@@ -54,7 +54,7 @@ export default function Home() {
     </div>
 
     {/* 5th screen */}
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen justify-center items-center">
       <h1 className="text-4xl font-bold">Join GitFries Today</h1>
       <EmailSignUp />
     </div>
