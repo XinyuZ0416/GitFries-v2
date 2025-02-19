@@ -1,13 +1,8 @@
 import EmailSignUp from "@/components/email-signup";
-import Footer from "@/components/footer";
-import Navbar from "@/components/navbar";
 
 export default function Home() {
   return (
     <>
-    <img className="fixed right-3 bottom-3 size-20 z-9" src="chatbot.png" />
-    <Navbar />
-
     {/* 1st screen */}
     <div className="flex h-screen">
       <div className="flex flex-col flex-1 justify-center items-center">
@@ -58,8 +53,6 @@ export default function Home() {
       <h1 className="text-4xl font-bold">Join GitFries Today</h1>
       <EmailSignUp />
     </div>
-
-    <Footer />
     </>
   );
 }
