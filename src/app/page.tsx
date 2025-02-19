@@ -1,10 +1,20 @@
+import EmailSignUp from "@/components/email-signup";
 import Navbar from "@/components/navbar";
-import Image from "next/image";
 
 export default function Home() {
   return (
     <>
     <Navbar />
+    <div className="flex h-screen">
+      <div className="flex flex-col flex-1 justify-center items-center">
+        <h1 className="text-4xl font-bold">Link Code Issues with Contributors</h1>
+        <EmailSignUp />
+      </div>
+
+      <div className="flex flex-col flex-1 justify-center items-center">
+        <img src="logo.png" />
+      </div>
+    </div>
     </>
   );
 }
