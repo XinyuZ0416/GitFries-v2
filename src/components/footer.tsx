@@ -9,19 +9,15 @@ export default function Footer() {
             <div className="mb-6 md:mb-0">
               <a href="https://flowbite.com/" className="flex items-center">
                 <img src="logo.png" className="h-8 me-3" alt="GitFries Logo" />
-                <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">GitFries</span>
+                <img src="https://see.fontimg.com/api/rf5/Yz9Ga/YWE2ZTFiNmIzODBjNGY5ZGJkYWU2Zjc4ODRjZTdiMDgub3Rm/R2l0RnJpZXM/flying-bird.png?r=fs&h=130&w=2000&fg=D00B0B&bg=FFFFFF&tb=1&s=65" className="h-8" alt="GitFries Title Logo" />
               </a>
-              <div className='flex flex-col'>
-                <a href="https://www.flaticon.com/free-icons/fries" title="fries icons">Fries icons created by Freepik - Flaticon</a>
-                <a href="https://www.flaticon.com/free-icons/chatbot" title="chatbot icons">Chatbot icons created by Freepik - Flaticon</a>
-              </div>
             </div>
             <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
               <div>
                 <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Resources</h2>
                 <ul className="text-gray-500 dark:text-gray-400 font-medium">
                   <li className="mb-4">
-                    <a href="https://flowbite.com/" className="hover:underline">Flowbite</a>
+                    <a href="/credits" className="hover:underline">Credits</a>
                   </li>
                   <li>
                     <a href="https://tailwindcss.com/" className="hover:underline">Tailwind CSS</a>
