@@ -1,7 +1,10 @@
+import LanguageCarousel from '@/components/language-carousel'
 import React from 'react'
 
 export default function IssuesPage() {
   return (
-    <div>IssuesPage</div>
+    <>
+    <LanguageCarousel />
+    </>
   )
 }
