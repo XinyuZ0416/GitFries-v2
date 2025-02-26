@@ -1,3 +1,4 @@
+import CommentBox from '@/components/comment-box'
 import React from 'react'
 
 export default function IssueDetails() {
@@ -21,9 +22,11 @@ export default function IssueDetails() {
         </div>
       </div>
 
-      <div className='mt-3'>
+      <div className='my-3'>
         <p className="font-normal text-gray-700">When outputting downloaded file in it should create directory with correct name according to music metadata. Instead, it creates  None directory for all downloaded music from one YTM Playlist.</p>
       </div>
+
+      <CommentBox />
     </div>
     </>
   )
