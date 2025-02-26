@@ -1,3 +1,4 @@
+import IssuePreview from '@/components/issue-preview'
 import LanguageCarousel from '@/components/language-carousel'
 import React from 'react'
 
@@ -21,6 +22,10 @@ export default function IssuesPage() {
     </div>
     
     <LanguageCarousel />
+
+    <h2 className="text-2xl font-bold">Latest</h2>
+
+    <IssuePreview />
     </>
   )
 }
