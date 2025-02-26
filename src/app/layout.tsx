@@ -29,7 +29,7 @@ export default function RootLayout({
         <div className="min-h-screen">
           {children}
         </div>
-        <img className="fixed right-3 bottom-3 size-20 z-9" src="chatbot.png" />
+        <img className="fixed right-3 bottom-3 size-20 z-9" src="/chatbot.png" />
         <Footer />
       </body>
     </html>
