@@ -2,7 +2,7 @@ import CommentBox from '@/components/comment-box'
 import CommentCard from '@/components/comment-card'
 import React from 'react'
 
-export default function IssueDetails() {
+export default function IssueDetailsPage() {
   return (
     <>
     <div className="flex flex-col p-3 m-3 bg-white border border-gray-200 rounded-lg shadow-sm">

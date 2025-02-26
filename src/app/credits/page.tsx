@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Credits() {
+export default function CreditsPage() {
   return (
     <>
     <div className='flex flex-col'>
