@@ -26,7 +26,9 @@ export default function RootLayout({
         className={`${ubuntuMono.variable} antialiased`}
       >
         <Navbar />
-        {children}
+        <div className="min-h-screen">
+          {children}
+        </div>
         <img className="fixed right-3 bottom-3 size-20 z-9" src="chatbot.png" />
         <Footer />
       </body>
