@@ -4,7 +4,7 @@ import Searchbar from './searchbar'
 export default function Navbar() {
   return (
     <>
-    <nav className="bg-yellow-300 sticky top-0">
+    <nav className="bg-yellow-300 sticky top-0 z-10">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2">
         <a href="/" className="flex items-center space-x-3">
           <img src="/logo.png" className="h-8" alt="GitFries Logo" />

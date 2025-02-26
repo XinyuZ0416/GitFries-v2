@@ -53,6 +53,21 @@ const carouselItems: CarouselItemType[] = [
     alt: "test",
     title: "title",
     description: "Java",
+  },{
+    image: "/java.png",
+    alt: "test",
+    title: "title",
+    description: "Java",
+  },{
+    image: "/java.png",
+    alt: "test",
+    title: "title",
+    description: "Java",
+  },{
+    image: "/java.png",
+    alt: "test",
+    title: "title",
+    description: "Java",
   },
 ];
 
