@@ -1,4 +1,5 @@
 import CommentBox from '@/components/comment-box'
+import CommentCard from '@/components/comment-card'
 import React from 'react'
 
 export default function IssueDetails() {
@@ -27,6 +28,8 @@ export default function IssueDetails() {
       </div>
 
       <CommentBox />
+
+      <CommentCard />
     </div>
     </>
   )
