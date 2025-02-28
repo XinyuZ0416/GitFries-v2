@@ -24,7 +24,7 @@ export default function Navbar() {
         
         <Searchbar />
 
-        <a href="/sign-up" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">Post an issue</a>
+        <a href="/post-issue" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">Post an issue</a>
 
         <a href="/sign-in" className="hover:underline">Sign In</a>
         
