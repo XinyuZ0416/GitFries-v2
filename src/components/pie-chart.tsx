@@ -30,28 +30,29 @@ export default function GitFriesPieChart() {
 
   const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#8dd1e1', '#a4de6c', '#d0ed57', '#ffc0cb']
 
-
   return (
     <>
-    <h2 className="text-2xl font-bold">Issues by Difficulty</h2>
-    <ResponsiveContainer width="100%" height={300}>
-      <PieChart width={730} height={250}>
-      <Tooltip />
-      <Legend />
-      <Pie 
-          data={data} 
-          dataKey="value" 
-          nameKey="key" 
-          cx="50%" 
-          cy="50%" 
-          outerRadius={100} 
-        >
-        {data.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-        ))}
-      </Pie>
-      </PieChart>
-    </ResponsiveContainer>
+    <div className='rounded-lg shadow-sm p-4'>
+      <h2 className="text-2xl font-bold">Issues by Difficulty</h2>
+      <ResponsiveContainer width="100%" height={300}>
+        <PieChart width={730} height={250}>
+        <Tooltip />
+        <Legend />
+        <Pie 
+            data={data} 
+            dataKey="value" 
+            nameKey="key" 
+            cx="50%" 
+            cy="50%" 
+            outerRadius={100} 
+          >
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          ))}
+        </Pie>
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
     </>
   )
 }
