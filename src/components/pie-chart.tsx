@@ -2,12 +2,16 @@
 import React, { useState, useEffect } from 'react'
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
-export default function GitFriesPieChart() {
-  type PieChartData = {
-    key: string,
-    value: number
-  }
+interface GitFriesPieChartProps {
+  title: string
+}
 
+type PieChartData = {
+  key: string,
+  value: number
+}
+
+export default function GitFriesPieChart({title}: GitFriesPieChartProps) {
   const data: PieChartData[] = [
     { key: "Java", value: 3 },
     { key: "JavaScript", value: 4 },
@@ -23,7 +27,7 @@ export default function GitFriesPieChart() {
   return (
     <>
     <div className='rounded-lg shadow-sm p-4'>
-      <h2 className="text-2xl font-bold">Issues by Difficulty</h2>
+      <h2 className="text-2xl font-bold">{title}</h2>
       <ResponsiveContainer width="100%" height={300}>
         <PieChart width={730} height={250}>
         <Tooltip />
