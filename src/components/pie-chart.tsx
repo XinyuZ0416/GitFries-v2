@@ -3,32 +3,22 @@ import React, { useState, useEffect } from 'react'
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
 export default function GitFriesPieChart() {
-  const data = [
-    {
-      key: "Java",
-      value: 3
-    },{
-      key: "JavaScript",
-      value: 4
-    },{
-      key: "TypeScript",
-      value: 1
-    },{
-      key: "Kotlin",
-      value: 7
-    },{
-      key: "C",
-      value: 6
-    },{
-      key: "C#",
-      value: 3
-    },{
-      key: "Swift",
-      value: 5
-    },
+  type PieChartData = {
+    key: string,
+    value: number
+  }
+
+  const data: PieChartData[] = [
+    { key: "Java", value: 3 },
+    { key: "JavaScript", value: 4 },
+    { key: "TypeScript", value: 1 },
+    { key: "Kotlin", value: 7 },
+    { key: "C", value: 6 },
+    { key: "C#", value: 3 },
+    { key: "Swift", value: 5 },
   ];
 
-  const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#8dd1e1', '#a4de6c', '#d0ed57', '#ffc0cb']
+  const COLORS: string[] = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#8dd1e1', '#a4de6c', '#d0ed57', '#ffc0cb']
 
   return (
     <>

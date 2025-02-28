@@ -3,14 +3,19 @@ import React from 'react';
 import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 
 export default function GitFriesBarChart() {
-  const data = [
-    { name: 'Mon', issues: 4000 },
-    { name: 'Tue', issues: 3000 },
-    { name: 'Wed', issues: 2000 },
-    { name: 'Thu', issues: 2780 },
-    { name: 'Fri', issues: 1890 },
-    { name: 'Sat', issues: 2390 },
-    { name: 'Sun', issues: 3490 },
+  type BarChartData = {
+    day: string,
+    issues: number
+  }
+
+  const data: BarChartData[] = [
+    { day: 'Mon', issues: 4000 },
+    { day: 'Tue', issues: 3000 },
+    { day: 'Wed', issues: 2000 },
+    { day: 'Thu', issues: 2780 },
+    { day: 'Fri', issues: 1890 },
+    { day: 'Sat', issues: 2390 },
+    { day: 'Sun', issues: 3490 },
   ];
 
   return (
@@ -20,7 +25,7 @@ export default function GitFriesBarChart() {
       <div className="w-full h-64">
         <ResponsiveContainer width="100%" height={200}>
           <BarChart data={data}>
-            <XAxis dataKey="name" />
+            <XAxis dataKey="day" />
             <YAxis />
             <Tooltip />
             <Bar dataKey="issues" fill="#FD6216" />

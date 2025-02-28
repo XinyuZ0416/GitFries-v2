@@ -3,53 +3,59 @@ import React from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
 export default function GitFriesLineChart() {
-  const data = [
+  type LineChartData = {
+    month: string,
+    issues: number,
+    contributions: number
+  }
+
+  const data: LineChartData[] = [
     {
-      name: "January",
+      month: "January",
       issues: 3,
       contributions: 10
     },{
-      name: "February",
+      month: "February",
       issues: 4,
       contributions: 14
     },{
-      name: "March",
+      month: "March",
       issues: 1,
       contributions: 10
     },{
-      name: "April",
+      month: "April",
       issues: 7,
       contributions: 3
     },{
-      name: "May",
+      month: "May",
       issues: 9,
       contributions: 10
     },{
-      name: "June",
+      month: "June",
       issues: 5,
       contributions: 12
     },{
-      name: "July",
+      month: "July",
       issues: 3,
       contributions: 5
     },{
-      name: "August",
+      month: "August",
       issues: 1,
       contributions: 10
     },{
-      name: "September",
+      month: "September",
       issues: 2,
       contributions: 8
     },{
-      name: "October",
+      month: "October",
       issues: 3,
       contributions: 10
     },{
-      name: "November",
+      month: "November",
       issues: 3,
       contributions: 1
     },{
-      name: "December",
+      month: "December",
       issues: 3,
       contributions: 10
     },
@@ -62,7 +68,7 @@ export default function GitFriesLineChart() {
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="month" />
           <YAxis />
           <Tooltip />
           <Legend />
