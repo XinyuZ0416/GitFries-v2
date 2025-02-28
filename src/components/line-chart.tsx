@@ -2,7 +2,7 @@
 import React from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
-export default function IssuesContributionsYearlyChart() {
+export default function GitFriesLineChart() {
   const data = [
     {
       name: "January",

@@ -2,7 +2,7 @@
 import React from 'react';
 import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 
-export default function IssuesWeeklyChart() {
+export default function GitFriesBarChart() {
   const data = [
     { name: 'Mon', issues: 4000 },
     { name: 'Tue', issues: 3000 },

@@ -1,12 +1,12 @@
-import IssuesContributionsYearlyChart from '@/components/issues-contributions-yearly-chart'
-import IssuesWeeklyChart from '@/components/issues-weekly-chart'
+import GitFriesLineChart from '@/components/line-chart'
+import GitFriesBarChart from '@/components/bar-chart'
 import React from 'react'
 
 export default function DashboardPage() {
   return (
     <>
-    <IssuesContributionsYearlyChart />
-    <IssuesWeeklyChart />
+    <GitFriesLineChart />
+    <GitFriesBarChart />
     </>
   )
 }
