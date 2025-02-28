@@ -58,7 +58,7 @@ export default function IssuesContributionsYearlyChart() {
   return (
     <>
     <div>
-      <h3>Issues and Contributions This Year</h3>
+      <h2 className="text-2xl font-bold">Issues and Contributions This Year</h2>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
