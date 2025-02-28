@@ -7,9 +7,16 @@ export default function DashboardPage() {
   return (
     <>
     <GitFriesLineChart />
-    <GitFriesBarChart />
-    <GitFriesPieChart />
-    <GitFriesPieChart />
+    <div className='flex w-full justify-around'>
+      <GitFriesBarChart />
+      <GitFriesPieChart />
+      <GitFriesPieChart />
+    </div>
+    <div className='flex w-full justify-around'>
+      <GitFriesBarChart />
+      <GitFriesPieChart />
+      <GitFriesPieChart />
+    </div>
     </>
   )
 }
