@@ -64,7 +64,7 @@ export default function GitFriesLineChart() {
   return (
     <>
     <div className='rounded-lg shadow-sm p-4'>
-      <h2 className="text-2xl font-bold">Issues and Contributions This Year</h2>
+      <h2 className="text-2xl font-bold">All Issues and Contributions This Year</h2>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
