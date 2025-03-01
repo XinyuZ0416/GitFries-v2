@@ -2,28 +2,32 @@
 import React from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
-export default function GitFriesLineChart() {
-  type LineChartData = {
-    month: string,
-    issues: number,
-    contributions: number
-  }
+interface GitFriesLineChartProps {
+  title: string,
+}
 
+type LineChartData = {
+  month: string,
+  issues: number,
+  contributions: number
+}
+
+export default function GitFriesLineChart({title}: GitFriesLineChartProps) {
   const data: LineChartData[] = [
     {
-      month: "January",
+      month: "Jan",
       issues: 3,
       contributions: 10
     },{
-      month: "February",
+      month: "Feb",
       issues: 4,
       contributions: 14
     },{
-      month: "March",
+      month: "Mar",
       issues: 1,
       contributions: 10
     },{
-      month: "April",
+      month: "Apr",
       issues: 7,
       contributions: 3
     },{
@@ -31,31 +35,31 @@ export default function GitFriesLineChart() {
       issues: 9,
       contributions: 10
     },{
-      month: "June",
+      month: "Jun",
       issues: 5,
       contributions: 12
     },{
-      month: "July",
+      month: "Jul",
       issues: 3,
       contributions: 5
     },{
-      month: "August",
+      month: "Aug",
       issues: 1,
       contributions: 10
     },{
-      month: "September",
+      month: "Sep",
       issues: 2,
       contributions: 8
     },{
-      month: "October",
+      month: "Oct",
       issues: 3,
       contributions: 10
     },{
-      month: "November",
+      month: "Nov",
       issues: 3,
       contributions: 1
     },{
-      month: "December",
+      month: "Dec",
       issues: 3,
       contributions: 10
     },
@@ -63,8 +67,8 @@ export default function GitFriesLineChart() {
 
   return (
     <>
-    <div className='rounded-lg shadow-sm p-4'>
-      <h2 className="text-2xl font-bold">All Issues and Contributions This Year</h2>
+    <div className='rounded-lg shadow-sm p-4 w-full'>
+      <h2 className="text-2xl font-bold">{title}</h2>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />

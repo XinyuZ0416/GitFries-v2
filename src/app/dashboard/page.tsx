@@ -8,7 +8,7 @@ import RequireSignInSignUp from '@/components/require-signin-signup'
 export default function DashboardPage() {
   return (
     <>
-    <GitFriesLineChart />
+    <GitFriesLineChart title='All Issues and Contributions This Year' />
     <div className='flex w-full justify-around'>
       <GitFriesBarChart title="All Issues This Week" color="#FD6216" />
       <GitFriesPieChart title="All Issues by Language" />
