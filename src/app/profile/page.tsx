@@ -8,7 +8,7 @@ export default function ProfilePage() {
     <>
     <div className='flex flex-col'>
       <div className='flex flex-row gap-2 w-full'>
-        <div className='flex flex-col gap-2 min-w-fit justify-between'>
+        <div className='flex flex-col gap-2 w-fit justify-between'>
           <ProfilePicCard />
           <ProfileAchievementsCard />
         </div>
