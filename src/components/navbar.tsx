@@ -19,6 +19,9 @@ export default function Navbar() {
             <li>
               <a href="/dashboard" className="block py-2 px-3 rounded-sm md:hover:bg-transparent md:p-0 md:dark:hover:bg-transparent">Dashboard</a>
             </li>
+            <li>
+              <a href="/achievements" className="block py-2 px-3 rounded-sm md:hover:bg-transparent md:p-0 md:dark:hover:bg-transparent">Achievements</a>
+            </li>
           </ul>
         </div>
         
