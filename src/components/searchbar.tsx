@@ -1,5 +1,5 @@
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import React from 'react'
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 
 export default function Searchbar() {
   return (
@@ -15,39 +15,7 @@ export default function Searchbar() {
                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
               </svg>
             </MenuButton>
-
-            <MenuItems
-              transition
-              anchor="bottom end"
-              className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700"
-            >
-              <MenuItem>
-                <button className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-white/10">
-                  Edit
-                  <kbd className="ml-auto hidden font-sans text-xs text-white/50 group-data-[focus]:inline">⌘E</kbd>
-                </button>
-              </MenuItem>
-              <MenuItem>
-                <button className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-white/10">
-                  Duplicate
-                  <kbd className="ml-auto hidden font-sans text-xs text-white/50 group-data-[focus]:inline">⌘D</kbd>
-                </button>
-              </MenuItem>
-              <MenuItem>
-                <button className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-white/10">
-                  Archive
-                  <kbd className="ml-auto hidden font-sans text-xs text-white/50 group-data-[focus]:inline">⌘A</kbd>
-                </button>
-              </MenuItem>
-              <MenuItem>
-                <button className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-white/10">
-                  Delete
-                  <kbd className="ml-auto hidden font-sans text-xs text-white/50 group-data-[focus]:inline">⌘D</kbd>
-                </button>
-              </MenuItem>
-            </MenuItems>
-          </Menu> 
-          
+          </Menu>
           <div className="relative w-full">
             <input type="search" id="search-dropdown" className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Search for an issue..." required />
             <button type="submit" className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
