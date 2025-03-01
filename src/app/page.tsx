@@ -17,17 +17,6 @@ export default function Home() {
 
     {/* 2nd screen */}
     <div className="flex flex-col h-screen">
-      <div className="flex flex-1 justify-center">
-        <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">Issue Reporter</button>
-        <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">Contributor</button>
-      </div>
-      <div className="flex-1">
-        <img src="reporter-preview.png" />
-      </div>
-    </div>
-
-    {/* 3rd screen */}
-    <div className="flex flex-col h-screen">
       <div className="flex-1">
         <h1 className="text-4xl font-bold">Find Talented Contributors</h1>
         <h2 className="text-2xl font-semi-bold">Bashing your head for a bug? Post the issue on GitFries, we will match it with contributors.</h2>
@@ -37,7 +26,7 @@ export default function Home() {
       </div>
     </div>
 
-    {/* 4th screen */}
+    {/* 3rd screen */}
     <div className="flex flex-col h-screen">
       <div className="flex-1">
         <h1 className="text-4xl font-bold">Showcase Skills by Contributing</h1>
@@ -48,7 +37,7 @@ export default function Home() {
       </div>
     </div>
 
-    {/* 5th screen */}
+    {/* 4th screen */}
     <div className="flex flex-col h-screen justify-center items-center">
       <h1 className="text-4xl font-bold">Join GitFries Today</h1>
       <EmailSignUp />
