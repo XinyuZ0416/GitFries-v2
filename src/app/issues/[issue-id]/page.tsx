@@ -1,5 +1,5 @@
-import CommentBox from '@/components/comment-box'
-import CommentCard from '@/components/comment-card'
+import AddCommentBox from '@/components/add-comment-box'
+import IssueCommentCard from '@/components/issue-comment-card'
 import React from 'react'
 
 export default function IssueDetailsPage() {
@@ -28,9 +28,9 @@ export default function IssueDetailsPage() {
         <p className="font-normal text-gray-700">When outputting downloaded file in it should create directory with correct name according to music metadata. Instead, it creates  None directory for all downloaded music from one YTM Playlist.</p>
       </div>
 
-      <CommentBox />
+      <AddCommentBox />
 
-      <CommentCard />
+      <IssueCommentCard />
     </div>
     </>
   )

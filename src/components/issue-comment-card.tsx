@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function CommentCard() {
+export default function IssueCommentCard() {
   return (
     <>
     <div className='flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm'>

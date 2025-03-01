@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function CommentBox() {
+export default function AddCommentBox() {
   return (
     <>
     <div className='flex flex-col gap-3'>
