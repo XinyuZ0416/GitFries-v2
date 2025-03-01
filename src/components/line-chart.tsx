@@ -67,7 +67,7 @@ export default function GitFriesLineChart({title}: GitFriesLineChartProps) {
 
   return (
     <>
-    <div className='rounded-lg shadow-sm p-4 w-full'>
+    <div className='rounded-lg shadow-sm bg-white p-4 w-full'>
       <div className='flex flex-row gap-2 items-center mr-auto'>
         <img className='size-14' src='/contribution.png' alt='contribution' />
         <h2 className="text-2xl font-bold">{title}</h2>

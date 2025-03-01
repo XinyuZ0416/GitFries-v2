@@ -3,7 +3,7 @@ import React from 'react'
 export default function PreviewCard() {
   return (
     <>
-    <a href="/issues/1" className="flex flex-row p-3 items-center bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
+    <a href="/issues/1" className="flex flex-row p-3 items-center bg-white rounded-lg shadow-sm hover:bg-gray-100">
       <div>
         <img className="rounded-full size-14" src="/potato.png" alt="user profile" />
         <h6 className='text-lg font-bold'>Potato</h6>

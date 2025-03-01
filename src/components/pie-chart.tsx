@@ -26,7 +26,7 @@ export default function GitFriesPieChart({title}: GitFriesPieChartProps) {
 
   return (
     <>
-    <div className='rounded-lg shadow-sm p-4'>
+    <div className='rounded-lg shadow-sm bg-white p-4'>
       <h2 className="text-2xl font-bold">{title}</h2>
       <ResponsiveContainer width="100%" height={300}>
         <PieChart width={730} height={250}>

@@ -25,7 +25,7 @@ export default function GitFriesBarChart({title, color}: GitFriesBarChartProps) 
 
   return (
     <>
-    <div className='w-full max-w-md rounded-lg shadow-sm p-4'>
+    <div className='w-full max-w-md rounded-lg shadow-sm bg-white p-4'>
       <h2 className="text-2xl font-bold">{title}</h2>
       <div className="w-full h-64">
         <ResponsiveContainer width="100%" height={200}>

@@ -8,6 +8,7 @@ import RequireSignInSignUp from '@/components/require-signin-signup'
 export default function DashboardPage() {
   return (
     <>
+    <div className='flex flex-col gap-2'>
     <GitFriesLineChart title='All Issues and Contributions This Year' />
     <div className='flex w-full justify-around'>
       <GitFriesBarChart title="All Issues This Week" color="#FD6216" />
@@ -21,6 +22,7 @@ export default function DashboardPage() {
     </div>
 
     <RequireSignInSignUp target='View Your Own Dashboard' />
+    </div>
     </>
   )
 }
