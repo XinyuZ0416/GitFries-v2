@@ -73,7 +73,7 @@ const carouselItems: CarouselItemType[] = [
 
 const CarouselItem: React.FC<CarouselItemType> = ({image, alt, title, description}) => (
   <>
-  <div className='py-4 flex flex-col items-center'>
+  <div className='py-4 mx-1 flex flex-col items-center rounded-lg shadow-sm bg-white hover:bg-gray-100'>
     <img src={image} alt={alt} title={title} className='w-14 h-14 object-cover rounded-lg' />
     <h3 className='text-lg font-semibold mt-2 '>{description}</h3>
   </div>
