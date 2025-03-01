@@ -31,6 +31,7 @@ export default function RootLayout({
         </div>
         <img className="fixed right-3 bottom-3 size-20 z-9" src="/chatbot.png" />
         <Footer />
+        <script src="https://unpkg.com/flowbite@3.1.2/dist/flowbite.js"></script>
       </body>
     </html>
   );
