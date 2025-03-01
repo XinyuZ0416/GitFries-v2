@@ -1,5 +1,6 @@
 import React from 'react'
 import Searchbar from './searchbar'
+import UserDropdown from './user-dropdown'
 
 export default function Navbar() {
   return (
@@ -35,7 +36,7 @@ export default function Navbar() {
         <a href='/notifications'>
           <img src="/notification.png" className="h-8" alt="no notification" />
         </a>
-        <img className="rounded-full h-8" src="/potato.png" alt="user profile" />
+        <UserDropdown />
       </div>
     </nav>
     </>
