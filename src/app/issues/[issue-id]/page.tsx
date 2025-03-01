@@ -19,6 +19,7 @@ export default function IssueDetailsPage() {
             <p className="font-normal text-gray-700">Today</p>
             <p className="font-normal text-gray-700">Kotlin</p>
             <img className="size-5" src="/link.png" alt="link" />
+            <img className="size-5" src="/empty-fries.png" alt="favorite button" />
           </div>
         </div>
       </div>
