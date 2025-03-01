@@ -9,6 +9,7 @@ export default function CreditsPage() {
       <a href="https://www.flaticon.com/free-icons/java" title="java icons">Java icons created by Freepik - Flaticon</a>
       <a href="https://www.flaticon.com/free-icons/potato" title="potato icons">Potato icons created by Freepik - Flaticon</a>
       <a href="https://www.flaticon.com/free-icons/link" title="link icons">Link icons created by Freepik - Flaticon</a>
+      <a href="https://www.flaticon.com/free-icons/potatoes" title="potatoes icons">Potatoes icons created by Freepik - Flaticon</a>
     </div>
     </>
   )
