@@ -19,6 +19,9 @@ export default function UserDropdown() {
         <a href='/profile' type='button' className="group flex w-full items-center justify-center rounded-lg py-1.5 px-3">Profile</a>
         </MenuItem>
         <MenuItem>
+        <a href='/membership' type='button' className="group flex w-full items-center justify-center rounded-lg py-1.5 px-3">Membership</a>
+        </MenuItem>
+        <MenuItem>
         <a href='/settings' type='button' className="group flex w-full items-center justify-center rounded-lg py-1.5 px-3">Settings</a>
         </MenuItem>
         <MenuItem>
