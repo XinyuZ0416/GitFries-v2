@@ -9,10 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.0",
+    "firebase": "^11.4.0",
     "flowbite-react": "^0.10.2",
     "next": "15.1.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-firebase-hooks": "^5.1.1",
     "react-multi-carousel": "^2.8.5",
     "recharts": "^2.15.1"
   },
