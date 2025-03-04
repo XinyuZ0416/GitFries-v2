@@ -1,0 +1,53 @@
+'use client'
+import React, { useState } from 'react';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from '@/app/firebase';
+
+export default function SignInCard() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+
+    setLoading(true);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      console.log('signed up!')
+    } catch (error) {
+      setError(error.message);
+      console.error("Error signing up:", error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <>
+    <form className="flex flex-col mx-auto w-2/5" onSubmit={handleSubmit} >
+      <div className="mb-5">
+        <label htmlFor="email" className="block mb-2 text-sm font-medium">Your email</label>
+        <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
+          type="email" id="email" placeholder="name@gitfries.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+      </div>
+      <div className="mb-5">
+        <label htmlFor="password" className="block mb-2 text-sm font-medium">Your password</label>
+        <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
+          type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+      </div>
+      <div className="flex items-start mb-5">
+        <div className="flex items-center h-5">
+          <input id="remember" type="checkbox" value="" className="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" />
+        </div>
+        <label htmlFor="remember" className="ms-2 text-sm font-medium">Remember me because I'm cool</label>
+      </div>
+      <a href='/forgot-password'>What was my password again?</a>
+      <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+        type="submit">Sign In</button>
+    </form>
+    </>
+  )
+}
