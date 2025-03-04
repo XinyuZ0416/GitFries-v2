@@ -6,10 +6,10 @@ import { db } from "../firebase";
 
 export default function TestPage() {
   // Reference Firestore collection
-  const colRef = collection(db, "issues");
+  const collectionRef = collection(db, "issues");
 
   // Fetch data using useCollection hook
-  const [snapshot, loading, error] = useCollection(colRef);
+  const [snapshot, loading, error] = useCollection(collectionRef);
 
   if (loading) return <p>Loading data...</p>;
   if (error) return <p>Error: {error.message}</p>;
