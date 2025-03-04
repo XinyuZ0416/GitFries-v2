@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendSignInLinkToEmail } from "firebase/auth";
 import { auth } from '@/app/firebase';
 
 export default function SignInCard() {
@@ -14,6 +14,24 @@ export default function SignInCard() {
     setShowPassword(!showPassword);
   };
 
+  const actionCodeSettings = {
+    // URL you want to redirect back to. The domain (www.example.com) for this
+    // URL must be in the authorized domains list in the Firebase Console.
+    url: 'http://localhost:3000/sign-in',
+    // This must be true.
+    handleCodeInApp: true,
+    // iOS: {
+    //   bundleId: 'com.example.ios'
+    // },
+    // android: {
+    //   packageName: 'com.example.android',
+    //   installApp: true,
+    //   minimumVersion: '12'
+    // },
+    // The domain must be configured in Firebase Hosting and owned by the project.
+    // linkDomain: 'custom-domain.com'
+  };
+
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -22,10 +40,14 @@ export default function SignInCard() {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      console.log('signed up!')
+      sendSignInLinkToEmail(auth, email, actionCodeSettings);
+      console.log('sent email!')
+      window.localStorage.setItem('emailForSignIn', email);
     } catch (error) {
       setError(error.message);
       console.error("Error signing up:", error.message);
+      const errorCode = error.code;
+      const errorMessage = error.message;
     } finally {
       setLoading(false);
     }
