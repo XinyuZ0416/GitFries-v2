@@ -1,6 +1,6 @@
 'use client'
-import React, { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword, sendSignInLinkToEmail } from "firebase/auth";
+import React, { useEffect, useState } from 'react';
+import { getAuth, createUserWithEmailAndPassword, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, getAdditionalUserInfo } from "firebase/auth";
 import { auth } from '@/app/firebase';
 
 export default function SignInCard() {
@@ -9,6 +9,47 @@ export default function SignInCard() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    // Confirm the link is a sign-in with email link.
+    const auth = getAuth();
+    if (isSignInWithEmailLink(auth, window.location.href)) {
+      // Additional state parameters can also be passed via URL.
+      // This can be used to continue the user's intended action before triggering
+      // the sign-in operation.
+      // Get the email if available. This should be available if the user completes
+      // the flow on the same device where they started it.
+      let email = window.localStorage.getItem('emailForSignIn');
+      if (!email) {
+        // User opened the link on a different device. To prevent session fixation
+        // attacks, ask the user to provide the associated email again. For example:
+        email = window.prompt('Please provide your email for confirmation');
+      }
+      // The client SDK will parse the code from the link for you.
+      signInWithEmailLink(auth, email!, window.location.href)
+        .then((result) => {
+          // Clear email from storage.
+          window.localStorage.removeItem('emailForSignIn');
+          // You can access the new user by importing getAdditionalUserInfo
+          // and calling it with result:
+          console.log(getAdditionalUserInfo(result));
+          // You can access the user's profile via:
+          getAdditionalUserInfo(result)?.profile
+          // You can check if the user is new or existing:
+          getAdditionalUserInfo(result)?.isNewUser
+        })
+        .catch((error) => {
+          // Some error occurred, you can inspect the code: error.code
+          // Common errors could be invalid email and invalid or expired OTPs.
+          console.error('Error signing in with email link:', error.code);
+          // error.code:
+          // auth/missing-email
+          // auth/invalid-action-code
+          setError(error.message);
+          
+        });
+    }
+  }, []);
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
@@ -20,14 +61,6 @@ export default function SignInCard() {
     url: 'http://localhost:3000/sign-in',
     // This must be true.
     handleCodeInApp: true,
-    // iOS: {
-    //   bundleId: 'com.example.ios'
-    // },
-    // android: {
-    //   packageName: 'com.example.android',
-    //   installApp: true,
-    //   minimumVersion: '12'
-    // },
     // The domain must be configured in Firebase Hosting and owned by the project.
     // linkDomain: 'custom-domain.com'
   };
@@ -38,11 +71,10 @@ export default function SignInCard() {
 
     setLoading(true);
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      sendSignInLinkToEmail(auth, email, actionCodeSettings);
-      console.log('sent email!')
+      await createUserWithEmailAndPassword(auth, email, password);
+      await sendSignInLinkToEmail(auth, email, actionCodeSettings);
       window.localStorage.setItem('emailForSignIn', email);
+      console.log('sent email!')
     } catch (error) {
       setError(error.message);
       console.error("Error signing up:", error.message);
