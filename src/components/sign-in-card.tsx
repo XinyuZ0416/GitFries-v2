@@ -7,7 +7,7 @@ import { auth } from '@/app/firebase';
 export default function SignInCard() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
+  const [errorCode, setErrorCode] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async(e) => {
@@ -17,8 +17,8 @@ export default function SignInCard() {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       console.log(userCredential.user);
     } catch (error) {
-      const errorCode = error.code;
-      setError(error.message);
+      setErrorCode(error.code);
+      console.log(error.code)
     }
   }
 
@@ -47,6 +47,10 @@ export default function SignInCard() {
       <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
         type="submit">Sign In</button>
     </form>
+    <h3 className='text-lg font-semibold text-red-600'>
+      {errorCode == 'auth/invalid-credential' && 'Wrong email or password, try again.'}
+      {errorCode == 'auth/too-many-requests' && 'Chill.. You are seding too many requests, try again later.'}
+    </h3>
     </>
   )
 }
