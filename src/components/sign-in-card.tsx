@@ -8,7 +8,6 @@ export default function SignInCard() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     // Confirm the link is a sign-in with email link.
@@ -51,10 +50,6 @@ export default function SignInCard() {
     }
   }, []);
 
-  const togglePassword = () => {
-    setShowPassword(!showPassword);
-  };
-
   const actionCodeSettings = {
     // URL you want to redirect back to. The domain (www.example.com) for this
     // URL must be in the authorized domains list in the Firebase Console.
@@ -64,7 +59,6 @@ export default function SignInCard() {
     // The domain must be configured in Firebase Hosting and owned by the project.
     // linkDomain: 'custom-domain.com'
   };
-
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -98,12 +92,6 @@ export default function SignInCard() {
         <div className='flex flex-row relative'>
           <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
             type={showPassword ? 'text' : 'password'} id="password" placeholder="DefinitelyNot123456" value={password} onChange={(e) => setPassword(e.target.value)} required />
-          <span className='absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer'>
-            <button type="button" onClick={togglePassword} className="block" aria-label="password toggle">
-              <span className={`icon-[tabler--eye-off] text-base-content/80 ${showPassword ? 'hidden' : 'block'} size-5 flex-shrink-0`}></span>
-              <span className={`icon-[tabler--eye] text-base-content/80 ${showPassword ? 'block' : 'hidden' } size-5 flex-shrink-0`}></span>
-            </button>
-          </span>
         </div>
       </div>
       <div className="flex items-start mb-5">
