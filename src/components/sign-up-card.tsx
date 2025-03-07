@@ -1,19 +1,23 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, getAdditionalUserInfo } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, getAdditionalUserInfo } from "firebase/auth";
 import { auth } from '@/app/firebase';
 
 export default function SignUpCard() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
-  const [error, setError] = useState(null);
+  const [errorCode, setErrorCode] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isLoggedIn, setILoggedIn] = useState(false);
 
   useEffect(() => {
-    const auth = getAuth();
+    console.log(auth)
+    console.log(window.localStorage.getItem('emailForSignIn'))
+    console.log(isSignInWithEmailLink(auth, window.location.href))
     if (isSignInWithEmailLink(auth, window.location.href)) {
       let email = window.localStorage.getItem('emailForSignIn');
+      console.log(email)
       if (!email) {
         email = window.prompt('Please provide your email for confirmation');
       }
@@ -21,12 +25,13 @@ export default function SignUpCard() {
         .then((result) => {
           window.localStorage.removeItem('emailForSignIn');
           console.log(getAdditionalUserInfo(result));
-          getAdditionalUserInfo(result)?.profile
-          getAdditionalUserInfo(result)?.isNewUser
+          if(!getAdditionalUserInfo(result)!.isNewUser) {
+            setILoggedIn(true);
+          }
         })
         .catch((error) => {
-          console.error('Error signing in with email link:', error.code);
-          setError(error.message);
+          console.error(error.code);
+          setErrorCode(error.code);
         });
     }
   }, []);
@@ -61,7 +66,7 @@ export default function SignUpCard() {
   const actionCodeSettings = {
     // URL you want to redirect back to. The domain (www.example.com) for this
     // URL must be in the authorized domains list in the Firebase Console.
-    url: 'http://localhost:3000/sign-in',
+    url: 'http://localhost:3000/sign-up',
     // This must be true.
     handleCodeInApp: true,
     // The domain must be configured in Firebase Hosting and owned by the project.
@@ -73,7 +78,8 @@ export default function SignUpCard() {
     e.preventDefault();
 
     if(password !== repeatPassword) {
-      throw new Error('Password not confirmed');
+      setErrorCode('passwords/mismatch');
+      throw new Error(`Passwords don't match`);
     }
 
     setLoading(true);
@@ -83,10 +89,7 @@ export default function SignUpCard() {
       window.localStorage.setItem('emailForSignIn', email);
       console.log('sent email!')
     } catch (error) {
-      setError(error.message);
-      console.error("Error signing up:", error.message);
-      const errorCode = error.code;
-      const errorMessage = error.message;
+      setErrorCode(error.code);
     } finally {
       setLoading(false);
     }
@@ -124,6 +127,12 @@ export default function SignUpCard() {
       <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
         type="submit" >Sign Up</button>
     </form>
+    <h3 className='text-lg font-semibold text-red-600'>
+      {isLoggedIn == true && 'You are logged in!'}
+      {errorCode == 'passwords/mismatch' && 'Your passwords are not matching, try again.'}
+      {errorCode == 'auth/missing-email' && 'No email provided :< , try again.'}
+      {errorCode == 'auth/invalid-action-code' && 'Is that an email...? Try again.'}
+    </h3>
     </>
   )
 }

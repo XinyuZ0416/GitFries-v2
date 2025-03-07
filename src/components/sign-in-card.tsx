@@ -7,7 +7,7 @@ import { auth } from '@/app/firebase';
 export default function SignInCard() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorCode, setErrorCode] = useState(null);
+  const [errorCode, setErrorCode] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async(e) => {
