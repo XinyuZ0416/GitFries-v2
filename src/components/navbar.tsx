@@ -1,8 +1,23 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
 import Searchbar from './searchbar'
 import UserDropdown from './user-dropdown'
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '@/app/firebase';
 
 export default function Navbar() {
+  const [uid, setUid] = useState<string>('');
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/auth.user
+        setUid(user.uid);
+      }
+    });
+  }, []);
+
   return (
     <>
     <nav className="bg-yellow-300 sticky top-0 z-10">
@@ -30,14 +45,23 @@ export default function Navbar() {
 
         <a href="/post-issue" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">Post an issue</a>
 
-        <a href="/sign-in" className="hover:underline">Sign In</a>
-        <a href="/sign-up" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">Sign Up</a>
-
-        {/* <a href='/notifications'>
-          <img src="/notification.png" className="h-8" alt="no notification" />
-        </a> */}
-        {/* <img className="rounded-full h-8" src="/potato.png" alt="user profile" /> */}
-        {/* <UserDropdown /> */}
+        { // if user is logged in
+          uid && 
+          <>
+          <a href='/notifications'>
+            <img src="/notification.png" className="h-8" alt="no notification" />
+          </a>
+          <UserDropdown />
+          </>
+        }
+        
+        { // if user is logged out
+          !uid && 
+          <>
+          <a href="/sign-in" className="hover:underline">Sign In</a>
+          <a href="/sign-up" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">Sign Up</a>
+          </>
+        }
       </div>
     </nav>
     </>

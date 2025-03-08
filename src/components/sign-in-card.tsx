@@ -17,13 +17,10 @@ export default function SignInCard() {
     setIsLoading(true);
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      
       if (!userCredential.user.emailVerified) {
         setErrorCode('auth/email-not-verified');
       }
-
       setPersistence(auth, isRememberMe ? browserLocalPersistence :browserSessionPersistence);
-      console.log('logged in!');
     } catch (error: any) {
       setErrorCode(error.code);
     } finally {
