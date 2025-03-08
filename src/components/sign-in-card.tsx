@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react';
-import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
+import { browserLocalPersistence, browserSessionPersistence, sendPasswordResetEmail, setPersistence, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/app/firebase';
 
 export default function SignInCard() {
@@ -8,6 +8,7 @@ export default function SignInCard() {
   const [password, setPassword] = useState<string>('');
   const [errorCode, setErrorCode] = useState<string>('');
   const [isResetPassword, setIsResetPassword] = useState<boolean>(false);
+  const [isRememberMe, setIsRememberMe] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSubmit = async(e: any) => {
@@ -21,6 +22,7 @@ export default function SignInCard() {
         setErrorCode('auth/email-not-verified');
       }
 
+      setPersistence(auth, isRememberMe ? browserLocalPersistence :browserSessionPersistence);
       console.log('logged in!');
     } catch (error: any) {
       setErrorCode(error.code);
@@ -59,13 +61,14 @@ export default function SignInCard() {
       </div>
       <div className="flex items-start mb-5">
         <div className="flex items-center h-5">
-          <input id="remember" type="checkbox" value="" className="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" />
+          <input className="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
+            id="remember" type="checkbox" checked={isRememberMe} onChange={(e) => setIsRememberMe(e.target.checked)} />
         </div>
-        <label htmlFor="remember" className="ms-2 text-sm font-medium">Remember me because I'm cool</label>
+        <label htmlFor="remember" className="ms-2 text-sm font-medium">Remember me please please please</label>
       </div>
       <button className="text-white bg-yellow-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
         type='button' onClick={handleResetPassword}>
-        What was my password again?
+        Oh shit what's my password again aaaaaa
       </button>
       <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
         type="submit">Sign In</button>
