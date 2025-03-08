@@ -13,17 +13,19 @@ export default function SignInCard() {
   const handleSubmit = async(e) => {
     e.preventDefault();
 
+    setLoading(true);
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       
       if (!userCredential.user.emailVerified) {
-        throw new Error('Please verify your email');
+        setErrorCode('auth/email-not-verified');
       }
 
       console.log('logged in!');
     } catch (error) {
       setErrorCode(error.code);
-      console.log(error.code)
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -54,6 +56,7 @@ export default function SignInCard() {
     </form>
     <h3 className='text-lg font-semibold text-red-600'>
       {errorCode == 'auth/invalid-credential' && 'Wrong email or password, try again.'}
+      {errorCode == 'auth/email-not-verified' && 'Please find the verification link in your email and verify before logging in.'}
       {errorCode == 'auth/too-many-requests' && 'Chill.. You are seding too many requests, try again later.'}
     </h3>
     </>

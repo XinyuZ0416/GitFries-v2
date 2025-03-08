@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { createUserWithEmailAndPassword, isSignInWithEmailLink, signInWithEmailLink, getAdditionalUserInfo, sendEmailVerification } from "firebase/auth";
 import { auth } from '@/app/firebase';
 
@@ -8,51 +8,29 @@ export default function SignUpCard() {
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const [errorCode, setErrorCode] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [isLoggedIn, setILoggedIn] = useState(false);
-
-  useEffect(() => {
-    console.log(auth)
-    console.log(window.localStorage.getItem('emailForSignIn'))
-    console.log(isSignInWithEmailLink(auth, window.location.href))
-    if (isSignInWithEmailLink(auth, window.location.href)) {
-      let email = window.localStorage.getItem('emailForSignIn');
-      console.log(email)
-      if (!email) {
-        email = window.prompt('Please provide your email for confirmation');
-      }
-      signInWithEmailLink(auth, email!, window.location.href)
-        .then((result) => {
-          window.localStorage.removeItem('emailForSignIn');
-          console.log(getAdditionalUserInfo(result));
-          if(!getAdditionalUserInfo(result)!.isNewUser) {
-            setILoggedIn(true);
-          }
-        })
-        .catch((error) => {
-          console.error(error.code);
-          setErrorCode(error.code);
-        });
-    }
-  }, []);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async(e) => {
     e.preventDefault();
 
-    if(password !== repeatPassword) {
-      setErrorCode('passwords/mismatch');
-      throw new Error(`Passwords don't match`);
-    }
+    setIsLoading(true);
+    if (password == repeatPassword) {
+      if (errorCode == 'passwords/mismatch') {
+        setErrorCode('');
+      }
 
-    setLoading(true);
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      await sendEmailVerification(userCredential.user);
-      console.log('sent email!')
-    } catch (error) {
-      setErrorCode(error.code);
-    } finally {
-      setLoading(false);
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await sendEmailVerification(userCredential.user);
+        console.log('sent email!')
+      } catch (error) {
+        setErrorCode(error.code);
+        throw new Error(error.code);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      setErrorCode('passwords/mismatch');
     }
   }
 
@@ -88,11 +66,12 @@ export default function SignUpCard() {
       <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
         type="submit" >Sign Up</button>
     </form>
+    <h3 className='text-lg font-semibold text-green-600'>
+      {isLoading && 'Loading...'}
+    </h3>
     <h3 className='text-lg font-semibold text-red-600'>
-      {isLoggedIn == true && 'You are logged in!'}
       {errorCode == 'passwords/mismatch' && 'Your passwords are not matching, try again.'}
-      {errorCode == 'auth/missing-email' && 'No email provided :< , try again.'}
-      {errorCode == 'auth/invalid-action-code' && 'Is that an email...? Try again.'}
+      {errorCode == 'auth/email-already-in-use' && 'Email already in use, did you forget the password?'}
     </h3>
     </>
   )
