@@ -4,11 +4,11 @@ import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/aut
 import { auth } from '@/app/firebase';
 
 export default function SignInCard() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorCode, setErrorCode] = useState('');
-  const [isResetPassword, setIsResetPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [errorCode, setErrorCode] = useState<string>('');
+  const [isResetPassword, setIsResetPassword] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSubmit = async(e: any) => {
     e.preventDefault();

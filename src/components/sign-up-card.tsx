@@ -4,11 +4,11 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/
 import { auth } from '@/app/firebase';
 
 export default function SignUpCard() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [repeatPassword, setRepeatPassword] = useState('');
-  const [errorCode, setErrorCode] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [repeatPassword, setRepeatPassword] = useState<string>('');
+  const [errorCode, setErrorCode] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSubmit = async(e: any) => {
     e.preventDefault();
