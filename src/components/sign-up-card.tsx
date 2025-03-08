@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react';
-import { createUserWithEmailAndPassword, isSignInWithEmailLink, signInWithEmailLink, getAdditionalUserInfo, sendEmailVerification } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { auth } from '@/app/firebase';
 
 export default function SignUpCard() {
@@ -10,7 +10,7 @@ export default function SignUpCard() {
   const [errorCode, setErrorCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async(e: any) => {
     e.preventDefault();
 
     setIsLoading(true);
@@ -23,7 +23,7 @@ export default function SignUpCard() {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         await sendEmailVerification(userCredential.user);
         console.log('sent email!')
-      } catch (error) {
+      } catch (error: any) {
         setErrorCode(error.code);
         throw new Error(error.code);
       } finally {

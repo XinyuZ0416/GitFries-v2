@@ -10,7 +10,7 @@ export default function SignInCard() {
   const [errorCode, setErrorCode] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async(e: any) => {
     e.preventDefault();
 
     setLoading(true);
@@ -22,7 +22,7 @@ export default function SignInCard() {
       }
 
       console.log('logged in!');
-    } catch (error) {
+    } catch (error: any) {
       setErrorCode(error.code);
     } finally {
       setLoading(false);
