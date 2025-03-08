@@ -15,7 +15,12 @@ export default function SignInCard() {
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      console.log(userCredential.user);
+      
+      if (!userCredential.user.emailVerified) {
+        throw new Error('Please verify your email');
+      }
+
+      console.log('logged in!');
     } catch (error) {
       setErrorCode(error.code);
       console.log(error.code)

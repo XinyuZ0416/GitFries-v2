@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import { createUserWithEmailAndPassword, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, getAdditionalUserInfo } from "firebase/auth";
+import { createUserWithEmailAndPassword, isSignInWithEmailLink, signInWithEmailLink, getAdditionalUserInfo, sendEmailVerification } from "firebase/auth";
 import { auth } from '@/app/firebase';
 
 export default function SignUpCard() {
@@ -36,44 +36,6 @@ export default function SignUpCard() {
     }
   }, []);
 
-  // useEffect(() => {
-  //   const auth = getAuth();
-  //   const signUp = async () => {
-  //     try {
-  //       if (isSignInWithEmailLink(auth, window.location.href)) {
-  //         let email = window.localStorage.getItem('emailForSignIn');
-  //         console.log(email)
-  //         if (!email) { // User opened the link on a different device/ browser.
-  //           email = window.prompt('Please provide your email for confirmation');
-  //         }
-  //         await signInWithEmailLink(auth, email!, window.location.href);
-  //         window.localStorage.removeItem('emailForSignIn');
-  //         // console.log(getAdditionalUserInfo(result));
-  //       }
-  //     } catch (error) {
-  //       console.error('Error signing in with email link:', error.code);
-  //       // error.code:
-  //       // auth/missing-email
-  //       // auth/invalid-action-code
-  //       setError(error.message);
-  //     }
-  //   }
-
-  //   signUp();
-  // }, []);
-
-
-  const actionCodeSettings = {
-    // URL you want to redirect back to. The domain (www.example.com) for this
-    // URL must be in the authorized domains list in the Firebase Console.
-    url: 'http://localhost:3000/sign-up',
-    // This must be true.
-    handleCodeInApp: true,
-    // The domain must be configured in Firebase Hosting and owned by the project.
-    // linkDomain: 'custom-domain.com'
-  };
-
-
   const handleSubmit = async(e) => {
     e.preventDefault();
 
@@ -84,9 +46,8 @@ export default function SignUpCard() {
 
     setLoading(true);
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      await sendSignInLinkToEmail(auth, email, actionCodeSettings);
-      window.localStorage.setItem('emailForSignIn', email);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await sendEmailVerification(userCredential.user);
       console.log('sent email!')
     } catch (error) {
       setErrorCode(error.code);
