@@ -1,19 +1,19 @@
 'use client'
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/app/firebase';
-
 
 export default function SignInCard() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorCode, setErrorCode] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [isResetPassword, setIsResetPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async(e: any) => {
     e.preventDefault();
 
-    setLoading(true);
+    setIsLoading(true);
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       
@@ -25,7 +25,20 @@ export default function SignInCard() {
     } catch (error: any) {
       setErrorCode(error.code);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
+    }
+  }
+
+  const handleResetPassword = async(e: any) => {
+    setIsLoading(true);
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setIsResetPassword(true);
+    } catch (error: any) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -50,10 +63,17 @@ export default function SignInCard() {
         </div>
         <label htmlFor="remember" className="ms-2 text-sm font-medium">Remember me because I'm cool</label>
       </div>
-      <a href='/forgot-password'>What was my password again?</a>
+      <button className="text-white bg-yellow-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+        type='button' onClick={handleResetPassword}>
+        What was my password again?
+      </button>
       <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
         type="submit">Sign In</button>
     </form>
+    <h3 className='text-lg font-semibold text-green-600'>
+      {isLoading && 'Loading...'}
+      {isResetPassword && 'Check your email for password reset link.'}
+    </h3>
     <h3 className='text-lg font-semibold text-red-600'>
       {errorCode == 'auth/invalid-credential' && 'Wrong email or password, try again.'}
       {errorCode == 'auth/email-not-verified' && 'Please find the verification link in your email and verify before logging in.'}
