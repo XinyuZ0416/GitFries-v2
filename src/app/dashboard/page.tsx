@@ -4,8 +4,10 @@ import GitFriesBarChart from '@/components/bar-chart'
 import React from 'react'
 import GitFriesPieChart from '@/components/pie-chart'
 import RequireSignInSignUp from '@/components/require-signin-signup'
+import { useAuth } from '@/components/providers'
 
 export default function DashboardPage() {
+  const { isVerified } = useAuth();  
   return (
     <>
     <div className='flex flex-col gap-2'>
@@ -20,8 +22,10 @@ export default function DashboardPage() {
       <GitFriesPieChart title="All Contributions by Language" />
       <GitFriesPieChart title="All Contributions by Difficulty" />
     </div>
-
-    <RequireSignInSignUp target='View Your Own Dashboard' />
+    {isVerified ? 
+      <h2 className="text-2xl font-bold">My Dashboard</h2> :
+      <RequireSignInSignUp target='View Your Own Dashboard' />
+    }
     </div>
     </>
   )
