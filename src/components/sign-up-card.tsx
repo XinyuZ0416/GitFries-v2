@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { auth } from '@/app/firebase';
+import CheckUnchecked from './check-unchecked';
 
 export default function SignUpCard() {
   const [email, setEmail] = useState<string>('');
@@ -9,6 +10,11 @@ export default function SignUpCard() {
   const [repeatPassword, setRepeatPassword] = useState<string>('');
   const [errorCode, setErrorCode] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isUpperCase, setIsUpperCase] = useState<boolean>(false);
+  const [isLowerCase, setIsLowerCase] = useState<boolean>(false);
+  const [isSpecialChar, setIsSpecialChar] = useState<boolean>(false);
+  const [isNumber, setIsNumber] = useState<boolean>(false);
+  const [isLongerThanSix, setIsLongerThanSix] = useState<boolean>(false);
 
   const handleSubmit = async(e: any) => {
     e.preventDefault();
@@ -33,6 +39,16 @@ export default function SignUpCard() {
       setErrorCode('passwords/mismatch');
     }
   }
+  
+  const handleSetPassword = (e: any) => {
+    let input = e.target.value;
+    setPassword(input);
+    /[A-Z]/.test(input) ? setIsUpperCase(true) : setIsUpperCase(false);
+    /[a-z]/.test(input) ? setIsLowerCase(true) : setIsLowerCase(false);
+    /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(input) ? setIsSpecialChar(true) : setIsSpecialChar(false);
+    /\d/.test(input) ? setIsNumber(true) : setIsNumber(false);
+    input.length >= 6 ? setIsLongerThanSix(true) : setIsLongerThanSix(false);
+  }
 
   return (
     <>
@@ -46,10 +62,21 @@ export default function SignUpCard() {
       </div>
       <div className="relative z-0 w-full mb-5 group">
         <input className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
-          type='password' name="floating_password" id="floating_password" placeholder=" " value={password} onChange={(e) => setPassword(e.target.value)} required />
+          type='password' name="floating_password" id="floating_password" placeholder=" " value={password} onChange={handleSetPassword} required />
         <label htmlFor="floating_password" className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
           Password
         </label>
+      </div>
+      <div>
+        { password &&
+          <>
+          <CheckUnchecked condition={isUpperCase} explanation='at least 1 uppercase character' />
+          <CheckUnchecked condition={isLowerCase} explanation='at least 1 lowercase character' />
+          <CheckUnchecked condition={isSpecialChar} explanation='at least 1 special character' />
+          <CheckUnchecked condition={isNumber} explanation='at least 1 number' />
+          <CheckUnchecked condition={isLongerThanSix} explanation='at least 6 characters' />
+          </>
+        }
       </div>
       <div className="relative z-0 w-full mb-5 group">
         <input className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer ${password == repeatPassword ? '': 'border-red-500'}`}
@@ -70,6 +97,7 @@ export default function SignUpCard() {
       {isLoading && 'Loading...'}
     </h3>
     <h3 className='text-lg font-semibold text-red-600'>
+      {errorCode == 'auth/weak-password' && 'Your password is too weak, try harder.'}
       {errorCode == 'passwords/mismatch' && 'Your passwords are not matching, try again.'}
       {errorCode == 'auth/email-already-in-use' && 'Email already in use, did you forget the password?'}
     </h3>
