@@ -1,9 +1,11 @@
 'use client'
+import { useAuth } from '@/components/providers';
 import RequireSignInSignUp from '@/components/require-signin-signup'
 import React, { useEffect, useState } from 'react'
 
 export default function PostIssuePage() {
   const [mounted, setMounted] = useState(false);
+  const {uid} = useAuth();
 
   useEffect(() => {
     setMounted(true);
@@ -13,8 +15,7 @@ export default function PostIssuePage() {
   
   return (
     <>
-    {/* <RequireSignInSignUp target='Post an Issue' /> */}
-    {/* 如果用户已经登陆 */}
+    {uid ? 
     <div className='flex justify-center items-center h-screen'>
       <form className="mx-auto w-2/5">
         <fieldset className="mb-5">
@@ -71,7 +72,10 @@ export default function PostIssuePage() {
         </div>
         <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
       </form>
-    </div>
+    </div> :
+    <RequireSignInSignUp target='Post an Issue' />
+  }
+    
     </>
   )
 }
