@@ -1,22 +1,11 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Searchbar from './searchbar'
 import UserDropdown from './user-dropdown'
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/app/firebase';
+import { useAuth } from './providers';
 
 export default function Navbar() {
-  const [uid, setUid] = useState<string>('');
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/auth.user
-        setUid(user.uid);
-      }
-    });
-  }, []);
+  const { uid } = useAuth();
 
   return (
     <>
