@@ -4,8 +4,8 @@ import RequireSignInSignUp from '@/components/require-signin-signup'
 import React, { useEffect, useState } from 'react'
 
 export default function PostIssuePage() {
-  const [mounted, setMounted] = useState(false);
-  const {uid} = useAuth();
+  const [ mounted, setMounted ] = useState(false);
+  const { uid, isVerified } = useAuth();
 
   useEffect(() => {
     setMounted(true);
@@ -15,7 +15,7 @@ export default function PostIssuePage() {
   
   return (
     <>
-    {uid ? 
+    {isVerified ? 
     <div className='flex justify-center items-center h-screen'>
       <form className="mx-auto w-2/5">
         <fieldset className="mb-5">

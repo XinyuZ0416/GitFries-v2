@@ -3,7 +3,7 @@ import EmailSignUp from "@/components/email-signup";
 import { useAuth } from "@/components/providers";
 
 export default function Home() {
-  const {uid} = useAuth();
+  const { isVerified } = useAuth();
 
   return (
     <>
@@ -11,7 +11,7 @@ export default function Home() {
     <div className="flex h-screen">
       <div className="flex flex-col flex-1 justify-center items-center">
         <h1 className="text-4xl font-bold">Link Code Issues with Contributors</h1>
-        {!uid && <EmailSignUp goal="Find Contributors or Contribute to Issues" />}
+        {!isVerified && <EmailSignUp goal="Find Contributors or Contribute to Issues" />}
       </div>
 
       <div className="flex flex-col flex-1 justify-center items-center">
@@ -42,7 +42,7 @@ export default function Home() {
     </div>
 
     {/* 4th screen */}
-    {!uid && 
+    {!isVerified && 
     <div className="flex flex-col h-screen justify-center items-center">
       <h1 className="text-4xl font-bold">Join GitFries Today</h1>
       <EmailSignUp goal="Find Contributors or Contribute to Issues" />

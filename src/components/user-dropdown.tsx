@@ -8,12 +8,13 @@ import { useAuth } from './providers';
 
 export default function UserDropdown() {
   const router = useRouter();
-  const {setUid} = useAuth();
+  const { setUid, setIsVerified } = useAuth();
 
   const handleSignOut = async() => {
     try {
       await signOut(auth);
       setUid('');
+      setIsVerified(false);
       router.push('/');
     }catch(error) {
       console.error(error);

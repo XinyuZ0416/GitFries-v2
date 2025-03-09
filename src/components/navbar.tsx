@@ -5,7 +5,7 @@ import UserDropdown from './user-dropdown'
 import { useAuth } from './providers';
 
 export default function Navbar() {
-  const { uid } = useAuth();
+  const { isVerified } = useAuth();
 
   return (
     <>
@@ -34,8 +34,8 @@ export default function Navbar() {
 
         <a href="/post-issue" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">Post an issue</a>
 
-        { // if user is logged in
-          uid && 
+        { // if user is logged in & verified
+          isVerified && 
           <>
           <a href='/notifications'>
             <img src="/notification.png" className="h-8" alt="no notification" />
@@ -44,8 +44,8 @@ export default function Navbar() {
           </>
         }
         
-        { // if user is logged out
-          !uid && 
+        { // if user is logged out or not verified
+          !isVerified && 
           <>
           <a href="/sign-in" className="hover:underline">Sign In</a>
           <a href="/sign-up" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">Sign Up</a>

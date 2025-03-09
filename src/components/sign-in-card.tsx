@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { browserLocalPersistence, browserSessionPersistence, sendPasswordResetEmail, setPersistence, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/app/firebase';
 import { useRouter } from 'next/navigation';
+import { useAuth } from './providers';
 
 export default function SignInCard() {
   const [email, setEmail] = useState<string>('');
@@ -12,6 +13,7 @@ export default function SignInCard() {
   const [isRememberMe, setIsRememberMe] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
+  const {setIsVerified, uid, setUid} = useAuth();
 
   const handleSubmit = async(e: any) => {
     e.preventDefault();
@@ -21,9 +23,12 @@ export default function SignInCard() {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       if (!userCredential.user.emailVerified) {
         setErrorCode('auth/email-not-verified');
+      } else {
+        setPersistence(auth, isRememberMe ? browserLocalPersistence :browserSessionPersistence);
+        setUid(uid);
+        setIsVerified(true);
+        router.push('/profile');
       }
-      setPersistence(auth, isRememberMe ? browserLocalPersistence :browserSessionPersistence);
-      router.push('/profile');
     } catch (error: any) {
       setErrorCode(error.code);
     } finally {

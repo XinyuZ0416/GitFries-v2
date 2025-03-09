@@ -3,16 +3,19 @@ import { auth } from "@/app/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-// auth context - whether user is logged in
+// auth context
 interface AuthContextProps {
   uid: string,
   setUid: React.Dispatch<React.SetStateAction<string>>;
+  isVerified: boolean,
+  setIsVerified: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AuthContext = createContext<AuthContextProps | null>(null);
 
 export const AuthProvider = ({children}:{children: React.ReactNode}) => {
   const [uid, setUid] = useState<string>('');
+  const [isVerified, setIsVerified] = useState<boolean>(false);
 
   useEffect(() => {
     console.log(auth)
@@ -21,13 +24,14 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
         setUid(user.uid);
+        setIsVerified(user.emailVerified);
       }
     });
     return () => unsubscribe(); // clean up
   }, []);
 
   return(
-    <AuthContext.Provider value={{uid, setUid}}>
+    <AuthContext.Provider value={{uid, setUid, isVerified, setIsVerified}}>
       {children}
     </AuthContext.Provider>
   );
