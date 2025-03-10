@@ -6,15 +6,18 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 // auth context
 interface AuthContextProps {
   uid: string,
-  setUid: React.Dispatch<React.SetStateAction<string>>;
+  setUid: React.Dispatch<React.SetStateAction<string>>,
+  email: string,
+  setEmail: React.Dispatch<React.SetStateAction<string>>,
   isVerified: boolean,
-  setIsVerified: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsVerified: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 const AuthContext = createContext<AuthContextProps | null>(null);
 
 export const AuthProvider = ({children}:{children: React.ReactNode}) => {
   const [uid, setUid] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
   const [isVerified, setIsVerified] = useState<boolean>(false);
 
   useEffect(() => {
@@ -24,6 +27,7 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
         setUid(user.uid);
+        setEmail(user.email!);
         setIsVerified(user.emailVerified);
       }
     });
@@ -31,7 +35,7 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
   }, []);
 
   return(
-    <AuthContext.Provider value={{uid, setUid, isVerified, setIsVerified}}>
+    <AuthContext.Provider value={{uid, setUid, email, setEmail, isVerified, setIsVerified, }}>
       {children}
     </AuthContext.Provider>
   );

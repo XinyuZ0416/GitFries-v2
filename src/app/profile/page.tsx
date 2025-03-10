@@ -5,6 +5,7 @@ import ProfilePicCard from '@/components/profile-pic-card'
 import React from 'react'
 
 export default function ProfilePage() {
+  // TODO: if no user/ user not verified, dont show content
   return (
     <>
     <div className='flex flex-col gap-2'>
