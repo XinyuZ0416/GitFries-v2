@@ -3,6 +3,7 @@ import LanguageCarousel from '@/components/language-carousel'
 import React from 'react'
 
 export default function IssuesPage() {
+  // TODO: cannot view more than 1 page/ use search without verified log in
   return (
     <>
     <div className="flex">

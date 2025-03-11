@@ -6,7 +6,7 @@ export default function PricingFreeCard() {
     <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-8 dark:bg-gray-800 dark:border-gray-700">
       <h5 className="mb-4 text-xl font-medium text-gray-500">Standard Plan</h5>
       <div className="flex items-baseline text-gray-900 dark:text-white">
-        <span className="text-3xl font-semibold">£</span>
+        <span className="text-3xl font-semibold">$</span>
         <span className="text-5xl font-extrabold tracking-tight">0</span>
         <span className="ms-1 text-xl font-normal text-gray-500">/month</span>
       </div>
