@@ -55,9 +55,9 @@ export default function PostIssuePage() {
   const handleChange = (e: any) => {
     const { name, value, type, checked } = e.target;
     
-    setFormData((prevFormData) => {
+    setFormData((prev) => {
       return {
-        ...prevFormData,
+        ...prev,
         [name]: type ? (type === 'checkbox' ? checked : value) : value,
         time: new Date(),
       }
