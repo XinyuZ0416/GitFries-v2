@@ -33,6 +33,7 @@ export default function Settings() {
   }, [uid]);
 
   const handleSubmit = async() => {
+    // TODO: create user data upon email verification, and use update instead of create here
     await addDoc(collection(db, "users"), {
       uid: formData.uid,
       pic: formData.pic,
@@ -53,10 +54,12 @@ export default function Settings() {
   }
 
   const handleResetEmail = () => {
+    // TODO: UI update & implement method
     console.log('reset email link sent')
   }
 
   const handleResetPassword = async(e: any) => {
+    // TODO: UI update
     setIsLoading(true);
     try {
       await sendPasswordResetEmail(auth, email);
