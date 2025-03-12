@@ -13,7 +13,7 @@ export default function SignInPage() {
   const [isRememberMe, setIsRememberMe] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
-  const {setIsVerified, uid, setUid} = useAuth();
+  const { isVerified, setIsVerified, uid, setUid} = useAuth();
 
   const handleSubmit = async(e: any) => {
     e.preventDefault();
@@ -51,7 +51,9 @@ export default function SignInPage() {
 
   return (
     <>
-    <div className='flex flex-col justify-center items-center h-screen'>
+    { isVerified ? 
+      'You have signed in. Redirecting to profile page...' :  // TODO: implement redirect
+      <div className='flex flex-col justify-center items-center h-screen'>
       <form className="flex flex-col mx-auto w-2/5" onSubmit={handleSubmit} >
         <div className="mb-5">
           <label htmlFor="email" className="block mb-2 text-sm font-medium">Your email</label>
@@ -89,6 +91,8 @@ export default function SignInPage() {
         {errorCode == 'auth/too-many-requests' && 'Chill.. You are seding too many requests, try again later.'}
       </h3>
     </div>
+    }
+    
     </>
   )
 }
