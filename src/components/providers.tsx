@@ -1,6 +1,7 @@
 'use client'
-import { auth } from "@/app/firebase";
+import { auth, db } from "@/app/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { addDoc, collection } from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 // auth context
@@ -29,6 +30,17 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
         setUid(user.uid);
         setEmail(user.email!);
         setIsVerified(user.emailVerified);
+
+        // create user info in firebase if it's the first time user signs in after email verification
+        if(user.emailVerified && user.metadata.creationTime === user.metadata.lastSignInTime ){
+          const createUserInfo = async() => {
+            await addDoc(collection(db, "users"), {
+              uid: user.uid,
+              email: user.email,
+            });
+          }
+          createUserInfo();
+        }
       }
     });
     return () => unsubscribe(); // clean up
