@@ -12,12 +12,14 @@ interface AuthContextProps {
   setEmail: React.Dispatch<React.SetStateAction<string>>,
   isVerified: boolean,
   setIsVerified: React.Dispatch<React.SetStateAction<boolean>>,
+  userDbId: string,
 }
 
 const AuthContext = createContext<AuthContextProps | null>(null);
 
 export const AuthProvider = ({children}:{children: React.ReactNode}) => {
   const [uid, setUid] = useState<string>('');
+  const [userDbId, setUserDbId] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [isVerified, setIsVerified] = useState<boolean>(false);
 
@@ -39,12 +41,16 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
         if(user.emailVerified && user.metadata.creationTime === user.metadata.lastSignInTime ){
           if (querySnapshot.empty) {
             const createUserInfo = async() => {
-              await addDoc(collection(db, "users"), {
+              const docRef = await addDoc(collection(db, "users"), {
                 uid: user.uid,
                 email: user.email,
               });
+
+              setUserDbId(docRef.id);
             }
             createUserInfo();
+          } else {
+            setUserDbId(querySnapshot.docs[0].id);
           }
         }
       }
@@ -53,7 +59,7 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
   }, []);
 
   return(
-    <AuthContext.Provider value={{uid, setUid, email, setEmail, isVerified, setIsVerified, }}>
+    <AuthContext.Provider value={{uid, setUid, email, setEmail, isVerified, setIsVerified, userDbId}}>
       {children}
     </AuthContext.Provider>
   );

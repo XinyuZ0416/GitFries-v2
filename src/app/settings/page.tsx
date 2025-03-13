@@ -4,10 +4,9 @@ import React, { useEffect, useState } from 'react'
 import { auth, db } from '../firebase';
 import { useAuth } from '@/components/providers';
 import { useRouter } from 'next/navigation';
-import { addDoc, collection } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 
 type FormDataType = {
-  uid: string,
   pic: string,
   username: string,
   bio: string,
@@ -16,26 +15,18 @@ type FormDataType = {
 export default function Settings() {
   const [ isLoading, setIsLoading ] = useState<boolean>(false);
   const [ isResetPassword, setIsResetPassword ] = useState<boolean>(false);
-  const { email, uid, setUid, isVerified, setIsVerified } = useAuth();
+  const { email, uid, setUid, isVerified, setIsVerified, userDbId } = useAuth();
   const router = useRouter();
   const [ formData, setFormData ] = useState<FormDataType>({
-    uid: '',
     pic: '',
     username: '',
     bio: '',
   });
 
   // TODO: if no user/ user not verified, dont show content
-  useEffect(() => {
-    if(isVerified){
-      setFormData((prev) => ({...prev, uid: uid}));
-    }
-  }, [uid]);
 
   const handleSubmit = async() => {
-    // TODO: create user data upon email verification, and use update instead of create here
-    await addDoc(collection(db, "users"), {
-      uid: formData.uid,
+    await updateDoc(doc(db, "users", userDbId), {
       pic: formData.pic,
       username: formData.username,
       bio: formData.bio,
