@@ -77,7 +77,7 @@ export default function Settings() {
     setIsLoading(true);
 
     try {
-      // TODO: 1. double check with user 2. send verification via email
+      // TODO: 1. double check with user 2. send verification via email 3. delete from users db
       await user!.delete();
       console.log('user deleted');
       setUid('');

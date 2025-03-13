@@ -1,7 +1,7 @@
 'use client'
 import { auth, db } from "@/app/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 // auth context
@@ -23,7 +23,7 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
 
   useEffect(() => {
     console.log(auth)
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async(user) => {
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
@@ -31,19 +31,25 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
         setEmail(user.email!);
         setIsVerified(user.emailVerified);
 
-        // create user info in firebase if it's the first time user signs in after email verification
+        // Check if user already exists
+        const q = query(collection(db, "users"), where("uid", "==", user.uid));
+        const querySnapshot = await getDocs(q);
+
+        // Create user info in firebase if it's the first time user signs in after email verification
         if(user.emailVerified && user.metadata.creationTime === user.metadata.lastSignInTime ){
-          const createUserInfo = async() => {
-            await addDoc(collection(db, "users"), {
-              uid: user.uid,
-              email: user.email,
-            });
+          if (querySnapshot.empty) {
+            const createUserInfo = async() => {
+              await addDoc(collection(db, "users"), {
+                uid: user.uid,
+                email: user.email,
+              });
+            }
+            createUserInfo();
           }
-          createUserInfo();
         }
       }
     });
-    return () => unsubscribe(); // clean up
+    return () => unsubscribe(); // Clean up
   }, []);
 
   return(
