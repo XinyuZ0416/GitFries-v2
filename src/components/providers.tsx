@@ -1,7 +1,8 @@
 'use client'
-import { auth, db } from "@/app/firebase";
+import { auth, db, storage } from "@/app/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
+import { getDownloadURL, ref } from "firebase/storage";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 // auth context
@@ -13,6 +14,7 @@ interface AuthContextProps {
   isVerified: boolean,
   setIsVerified: React.Dispatch<React.SetStateAction<boolean>>,
   userDbId: string,
+  userPicUrl: string,
 }
 
 const AuthContext = createContext<AuthContextProps | null>(null);
@@ -20,6 +22,7 @@ const AuthContext = createContext<AuthContextProps | null>(null);
 export const AuthProvider = ({children}:{children: React.ReactNode}) => {
   const [uid, setUid] = useState<string>('');
   const [userDbId, setUserDbId] = useState<string>('');
+  const [userPicUrl, setUserPicUrl] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [isVerified, setIsVerified] = useState<boolean>(false);
 
@@ -27,6 +30,22 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
     console.log(auth)
     const unsubscribe = onAuthStateChanged(auth, async(user) => {
       if (user) {
+        // Get user pic, if no pic stored, default pic to potato
+        try {
+          const userPicUrl = await getDownloadURL(ref(storage, `user-img/${user.uid}`));
+          setUserPicUrl(userPicUrl);
+        } catch(error) {
+          // console.error(error);
+
+          try {
+            const defaultUrl = await getDownloadURL(ref(storage, `user-img/potato.png`));
+            setUserPicUrl(defaultUrl)
+          } catch(error) {
+            console.error(error);
+          }
+        }
+        
+
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
         setUid(user.uid);
@@ -41,12 +60,12 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
         if(user.emailVerified && user.metadata.creationTime === user.metadata.lastSignInTime ){
           if (querySnapshot.empty) {
             const createUserInfo = async() => {
-              const docRef = await addDoc(collection(db, "users"), {
+              await setDoc(doc(db, "users", user.uid), {
                 uid: user.uid,
                 email: user.email,
               });
 
-              setUserDbId(docRef.id);
+              setUserDbId(user.uid);
             }
             createUserInfo();
           } else {
@@ -59,7 +78,7 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
   }, []);
 
   return(
-    <AuthContext.Provider value={{uid, setUid, email, setEmail, isVerified, setIsVerified, userDbId}}>
+    <AuthContext.Provider value={{uid, setUid, email, setEmail, isVerified, setIsVerified, userDbId, userPicUrl}}>
       {children}
     </AuthContext.Provider>
   );

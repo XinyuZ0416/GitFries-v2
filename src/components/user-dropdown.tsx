@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 export default function UserDropdown() {
   const router = useRouter();
-  const { setUid, setIsVerified } = useAuth();
+  const { setUid, setIsVerified, userPicUrl } = useAuth();
 
   const handleSignOut = async() => {
     try {
@@ -26,7 +26,7 @@ export default function UserDropdown() {
     <>
     <Menu>
       <MenuButton className="shrink-0">
-        <img className="rounded-full h-8" src="/potato.png" alt="user profile" />
+        <img className="rounded-full h-8" src={userPicUrl} alt="user profile" />
       </MenuButton>
 
       <MenuItems
