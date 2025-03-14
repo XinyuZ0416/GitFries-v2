@@ -40,9 +40,14 @@ export default function Settings() {
   const handleChange = (e: any) => {
     const { name, value, files } = e.target;
 
-    if (name === "file_input" && !fileTypes.includes(files[0].type)) {
-      alert('invalid file type');
-      return;
+    if (name === "file_input") {
+      if (!fileTypes.includes(files[0].type)) {
+        alert('invalid file type');
+        return;
+      } else if (files[0].size > 3 * 1024 * 1024) {
+        alert('file to large');
+        return;
+      }
     }
 
     setFormData((prev) => ({
@@ -98,7 +103,7 @@ export default function Settings() {
           <label className="block mb-2 text-sm font-medium" htmlFor="file_input">Profile Picture</label>
           <input className="block w-full text-sm border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
             aria-describedby="file_input_help" id="file_input" name="file_input" type="file" value={formData.file_input} onChange={handleChange}></input>
-          <p className="mt-1 text-sm" id="file_input_help">JPG, JPEG or PNG (MAX 3MB)</p>
+          <p className="mt-1 text-sm" id="file_input_help">.jpg/.jpeg/.png (MAX 3MB)</p>
         </fieldset>
         <fieldset className="mb-5">
           <label htmlFor="username" className="block mb-2 text-sm font-medium">Username</label>
