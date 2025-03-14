@@ -5,9 +5,10 @@ import { auth, db } from '../firebase';
 import { useAuth } from '@/components/providers';
 import { useRouter } from 'next/navigation';
 import { doc, updateDoc } from 'firebase/firestore';
+import { File } from 'buffer';
 
 type FormDataType = {
-  pic: string,
+  file_input: string,
   username: string,
   bio: string,
 }
@@ -18,30 +19,36 @@ export default function Settings() {
   const { email, uid, setUid, isVerified, setIsVerified, userDbId } = useAuth();
   const router = useRouter();
   const [ formData, setFormData ] = useState<FormDataType>({
-    pic: '',
+    file_input: '',
     username: '',
     bio: '',
   });
+  const fileTypes = ["image/jpeg", "image/jpg", "image/png",];
 
   // TODO: if no user/ user not verified, dont show content
 
   const handleSubmit = async() => {
-    await updateDoc(doc(db, "users", userDbId), {
-      pic: formData.pic,
-      username: formData.username,
-      bio: formData.bio,
-    });
+    // Only update modified fields
+    const updatedData: Partial<FormDataType> = {};
+    if (formData.file_input) updatedData.file_input = formData.file_input;
+    if (formData.username) updatedData.username = formData.username;
+    if (formData.bio) updatedData.bio = formData.bio;
+
+    await updateDoc(doc(db, "users", userDbId), updatedData);
   }
 
   const handleChange = (e: any) => {
-    const { name, value } = e.target;
+    const { name, value, files } = e.target;
 
-    setFormData((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      }
-    });
+    if (name === "file_input" && !fileTypes.includes(files[0].type)) {
+      alert('invalid file type');
+      return;
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   }
 
   const handleResetEmail = () => {
@@ -88,14 +95,15 @@ export default function Settings() {
     <div className='flex flex-col justify-center items-center h-screen'>
       <form className="mx-auto w-2/5" onSubmit={handleSubmit}>
         <fieldset className="mb-5">
-          <label htmlFor="pic" className="block mb-2 text-sm font-medium">Profile Picture</label>
-          <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            type="text" id="pic" name='pic' value={formData.pic} onChange={handleChange} required />
+          <label className="block mb-2 text-sm font-medium" htmlFor="file_input">Profile Picture</label>
+          <input className="block w-full text-sm border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
+            aria-describedby="file_input_help" id="file_input" name="file_input" type="file" value={formData.file_input} onChange={handleChange}></input>
+          <p className="mt-1 text-sm" id="file_input_help">JPG, JPEG or PNG (MAX 3MB)</p>
         </fieldset>
         <fieldset className="mb-5">
           <label htmlFor="username" className="block mb-2 text-sm font-medium">Username</label>
           <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            type="text" id="username" name='username' value={formData.username} onChange={handleChange} required />
+            type="text" id="username" name='username' value={formData.username} onChange={handleChange} />
         </fieldset>
         <fieldset className="mb-5">
           <label htmlFor="bio" className="block mb-2 text-sm font-medium">Bio</label>
