@@ -9,7 +9,6 @@ import { File } from 'buffer';
 import { ref, uploadBytes } from 'firebase/storage';
 
 type FormDataType = {
-  file_input: string,
   username: string,
   bio: string,
 }
@@ -20,7 +19,6 @@ export default function Settings() {
   const { email, uid, setUid, isVerified, setIsVerified, userDbId } = useAuth();
   const router = useRouter();
   const [ formData, setFormData ] = useState<FormDataType>({
-    file_input: '',
     username: '',
     bio: '',
   });
@@ -31,7 +29,6 @@ export default function Settings() {
   const handleSubmit = async() => {
     // Only update modified fields
     const updatedData: Partial<FormDataType> = {};
-    if (formData.file_input) updatedData.file_input = formData.file_input;
     if (formData.username) updatedData.username = formData.username;
     if (formData.bio) updatedData.bio = formData.bio;
 
@@ -55,23 +52,29 @@ export default function Settings() {
   const handleFileSelection = (e: any) => {
     const { files } = e.target;
 
+    if (!files.length) return;
+
     if (!fileTypes.includes(files[0].type)) {
       alert('invalid file type');
+      e.target.value = '';
       return;
     } else if (files[0].size > 3 * 1024 * 1024) {
       alert('file to large');
+      e.target.value = '';
       return;
     }
+
+    handleFileUpload(e);
   }
 
   const handleFileUpload = async(e: any) => {
-    const { file } = e.target;
-    const storageRef = ref(storage, `user-img/userDbId`);
+    const { files } = e.target;
+    const storageRef = ref(storage, `user-img/${userDbId}`);
 
     setIsLoading(true);
 
     try {
-      await uploadBytes(storageRef, file);
+      await uploadBytes(storageRef, files[0]);
       console.log('Uploaded file!');
     } catch (error) {
       console.error(error);
@@ -126,7 +129,7 @@ export default function Settings() {
         <fieldset className="mb-5">
           <label className="block mb-2 text-sm font-medium" htmlFor="file_input">Profile Picture</label>
           <input className="block w-full text-sm border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
-            aria-describedby="file_input_help" id="file_input" name="file_input" type="file" value={formData.file_input} onChange={handleChange}></input>
+            aria-describedby="file_input_help" id="file_input" name="file_input" type="file" onChange={handleFileSelection}></input>
           <p className="mt-1 text-sm" id="file_input_help">.jpg/.jpeg/.png (MAX 3MB)</p>
         </fieldset>
         <fieldset className="mb-5">
