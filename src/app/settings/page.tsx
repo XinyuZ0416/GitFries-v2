@@ -1,11 +1,10 @@
 'use client'
 import { sendPasswordResetEmail } from 'firebase/auth';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { auth, db, storage } from '../firebase';
 import { useAuth } from '@/components/providers';
 import { useRouter } from 'next/navigation';
 import { doc, updateDoc } from 'firebase/firestore';
-import { File } from 'buffer';
 import { ref, uploadBytes } from 'firebase/storage';
 
 type FormDataType = {
@@ -16,7 +15,7 @@ type FormDataType = {
 export default function Settings() {
   const [ isLoading, setIsLoading ] = useState<boolean>(false);
   const [ isResetPassword, setIsResetPassword ] = useState<boolean>(false);
-  const { email, uid, setUid, isVerified, setIsVerified, userDbId } = useAuth();
+  const { email, setUid, setIsVerified, userDbId } = useAuth();
   const router = useRouter();
   const [ formData, setFormData ] = useState<FormDataType>({
     username: '',
@@ -38,11 +37,6 @@ export default function Settings() {
   const handleChange = (e: any) => {
     const { name, value } = e.target;
 
-    if (name === "file_input") {
-      handleFileSelection(e);
-      handleFileUpload(e);
-    }
-
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -56,7 +50,7 @@ export default function Settings() {
 
     if (!fileTypes.includes(files[0].type)) {
       alert('invalid file type');
-      e.target.value = '';
+      e.target.value = ''; // reset so that user doesn't see the file name
       return;
     } else if (files[0].size > 3 * 1024 * 1024) {
       alert('file to large');
@@ -64,7 +58,7 @@ export default function Settings() {
       return;
     }
 
-    handleFileUpload(e);
+    handleFileUpload(e); 
   }
 
   const handleFileUpload = async(e: any) => {
@@ -76,6 +70,7 @@ export default function Settings() {
     try {
       await uploadBytes(storageRef, files[0]);
       console.log('Uploaded file!');
+      // TODO: show in ui the upload result, update the display in navbar
     } catch (error) {
       console.error(error);
     } finally {
