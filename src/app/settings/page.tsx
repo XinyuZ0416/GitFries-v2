@@ -1,11 +1,12 @@
 'use client'
 import { sendPasswordResetEmail } from 'firebase/auth';
 import React, { useEffect, useState } from 'react'
-import { auth, db } from '../firebase';
+import { auth, db, storage } from '../firebase';
 import { useAuth } from '@/components/providers';
 import { useRouter } from 'next/navigation';
 import { doc, updateDoc } from 'firebase/firestore';
 import { File } from 'buffer';
+import { ref, uploadBytes } from 'firebase/storage';
 
 type FormDataType = {
   file_input: string,
@@ -38,22 +39,45 @@ export default function Settings() {
   }
 
   const handleChange = (e: any) => {
-    const { name, value, files } = e.target;
+    const { name, value } = e.target;
 
     if (name === "file_input") {
-      if (!fileTypes.includes(files[0].type)) {
-        alert('invalid file type');
-        return;
-      } else if (files[0].size > 3 * 1024 * 1024) {
-        alert('file to large');
-        return;
-      }
+      handleFileSelection(e);
+      handleFileUpload(e);
     }
 
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
+  }
+
+  const handleFileSelection = (e: any) => {
+    const { files } = e.target;
+
+    if (!fileTypes.includes(files[0].type)) {
+      alert('invalid file type');
+      return;
+    } else if (files[0].size > 3 * 1024 * 1024) {
+      alert('file to large');
+      return;
+    }
+  }
+
+  const handleFileUpload = async(e: any) => {
+    const { file } = e.target;
+    const storageRef = ref(storage, `user-img/userDbId`);
+
+    setIsLoading(true);
+
+    try {
+      await uploadBytes(storageRef, file);
+      console.log('Uploaded file!');
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   const handleResetEmail = () => {
