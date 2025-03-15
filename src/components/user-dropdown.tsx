@@ -27,7 +27,7 @@ export default function UserDropdown() {
     <>
     <Menu>
       <MenuButton className="shrink-0">
-        <img className="rounded-full h-8" src={userPicUrl} alt="user profile" />
+        {userPicUrl && <img className="rounded-full h-8" src={userPicUrl} alt="user profile" />}
       </MenuButton>
 
       <MenuItems
