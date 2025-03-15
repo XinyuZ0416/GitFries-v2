@@ -5,7 +5,7 @@ import { auth, db, storage } from '../firebase';
 import { useAuth } from '@/components/providers';
 import { useRouter } from 'next/navigation';
 import { doc, updateDoc } from 'firebase/firestore';
-import { ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 type FormDataType = {
   username: string,
@@ -16,7 +16,7 @@ export default function Settings() {
   const [ isLoading, setIsLoading ] = useState<boolean>(false);
   const [ isResetPassword, setIsResetPassword ] = useState<boolean>(false);
   const [ newEmail, setNewEmail ] = useState<string>('');
-  const { email, setUid, setIsVerified, userDbId } = useAuth();
+  const { email, setUid, setIsVerified, userDbId, setUserPicUrl } = useAuth();
   const router = useRouter();
   const [ formData, setFormData ] = useState<FormDataType>({
     username: '',
@@ -64,14 +64,19 @@ export default function Settings() {
 
   const handleFileUpload = async(e: any) => {
     const { files } = e.target;
-    const storageRef = ref(storage, `user-img/${userDbId}`);
+    // No file selected
+    if (!files.length) return;
 
+    // File selected
+    const storageRef = ref(storage, `user-img/${userDbId}`);
     setIsLoading(true);
 
     try {
       await uploadBytes(storageRef, files[0]);
       console.log('Uploaded file!');
-      // TODO: show in ui the upload result, update the display in navbar
+
+      setUserPicUrl(await getDownloadURL(storageRef));
+      // TODO: show in ui the upload result
     } catch (error) {
       console.error(error);
     } finally {

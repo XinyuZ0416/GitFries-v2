@@ -15,6 +15,7 @@ interface AuthContextProps {
   setIsVerified: React.Dispatch<React.SetStateAction<boolean>>,
   userDbId: string,
   userPicUrl: string,
+  setUserPicUrl: React.Dispatch<React.SetStateAction<string>>,
 }
 
 const AuthContext = createContext<AuthContextProps | null>(null);
@@ -73,7 +74,8 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
         uid, setUid, 
         email, setEmail, 
         isVerified, setIsVerified, 
-        userDbId, userPicUrl}}>
+        userDbId, 
+        userPicUrl, setUserPicUrl}}>
       {children}
     </AuthContext.Provider>
   );
