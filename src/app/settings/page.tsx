@@ -1,6 +1,6 @@
 'use client'
-import { sendPasswordResetEmail } from 'firebase/auth';
-import React, { useState } from 'react'
+import { onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, updateEmail, verifyBeforeUpdateEmail } from 'firebase/auth';
+import React, { useEffect, useState } from 'react'
 import { auth, db, storage } from '../firebase';
 import { useAuth } from '@/components/providers';
 import { useRouter } from 'next/navigation';
@@ -15,6 +15,7 @@ type FormDataType = {
 export default function Settings() {
   const [ isLoading, setIsLoading ] = useState<boolean>(false);
   const [ isResetPassword, setIsResetPassword ] = useState<boolean>(false);
+  const [ newEmail, setNewEmail ] = useState<string>('');
   const { email, setUid, setIsVerified, userDbId } = useAuth();
   const router = useRouter();
   const [ formData, setFormData ] = useState<FormDataType>({
@@ -78,9 +79,24 @@ export default function Settings() {
     }
   }
 
-  const handleResetEmail = () => {
+  const handleResetEmail = async(e: any) => {
+    e.preventDefault();
     // TODO: UI update & implement method
-    console.log('reset email link sent')
+    setIsLoading(true);
+    try {
+      // TODO: figure out the flow (answer from evdama https://stackoverflow.com/questions/77147854/firebase-please-verify-the-new-email-before-changing-email-auth-operation-not)
+
+      await verifyBeforeUpdateEmail(auth.currentUser!, newEmail);
+      console.log('email verification sent!')
+       // TODO: after email is verified, update UI to show user is logged out 
+    } catch(error) {
+      // console.error(error.code)
+      if (error.code === "auth/requires-recent-login") {
+        // TODO: update UI to show it requires recent log in, and force log user out
+      }
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   const handleResetPassword = async(e: any) => {
@@ -138,10 +154,6 @@ export default function Settings() {
             id="bio" name="bio" value={formData.bio} rows={4} onChange={handleChange} ></textarea>
         </fieldset>
         <button className="text-white bg-yellow-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
-          type='button' onClick={handleResetEmail}>
-          Reset Email
-        </button>
-        <button className="text-white bg-yellow-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           type='button' onClick={handleResetPassword}>
           Reset Password
         </button>
@@ -150,6 +162,18 @@ export default function Settings() {
           Delete Account
         </button>
         <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Update</button>
+      </form>
+
+      <form className="mx-auto w-2/5" onSubmit={handleResetEmail}>
+        <fieldset className="mb-5">
+          <label htmlFor="new-email" className="block mb-2 text-sm font-medium">New Email</label>
+          <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            type="email" id="new-email" name='new-email' onChange={(e) => setNewEmail(e.target.value)} required/>
+        </fieldset>
+        <button className="text-white bg-yellow-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+          type='submit'>
+          Reset Email
+        </button>
       </form>
 
       <h3 className='text-lg font-semibold text-green-600'>

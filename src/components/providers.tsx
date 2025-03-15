@@ -2,7 +2,7 @@
 import { auth, db, storage } from "@/app/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { addDoc, collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
-import { getDownloadURL, ref } from "firebase/storage";
+import { getDownloadURL, getMetadata, ref } from "firebase/storage";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 // auth context
@@ -45,7 +45,6 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
           }
         }
         
-
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
         setUid(user.uid);
