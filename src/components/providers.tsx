@@ -51,8 +51,7 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
         return;
       }
 
-      // User email verified, check if user exists in db. 
-      // If not, create user ( user.uid as document id )
+      // User email verified, check if user exists in db. If not, create user ( user.uid as document id )
       const userDocRef = doc(db, "users", user.uid);
       const userDocSnap = await getDoc(userDocRef);
       if (!userDocSnap.exists()) {

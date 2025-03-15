@@ -5,35 +5,46 @@ import { auth } from '../firebase';
 import CheckUnchecked from '@/components/check-unchecked';
 import { useAuth } from '@/components/providers';
 
+type PasswordCriteriaType = {
+  isUpperCase: boolean,
+  isLowerCase: boolean,
+  isSpecialChar: boolean,
+  isNumber: boolean,
+  isLongerThanSix: boolean,
+}
+
 export default function SignUpPage() {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [repeatPassword, setRepeatPassword] = useState<string>('');
-  const [errorCode, setErrorCode] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isUpperCase, setIsUpperCase] = useState<boolean>(false);
-  const [isLowerCase, setIsLowerCase] = useState<boolean>(false);
-  const [isSpecialChar, setIsSpecialChar] = useState<boolean>(false);
-  const [isNumber, setIsNumber] = useState<boolean>(false);
-  const [isLongerThanSix, setIsLongerThanSix] = useState<boolean>(false);
+  const [ email, setEmail ] = useState<string>('');
+  const [ password, setPassword ] = useState<string>('');
+  const [ repeatPassword, setRepeatPassword ] = useState<string>('');
+  const [ errorCode, setErrorCode ] = useState<string>('');
+  const [ isLoading, setIsLoading ] = useState<boolean>(false);
   const { isVerified } = useAuth();
+  const [ passwordCriteria, setPasswordCriteria ] = useState<PasswordCriteriaType>({
+    isUpperCase: false,
+    isLowerCase: false,
+    isSpecialChar: false,
+    isNumber: false,
+    isLongerThanSix: false,
+  });
 
   const handleSubmit = async(e: any) => {
     e.preventDefault();
-
     setIsLoading(true);
+
+    // Check if password matches repeat password
     if (password == repeatPassword) {
       if (errorCode == 'passwords/mismatch') {
         setErrorCode('');
       }
 
       try {
+        // Send email verification
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         await sendEmailVerification(userCredential.user);
         console.log('sent email!')
       } catch (error: any) {
         setErrorCode(error.code);
-        throw new Error(error.code);
       } finally {
         setIsLoading(false);
       }
@@ -45,12 +56,22 @@ export default function SignUpPage() {
   const handleSetPassword = (e: any) => {
     let input = e.target.value;
     setPassword(input);
-    /[A-Z]/.test(input) ? setIsUpperCase(true) : setIsUpperCase(false);
-    /[a-z]/.test(input) ? setIsLowerCase(true) : setIsLowerCase(false);
-    /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(input) ? setIsSpecialChar(true) : setIsSpecialChar(false);
-    /\d/.test(input) ? setIsNumber(true) : setIsNumber(false);
-    input.length >= 6 ? setIsLongerThanSix(true) : setIsLongerThanSix(false);
+    
+    // Check password validity
+    setPasswordCriteria({
+      isUpperCase: /[A-Z]/.test(input),
+      isLowerCase: /[a-z]/.test(input),
+      isSpecialChar: /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(input),
+      isNumber: /\d/.test(input),
+      isLongerThanSix: input.length >= 6,
+    });
   }
+
+  const errorMessage = 
+    errorCode == 'auth/weak-password' ? 'Your password is too weak, try harder.' :
+    errorCode == 'passwords/mismatch' ? 'Your passwords are not matching, try again.' :
+    errorCode == 'auth/email-already-in-use' ? 'Email already in use, did you forget the password?' :
+    "";
 
   return (
     <>
@@ -75,11 +96,11 @@ export default function SignUpPage() {
           <div>
             { password &&
               <>
-              <CheckUnchecked condition={isUpperCase} explanation='at least 1 uppercase character' />
-              <CheckUnchecked condition={isLowerCase} explanation='at least 1 lowercase character' />
-              <CheckUnchecked condition={isSpecialChar} explanation='at least 1 special character' />
-              <CheckUnchecked condition={isNumber} explanation='at least 1 number' />
-              <CheckUnchecked condition={isLongerThanSix} explanation='at least 6 characters' />
+              <CheckUnchecked condition={passwordCriteria.isUpperCase} explanation='at least 1 uppercase character' />
+              <CheckUnchecked condition={passwordCriteria.isLowerCase} explanation='at least 1 lowercase character' />
+              <CheckUnchecked condition={passwordCriteria.isSpecialChar} explanation='at least 1 special character' />
+              <CheckUnchecked condition={passwordCriteria.isNumber} explanation='at least 1 number' />
+              <CheckUnchecked condition={passwordCriteria.isLongerThanSix} explanation='at least 6 characters' />
               </>
             }
           </div>
@@ -87,7 +108,7 @@ export default function SignUpPage() {
             <input className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer ${password == repeatPassword ? '': 'border-red-500'}`}
               type="password" name="repeat_password" id="floating_repeat_password" placeholder=" " value={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)} required />
             <label htmlFor="floating_repeat_password" className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-              Confirm password {password == repeatPassword ? '': '(Fill in the Same Password as Above)'}
+              Repeat Password
             </label>
           </div>
           <div className="flex items-center mb-4">
@@ -101,11 +122,7 @@ export default function SignUpPage() {
         <h3 className='text-lg font-semibold text-green-600'>
           {isLoading && 'Loading...'}
         </h3>
-        <h3 className='text-lg font-semibold text-red-600'>
-          {errorCode == 'auth/weak-password' && 'Your password is too weak, try harder.'}
-          {errorCode == 'passwords/mismatch' && 'Your passwords are not matching, try again.'}
-          {errorCode == 'auth/email-already-in-use' && 'Email already in use, did you forget the password?'}
-        </h3>
+        {errorMessage && <h3 className='text-lg font-semibold text-red-600'>{errorMessage}</h3>}
       </div>
     }
   </>
