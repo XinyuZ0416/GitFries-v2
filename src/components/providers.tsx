@@ -1,8 +1,8 @@
 'use client'
 import { auth, db, storage } from "@/app/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { addDoc, collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
-import { getDownloadURL, getMetadata, ref } from "firebase/storage";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { getDownloadURL, ref } from "firebase/storage";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 // auth context
@@ -29,55 +29,51 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
   useEffect(() => {
     console.log(auth)
     const unsubscribe = onAuthStateChanged(auth, async(user) => {
-      if (user) {
-        // Get user pic, if no pic stored, default pic to potato
-        try {
-          const userPicUrl = await getDownloadURL(ref(storage, `user-img/${user.uid}`));
-          setUserPicUrl(userPicUrl);
-        } catch(error) {
-          // console.error(error);
+      // User is signed out, do nothing
+      if (!user) return;
 
-          try {
-            const defaultUrl = await getDownloadURL(ref(storage, `user-img/potato.png`));
-            setUserPicUrl(defaultUrl)
-          } catch(error) {
-            console.error(error);
-          }
-        }
-        
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/auth.user
-        setUid(user.uid);
-        setEmail(user.email!);
-        setIsVerified(user.emailVerified);
+      // User is signed in
+      setUid(user.uid);
+      setEmail(user.email!);
+      setIsVerified(user.emailVerified);
 
-        // Check if user already exists
-        const q = query(collection(db, "users"), where("uid", "==", user.uid));
-        const querySnapshot = await getDocs(q);
-
-        // Create user info in firebase if it's the first time user signs in after email verification
-        if(user.emailVerified && user.metadata.creationTime === user.metadata.lastSignInTime ){
-          if (querySnapshot.empty) {
-            const createUserInfo = async() => {
-              await setDoc(doc(db, "users", user.uid), {
-                uid: user.uid,
-                email: user.email,
-              });
-
-              setUserDbId(user.uid);
-            }
-            createUserInfo();
-          } else {
-            setUserDbId(querySnapshot.docs[0].id);
-          }
-        }
+      // Fetch user pic: if no pic stored, default pic to potato
+      try {
+        setUserPicUrl(await getDownloadURL(ref(storage, `user-img/${user.uid}`)));
+      } catch {
+        setUserPicUrl(await getDownloadURL(ref(storage, `user-img/potato.png`)));
       }
+
+      // If user email not verified, don't create user in db
+      if (!user.emailVerified) {
+        console.log("User email not verified. Skipping Firestore creation.");
+        return;
+      }
+
+      // User email verified, check if user exists in db. 
+      // If not, create user ( user.uid as document id )
+      const userDocRef = doc(db, "users", user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+      if (!userDocSnap.exists()) {
+        await setDoc(userDocRef, {
+          uid: user.uid,
+          email: user.email,
+        });
+        console.log("Created user in db!");
+      }
+
+      setUserDbId(user.uid);
     });
     return () => unsubscribe(); // Clean up
   }, []);
 
   return(
-    <AuthContext.Provider value={{uid, setUid, email, setEmail, isVerified, setIsVerified, userDbId, userPicUrl}}>
+    <AuthContext.Provider 
+      value={{
+        uid, setUid, 
+        email, setEmail, 
+        isVerified, setIsVerified, 
+        userDbId, userPicUrl}}>
       {children}
     </AuthContext.Provider>
   );

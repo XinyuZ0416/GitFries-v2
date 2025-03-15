@@ -89,7 +89,7 @@ export default function Settings() {
       await verifyBeforeUpdateEmail(auth.currentUser!, newEmail);
       console.log('email verification sent!')
        // TODO: after email is verified, update UI to show user is logged out 
-    } catch(error) {
+    } catch(error: any) {
       // console.error(error.code)
       if (error.code === "auth/requires-recent-login") {
         // TODO: update UI to show it requires recent log in, and force log user out
