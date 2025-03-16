@@ -2,7 +2,7 @@
 import { useAuth } from '@/components/providers';
 import { browserLocalPersistence, browserSessionPersistence, sendPasswordResetEmail, setPersistence, signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { auth } from '../firebase';
 
 export default function SignInPage() {
@@ -14,6 +14,12 @@ export default function SignInPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const { isVerified, setIsVerified, uid, setUid} = useAuth();
+
+  useEffect(() => {
+    if (isVerified) {
+      router.push('/profile');
+    }
+  }, [isVerified]);
 
   const handleSubmit = async(e: any) => {
     e.preventDefault();

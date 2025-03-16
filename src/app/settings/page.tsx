@@ -16,6 +16,7 @@ export default function Settings() {
   const [ isLoading, setIsLoading ] = useState<boolean>(false);
   const [ isResetPassword, setIsResetPassword ] = useState<boolean>(false);
   const [ newEmail, setNewEmail ] = useState<string>('');
+  const [ errorCode, setErrorCode ] = useState<string>('');
   const { email, setUid, setIsVerified, userDbId, setUserPicUrl } = useAuth();
   const router = useRouter();
   const [ formData, setFormData ] = useState<FormDataType>({
@@ -26,7 +27,7 @@ export default function Settings() {
 
   // TODO: if no user/ user not verified, dont show content
 
-  const handleSubmit = async() => {
+  const handleUpdate = async() => {
     // Only update modified fields
     const updatedData: Partial<FormDataType> = {};
     if (formData.username) updatedData.username = formData.username;
@@ -46,9 +47,11 @@ export default function Settings() {
 
   const handleFileSelection = (e: any) => {
     const { files } = e.target;
-
+    
+    // No file selected
     if (!files.length) return;
 
+    // File selected
     if (!fileTypes.includes(files[0].type)) {
       alert('invalid file type');
       e.target.value = ''; // reset so that user doesn't see the file name
@@ -63,11 +66,7 @@ export default function Settings() {
   }
 
   const handleFileUpload = async(e: any) => {
-    const { files } = e.target;
-    // No file selected
-    if (!files.length) return;
-
-    // File selected
+    const { files } = e.target; 
     const storageRef = ref(storage, `user-img/${userDbId}`);
     setIsLoading(true);
 
@@ -86,19 +85,14 @@ export default function Settings() {
 
   const handleResetEmail = async(e: any) => {
     e.preventDefault();
-    // TODO: UI update & implement method
     setIsLoading(true);
-    try {
-      // TODO: figure out the flow (answer from evdama https://stackoverflow.com/questions/77147854/firebase-please-verify-the-new-email-before-changing-email-auth-operation-not)
 
+    try {
       await verifyBeforeUpdateEmail(auth.currentUser!, newEmail);
       console.log('email verification sent!')
-       // TODO: after email is verified, update UI to show user is logged out 
+      alert('A verification link has been sent to your new email. Please verify and login again.');
     } catch(error: any) {
-      // console.error(error.code)
-      if (error.code === "auth/requires-recent-login") {
-        // TODO: update UI to show it requires recent log in, and force log user out
-      }
+      setErrorCode(error.code);
     } finally {
       setIsLoading(false);
     }
@@ -137,11 +131,15 @@ export default function Settings() {
       setIsLoading(false);
     }
   }
+
+  const errorMessage = 
+    errorCode === "auth/requires-recent-login" ? "Last log in was too long ago. For security concern, please log in again and reset email." :
+    "";
   
   return (
     <>
     <div className='flex flex-col justify-center items-center h-screen'>
-      <form className="mx-auto w-2/5" onSubmit={handleSubmit}>
+      <form className="mx-auto w-2/5" onSubmit={handleUpdate}>
         <fieldset className="mb-5">
           <label className="block mb-2 text-sm font-medium" htmlFor="file_input">Profile Picture</label>
           <input className="block w-full text-sm border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
@@ -185,6 +183,7 @@ export default function Settings() {
         {isLoading && 'Loading...'}
         {isResetPassword && 'Check your email for password reset link.'}
       </h3>
+      {errorMessage && <h3 className='text-lg font-semibold text-red-600'>{errorMessage}</h3>}
     </div>
     </>
   )
