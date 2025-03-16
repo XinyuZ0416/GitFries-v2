@@ -30,19 +30,25 @@ export default function Settings() {
   // TODO: if no user/ user not verified, dont show content
 
   useEffect(() => {
-    const getUsernameAndBio = async() => {
+    if (!uid) {
+      return;
+    }
+    
+    const getUsernameAndBio = async () => {
       const userDocRef = doc(db, "users", uid);
-      const userDocSnap = await getDoc(userDocRef);
-
-      if (userDocSnap.exists()) {
+  
+      try {
+        const userDocSnap = await getDoc(userDocRef);
         const userData = userDocSnap.data();
         setPlaceHolderUsername(userData?.username || '');
         setPlaceHolderBio(userData?.bio || '');
+      } catch (error) {
+        console.error("Error fetching user data:", error);
       }
-    }
-    
+    };
+  
     getUsernameAndBio();
-  }, []);
+  }, [uid]);
 
   const handleUpdate = async() => {
     // Only update modified fields
