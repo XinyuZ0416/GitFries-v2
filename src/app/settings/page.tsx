@@ -19,7 +19,7 @@ export default function Settings() {
   const [ placeHolderBio, setPlaceHolderBio] = useState<string>('');
   const [ newEmail, setNewEmail ] = useState<string>('');
   const [ errorCode, setErrorCode ] = useState<string>('');
-  const { email, username, bio, uid, setUid, setIsVerified, userDbId, setUserPicUrl } = useAuth();
+  const { email, username, bio, uid, setUid, isVerified, setIsVerified, userDbId, setUserPicUrl } = useAuth();
   const router = useRouter();
   const [ formData, setFormData ] = useState<FormDataType>({
     username: '',
@@ -28,6 +28,11 @@ export default function Settings() {
   const fileTypes = ["image/jpeg", "image/jpg", "image/png",];
 
   // TODO: if no user/ user not verified, dont show content
+
+  useEffect(() => {
+    console.log(isVerified)
+
+  }, [isVerified]);
 
   useEffect(() => {
     if (!uid) {

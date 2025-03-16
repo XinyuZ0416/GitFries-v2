@@ -11,7 +11,7 @@ export default function Home() {
     <div className="flex h-screen">
       <div className="flex flex-col flex-1 justify-center items-center">
         <h1 className="text-4xl font-bold">Link Code Issues with Contributors</h1>
-        {!isVerified && <EmailSignUp goal="Find Contributors or Contribute to Issues" />}
+        { isVerified !== null && !isVerified  && <EmailSignUp goal="Find Contributors or Contribute to Issues" /> }
       </div>
 
       <div className="flex flex-col flex-1 justify-center items-center">
@@ -42,7 +42,7 @@ export default function Home() {
     </div>
 
     {/* 4th screen */}
-    {!isVerified && 
+    { isVerified !== null && !isVerified && 
     <div className="flex flex-col h-screen justify-center items-center">
       <h1 className="text-4xl font-bold">Join GitFries Today</h1>
       <EmailSignUp goal="Find Contributors or Contribute to Issues" />

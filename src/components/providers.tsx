@@ -1,7 +1,7 @@
 'use client'
 import { auth, db, storage } from "@/app/firebase";
 import { onAuthStateChanged, updateProfile } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
@@ -13,8 +13,8 @@ interface AuthContextProps {
   setEmail: React.Dispatch<React.SetStateAction<string>>,
   username: string,
   bio: string,
-  isVerified: boolean,
-  setIsVerified: React.Dispatch<React.SetStateAction<boolean>>,
+  isVerified: boolean | null,
+  setIsVerified: React.Dispatch<React.SetStateAction<boolean | null>>,
   userDbId: string,
   userPicUrl: string,
   setUserPicUrl: React.Dispatch<React.SetStateAction<string>>,
@@ -29,14 +29,17 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
   const [ email, setEmail ] = useState<string>('');
   const [ username, setUsername] = useState<string>('');
   const [ bio, setBio ] = useState<string>('');
-  const [ isVerified, setIsVerified ] = useState<boolean>(false);
+  const [ isVerified, setIsVerified ] = useState<boolean | null>(null);
 
   useEffect(() => {
-    console.log(auth)
+    // console.log(auth)
     const unsubscribe = onAuthStateChanged(auth, async(user) => {
-      console.log(user)
+      // console.log(user)
       // User has not signed up
-      if (!user) return; 
+      if (!user) {
+        setIsVerified(false);
+        return; 
+      }
 
       // User has signed up
       // Set basic info
@@ -84,9 +87,13 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
       if (user.displayName !== userData?.username) {
         await updateProfile(user, {displayName: userData?.username || ''});
       }
+
+      if (user.email !== userData?.email) {
+        await updateDoc(doc(db, "users", user.uid), { email: user.email});
+      }
     });
     return () => unsubscribe(); // Clean up
-  }, [ username, bio ]);
+  }, [ username, bio, email ]);
 
   return(
     <AuthContext.Provider 
