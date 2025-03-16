@@ -20,7 +20,7 @@ export default function SignUpPage() {
   const [ repeatPassword, setRepeatPassword ] = useState<string>('');
   const [ errorCode, setErrorCode ] = useState<string>('');
   const [ isLoading, setIsLoading ] = useState<boolean>(false);
-  const { isVerified } = useAuth();
+  const { isVerified, setIsVerified } = useAuth();
   const router = useRouter();
   const [ passwordCriteria, setPasswordCriteria ] = useState<PasswordCriteriaType>({
     isUpperCase: false,
@@ -51,6 +51,19 @@ export default function SignUpPage() {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         await sendEmailVerification(userCredential.user);
         console.log('sent email!')
+
+        // Check email verification status every 1s
+        const interval = setInterval(async() => {
+          if (auth.currentUser) {
+            auth.currentUser.reload();
+
+            if(auth.currentUser.emailVerified) {
+              setIsVerified(true);
+              clearInterval(interval);
+              window.location.reload();
+            }
+          } 
+        }, 1000);
       } catch (error: any) {
         setErrorCode(error.code);
       } finally {
