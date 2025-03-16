@@ -17,7 +17,7 @@ export default function Settings() {
   const [ isResetPassword, setIsResetPassword ] = useState<boolean>(false);
   const [ newEmail, setNewEmail ] = useState<string>('');
   const [ errorCode, setErrorCode ] = useState<string>('');
-  const { email, setUid, setIsVerified, userDbId, setUserPicUrl } = useAuth();
+  const { email, username, bio, setUid, setIsVerified, userDbId, setUserPicUrl } = useAuth();
   const router = useRouter();
   const [ formData, setFormData ] = useState<FormDataType>({
     username: '',
@@ -148,12 +148,12 @@ export default function Settings() {
         <fieldset className="mb-5">
           <label htmlFor="username" className="block mb-2 text-sm font-medium">Username</label>
           <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            type="text" id="username" name='username' value={formData.username} onChange={handleChange} />
+            type="text" id="username" name='username' placeholder={username} value={formData.username} onChange={handleChange} />
         </fieldset>
         <fieldset className="mb-5">
           <label htmlFor="bio" className="block mb-2 text-sm font-medium">Bio</label>
           <textarea className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-            id="bio" name="bio" value={formData.bio} rows={4} onChange={handleChange} ></textarea>
+            id="bio" name="bio" placeholder={bio} value={formData.bio} rows={4} onChange={handleChange} ></textarea>
         </fieldset>
         <button className="text-white bg-yellow-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           type='button' onClick={handleResetPassword}>
@@ -171,7 +171,7 @@ export default function Settings() {
         <fieldset className="mb-5">
           <label htmlFor="new-email" className="block mb-2 text-sm font-medium">New Email</label>
           <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            type="email" id="new-email" name='new-email' onChange={(e) => setNewEmail(e.target.value)} required/>
+            type="email" id="new-email" name='new-email' placeholder={`Current email: ${email}`} onChange={(e) => setNewEmail(e.target.value)} required/>
         </fieldset>
         <button className="text-white bg-yellow-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           type='submit'>

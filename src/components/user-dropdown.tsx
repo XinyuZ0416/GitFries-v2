@@ -11,7 +11,6 @@ export default function UserDropdown() {
   const router = useRouter();
   const { setUid, setIsVerified, userPicUrl } = useAuth();
 
-  // TODO: update user pic when user pic is updated
   const handleSignOut = async() => {
     try {
       await signOut(auth);

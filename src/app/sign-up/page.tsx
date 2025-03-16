@@ -1,9 +1,10 @@
 'use client'
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { auth } from '../firebase';
 import CheckUnchecked from '@/components/check-unchecked';
 import { useAuth } from '@/components/providers';
+import { useRouter } from 'next/navigation';
 
 type PasswordCriteriaType = {
   isUpperCase: boolean,
@@ -20,6 +21,7 @@ export default function SignUpPage() {
   const [ errorCode, setErrorCode ] = useState<string>('');
   const [ isLoading, setIsLoading ] = useState<boolean>(false);
   const { isVerified } = useAuth();
+  const router = useRouter();
   const [ passwordCriteria, setPasswordCriteria ] = useState<PasswordCriteriaType>({
     isUpperCase: false,
     isLowerCase: false,
@@ -27,6 +29,12 @@ export default function SignUpPage() {
     isNumber: false,
     isLongerThanSix: false,
   });
+
+  useEffect(() => {
+    if (isVerified) {
+      router.push('/profile');
+    }
+  }, [isVerified]);
 
   const handleSubmit = async(e: any) => {
     e.preventDefault();
