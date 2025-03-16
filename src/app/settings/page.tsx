@@ -28,11 +28,6 @@ export default function Settings() {
   const fileTypes = ["image/jpeg", "image/jpg", "image/png",];
 
   // TODO: if no user/ user not verified, dont show content
-  useEffect(() => {
-    if(!auth.currentUser) {
-      router.push('/sign-in');
-    }
-  },[]);
 
   useEffect(() => {
     if (!uid) {
@@ -116,7 +111,7 @@ export default function Settings() {
       console.log('email verification sent!')
       alert('A verification link has been sent to your new email.');
       await signOut(auth);
-      window.location.reload();
+      router.push('/sign-in');
     } catch(error: any) {
       setErrorCode(error.code);
     } finally {
