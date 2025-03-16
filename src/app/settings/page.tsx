@@ -19,7 +19,7 @@ export default function Settings() {
   const [ placeHolderBio, setPlaceHolderBio] = useState<string>('');
   const [ newEmail, setNewEmail ] = useState<string>('');
   const [ errorCode, setErrorCode ] = useState<string>('');
-  const { email, username, bio, uid, setUid, isVerified, setIsVerified, userDbId, setUserPicUrl } = useAuth();
+  const { email, username, bio, uid, setUid, isVerified, setIsVerified, setUserPicUrl } = useAuth();
   const router = useRouter();
   const [ formData, setFormData ] = useState<FormDataType>({
     username: '',
@@ -54,7 +54,7 @@ export default function Settings() {
     if (formData.username) updatedData.username = formData.username;
     if (formData.bio) updatedData.bio = formData.bio;
 
-    await updateDoc(doc(db, "users", userDbId), updatedData);
+    await updateDoc(doc(db, "users", uid), updatedData);
   }
 
   const handleChange = (e: any) => {
@@ -68,7 +68,7 @@ export default function Settings() {
 
   const handleFileSelectAndUpload = async(e: any) => {
     const { files } = e.target;
-    const storageRef = ref(storage, `user-img/${userDbId}`);
+    const storageRef = ref(storage, `user-img/${uid}`);
 
     setIsLoading(true);
     

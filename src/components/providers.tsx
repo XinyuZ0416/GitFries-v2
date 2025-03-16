@@ -15,7 +15,6 @@ interface AuthContextProps {
   bio: string,
   isVerified: boolean | null,
   setIsVerified: React.Dispatch<React.SetStateAction<boolean | null>>,
-  userDbId: string,
   userPicUrl: string,
   setUserPicUrl: React.Dispatch<React.SetStateAction<string>>,
 }
@@ -24,76 +23,80 @@ const AuthContext = createContext<AuthContextProps | null>(null);
 
 export const AuthProvider = ({children}:{children: React.ReactNode}) => {
   const [ uid, setUid ] = useState<string>('');
-  const [ userDbId, setUserDbId ] = useState<string>('');
   const [ userPicUrl, setUserPicUrl ] = useState<string>('');
   const [ email, setEmail ] = useState<string>('');
   const [ username, setUsername] = useState<string>('');
   const [ bio, setBio ] = useState<string>('');
   const [ isVerified, setIsVerified ] = useState<boolean | null>(null);
 
+  // Set user basic info if user has signed in
   useEffect(() => {
-    // console.log(auth)
     const unsubscribe = onAuthStateChanged(auth, async(user) => {
-      // console.log(user)
-      // User has not signed up
       if (!user) {
         setIsVerified(false);
         return; 
       }
 
-      // User has signed up
-      // Set basic info
       setUid(user.uid);
       setEmail(user.email!);
       setIsVerified(user.emailVerified);
+    });
 
-      // If user email not verified, don't create user in db
-      if (!user.emailVerified) {
-        console.log("User email not verified. Skipping Firestore creation.");
-        return;
-      }
+    return () => unsubscribe(); // Cleanup
+  });
 
-      // If user email verified
-      // Fetch user pic: if no pic stored, default pic to potato
-      try {
-        const url = await getDownloadURL(ref(storage, `user-img/${user.uid}`));
-        setUserPicUrl(url);
-        await updateProfile(user, {photoURL: url});
-      } catch {
-        const fallbackUrl = await getDownloadURL(ref(storage, `user-img/potato.png`));
-        setUserPicUrl(fallbackUrl);
-        await updateProfile(user, {photoURL: fallbackUrl});
-      }
+  // Fetch/ create user in db
+  useEffect(() => {
+    if (!uid || !isVerified) return;
 
+    const fetchUserData = async() => {
       // Check if user exists in db: if not, create user ( user.uid as document id )
-      const userDocRef = doc(db, "users", user.uid);
+      const userDocRef = doc(db, "users", uid);
       const userDocSnap = await getDoc(userDocRef);
       if (!userDocSnap.exists()) {
         await setDoc(userDocRef, {
-          uid: user.uid,
-          email: user.email,
-          username: user.uid,
+          uid: uid,
+          email: email,
+          username: uid,
           bio: 'Each bite of fries gets me one byte closer to fixing this bug... or creating a new one?'
         });
         console.log("Created user in db!");
       }
-      
+
       // Update username and bio
       const userData = userDocSnap.data();
-      setUserDbId(user.uid);
       setUsername(userData?.username || '');
       setBio(userData?.bio || '');
-      
-      if (user.displayName !== userData?.username) {
-        await updateProfile(user, {displayName: userData?.username || ''});
+
+      if (auth.currentUser!.displayName !== userData?.username) {
+        await updateProfile(auth.currentUser!, {displayName: userData?.username || ''});
       }
 
-      if (user.email !== userData?.email) {
-        await updateDoc(doc(db, "users", user.uid), { email: user.email});
+      if (auth.currentUser!.email !== userData?.email) {
+        await updateDoc(doc(db, "users", uid), { email: auth.currentUser!.email});
       }
-    });
-    return () => unsubscribe(); // Clean up
-  }, [ username, bio, email ]);
+    }
+    fetchUserData();
+  }, [uid, isVerified]);
+
+  // Fetch profile pic (default to potato pic if user hasn't updated)
+  useEffect(() => {
+    if(!uid) return;
+
+    const fetchProfilePic = async() => {
+      try {
+        const url = await getDownloadURL(ref(storage, `user-img/${uid}`));
+        setUserPicUrl(url);
+        await updateProfile(auth.currentUser!, {photoURL: url});
+      } catch {
+        const fallbackUrl = await getDownloadURL(ref(storage, `user-img/potato.png`));
+        setUserPicUrl(fallbackUrl);
+        await updateProfile(auth.currentUser!, {photoURL: fallbackUrl});
+      }
+    }
+
+    fetchProfilePic();
+  }, [uid]);
 
   return(
     <AuthContext.Provider 
@@ -103,7 +106,6 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
         username, 
         bio,
         isVerified, setIsVerified, 
-        userDbId, 
         userPicUrl, setUserPicUrl}}>
       {children}
     </AuthContext.Provider>
