@@ -45,13 +45,16 @@ export default function Settings() {
     }));
   }
 
-  const handleFileSelection = (e: any) => {
+  const handleFileSelectAndUpload = async(e: any) => {
     const { files } = e.target;
+    const storageRef = ref(storage, `user-img/${userDbId}`);
+
+    setIsLoading(true);
     
-    // No file selected
+    // No file selected, do nothing
     if (!files.length) return;
 
-    // File selected
+    // File selected, check file type and size
     if (!fileTypes.includes(files[0].type)) {
       alert('invalid file type');
       e.target.value = ''; // reset so that user doesn't see the file name
@@ -62,14 +65,7 @@ export default function Settings() {
       return;
     }
 
-    handleFileUpload(e); 
-  }
-
-  const handleFileUpload = async(e: any) => {
-    const { files } = e.target; 
-    const storageRef = ref(storage, `user-img/${userDbId}`);
-    setIsLoading(true);
-
+    // Upload file
     try {
       await uploadBytes(storageRef, files[0]);
       console.log('Uploaded file!');
@@ -139,13 +135,16 @@ export default function Settings() {
   return (
     <>
     <div className='flex flex-col justify-center items-center h-screen'>
+      {/* Profile picture */}
+      <div className="mb-5">
+        <label className="block mb-2 text-sm font-medium" htmlFor="file_input">Profile Picture</label>
+        <input className="block w-full text-sm border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
+          aria-describedby="file_input_help" id="file_input" name="file_input" type="file" onChange={handleFileSelectAndUpload}></input>
+        <p className="mt-1 text-sm" id="file_input_help">.jpg/.jpeg/.png (MAX 3MB)</p>
+      </div>
+      
+      {/* Username and bio */}
       <form className="mx-auto w-2/5" onSubmit={handleUpdate}>
-        <fieldset className="mb-5">
-          <label className="block mb-2 text-sm font-medium" htmlFor="file_input">Profile Picture</label>
-          <input className="block w-full text-sm border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
-            aria-describedby="file_input_help" id="file_input" name="file_input" type="file" onChange={handleFileSelection}></input>
-          <p className="mt-1 text-sm" id="file_input_help">.jpg/.jpeg/.png (MAX 3MB)</p>
-        </fieldset>
         <fieldset className="mb-5">
           <label htmlFor="username" className="block mb-2 text-sm font-medium">Username</label>
           <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -167,6 +166,7 @@ export default function Settings() {
         <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Update</button>
       </form>
 
+      {/* Email */}
       <form className="mx-auto w-2/5" onSubmit={handleResetEmail}>
         <fieldset className="mb-5">
           <label htmlFor="new-email" className="block mb-2 text-sm font-medium">New Email</label>
@@ -178,7 +178,7 @@ export default function Settings() {
           Reset Email
         </button>
       </form>
-
+      
       <h3 className='text-lg font-semibold text-green-600'>
         {isLoading && 'Loading...'}
         {isResetPassword && 'Check your email for password reset link.'}
