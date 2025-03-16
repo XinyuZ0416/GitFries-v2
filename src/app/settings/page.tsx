@@ -27,13 +27,6 @@ export default function Settings() {
   });
   const fileTypes = ["image/jpeg", "image/jpg", "image/png",];
 
-  // TODO: if no user/ user not verified, dont show content
-
-  useEffect(() => {
-    console.log(isVerified)
-
-  }, [isVerified]);
-
   useEffect(() => {
     if (!uid) {
       return;
