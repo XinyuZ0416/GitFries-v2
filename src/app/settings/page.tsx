@@ -28,12 +28,6 @@ export default function Settings() {
   const fileTypes = ["image/jpeg", "image/jpg", "image/png",];
 
   useEffect(() => {
-    if (!isVerified) {
-      router.push('/sign-in');
-    }
-  }, [isVerified]);
-
-  useEffect(() => {
     if (!uid) {
       return;
     }
