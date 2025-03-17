@@ -1,5 +1,5 @@
 'use client'
-import { sendPasswordResetEmail, signOut, verifyBeforeUpdateEmail } from 'firebase/auth';
+import { EmailAuthProvider, reauthenticateWithCredential, sendPasswordResetEmail, signOut, verifyBeforeUpdateEmail } from 'firebase/auth';
 import React, { useEffect, useState } from 'react'
 import { auth, db, storage } from '../firebase';
 import { useAuth } from '@/components/providers';
@@ -144,15 +144,23 @@ export default function Settings() {
     setIsLoading(true);
 
     try {
-      // TODO: 1. double check with user 2. send verification via email 3. delete from users db
+      // Re-auth user with forcing password check
+      const password = prompt('For security concern, please enter your password to confirm account deletion.');
+      if(!password) return;
+
+      const credential = EmailAuthProvider.credential(user!.email!, password);
+      await reauthenticateWithCredential(user!,credential)
+
       await user!.delete();
       alert('Your account has been deleted.');
       await deleteDoc(doc(db, "users", uid));
       await signOut(auth);
     } catch (error: any) {
       console.error(error.code);
+      setErrorCode(error.code);
       // auth/requires-recent-login
       // undefined
+      // auth/invalid-credential (password is wrong)
     } finally {
       setIsLoading(false);
     }
@@ -160,7 +168,8 @@ export default function Settings() {
 
   const errorMessage = 
     errorCode === "auth/requires-recent-login" ? "Last log in was too long ago. For security concern, please log in again and reset email." :
-    "";
+                  "auth/invalid-credential" ? "Wrong password, please try again." 
+                  : "";
   
   return (
     <>
