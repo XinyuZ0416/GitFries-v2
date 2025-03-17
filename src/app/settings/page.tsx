@@ -19,13 +19,19 @@ export default function Settings() {
   const [ placeHolderBio, setPlaceHolderBio] = useState<string>('');
   const [ newEmail, setNewEmail ] = useState<string>('');
   const [ errorCode, setErrorCode ] = useState<string>('');
-  const { email, uid, setUserPicUrl } = useAuth();
+  const { email, uid, setUserPicUrl, isVerified } = useAuth();
   const router = useRouter();
   const [ formData, setFormData ] = useState<FormDataType>({
     username: '',
     bio: '',
   });
   const fileTypes = ["image/jpeg", "image/jpg", "image/png",];
+
+  useEffect(() => {
+    if (isVerified === null || !isVerified) {
+      router.push('/sign-in');
+    }
+  }, [isVerified]);
 
   useEffect(() => {
     if (!uid) {
