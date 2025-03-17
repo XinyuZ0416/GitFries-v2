@@ -18,6 +18,7 @@ type FormDataType = {
 
 export default function PostIssuePage() {
   const [ mounted, setMounted ] = useState<boolean>(false);
+  const [ isValidUrl, setIsValidUrl ] = useState<boolean | null>(null);
   const { uid, isVerified } = useAuth();
   const [ formData, setFormData ] = useState<FormDataType>({
     issueReporterUid: '',
@@ -39,17 +40,24 @@ export default function PostIssuePage() {
 
   if (!mounted) return null; // Avoid rendering until mounted on client-side
 
-  const handleSubmit = async() => {
-    await addDoc(collection(db, "issues"), {
-      issueReporterUid: formData.issueReporterUid,
-      url: formData.url,
-      title: formData.title,
-      description: formData.description,
-      language: formData.language,
-      difficulty: formData.difficulty,
-      isUrgent: formData.isUrgent,
-      time: Timestamp.fromDate(formData.time),
-    });
+  const handleSubmit = async(e: any) => {
+    if(formData.url.includes("https://") || formData.url.includes("http://") ) {
+      setIsValidUrl(true);
+      await addDoc(collection(db, "issues"), {
+        issueReporterUid: formData.issueReporterUid,
+        url: formData.url,
+        title: formData.title,
+        description: formData.description,
+        language: formData.language,
+        difficulty: formData.difficulty,
+        isUrgent: formData.isUrgent,
+        time: Timestamp.fromDate(formData.time),
+      });
+    } else {
+      setIsValidUrl(false);
+      e.preventDefault();
+      return;
+    }
   }
 
   const handleChange = (e: any) => {
@@ -70,7 +78,8 @@ export default function PostIssuePage() {
       <div className='flex justify-center items-center h-screen'>
         <form className="mx-auto w-2/5" onSubmit={handleSubmit}>
           <fieldset className="mb-5">
-            <label htmlFor="issue_url" className="block mb-2 text-sm font-medium">Issue URL *</label>
+            <label className={isValidUrl || isValidUrl === null ? "block mb-2 text-sm font-medium" :  "block mb-2 text-sm font-medium text-red-600" }
+              htmlFor="issue_url" >Issue URL *{isValidUrl || isValidUrl === null ? "" : " (Must be a valid URL)"}</label>
             <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
               type="text" id="issue_url" name='url' value={formData.url} onChange={handleChange} required />
           </fieldset>
