@@ -19,7 +19,7 @@ export default function Settings() {
   const [ placeHolderBio, setPlaceHolderBio] = useState<string>('');
   const [ newEmail, setNewEmail ] = useState<string>('');
   const [ errorCode, setErrorCode ] = useState<string>('');
-  const { email, username, bio, uid, setUid, isVerified, setIsVerified, setUserPicUrl } = useAuth();
+  const { email, uid, setUserPicUrl } = useAuth();
   const router = useRouter();
   const [ formData, setFormData ] = useState<FormDataType>({
     username: '',
@@ -110,6 +110,7 @@ export default function Settings() {
       alert('A verification link has been sent to your new email.');
       await signOut(auth);
     } catch(error: any) {
+      console.error(error.code);
       setErrorCode(error.code);
     } finally {
       setIsLoading(false);
@@ -161,10 +162,10 @@ export default function Settings() {
   }
 
   const errorMessage = 
-    errorCode === "auth/requires-recent-login" ? "Last log in was too long ago. For security concern, please log in again and reset email." :
-                  "auth/invalid-credential" ? "Wrong password, please try again." 
-                  : "";
-  
+    errorCode === "auth/requires-recent-login" ? "Last log in was too long ago. For security concern, please log in again and reset email."
+      : errorCode === "auth/invalid-credential" ? "Wrong password, please try again."
+      : "";
+
   return (
     <>
     <div className='flex flex-col justify-center items-center h-screen'>
