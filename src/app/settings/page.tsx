@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { auth, db, storage } from '../firebase';
 import { useAuth } from '@/components/providers';
 import { useRouter } from 'next/navigation';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 type FormDataType = {
@@ -146,10 +146,9 @@ export default function Settings() {
     try {
       // TODO: 1. double check with user 2. send verification via email 3. delete from users db
       await user!.delete();
-      console.log('user deleted');
-      setUid('');
-      setIsVerified(false);
-      router.push('/');
+      alert('Your account has been deleted.');
+      await deleteDoc(doc(db, "users", uid));
+      await signOut(auth);
     } catch (error: any) {
       console.error(error.code);
       // auth/requires-recent-login
