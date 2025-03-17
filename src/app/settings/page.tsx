@@ -28,6 +28,12 @@ export default function Settings() {
   const fileTypes = ["image/jpeg", "image/jpg", "image/png",];
 
   useEffect(() => {
+    if (!isVerified) {
+      router.push('/sign-in');
+    }
+  }, [isVerified]);
+
+  useEffect(() => {
     if (!uid) {
       return;
     }
@@ -109,7 +115,6 @@ export default function Settings() {
       console.log('email verification sent!')
       alert('A verification link has been sent to your new email.');
       await signOut(auth);
-      router.push('/sign-in');
     } catch(error: any) {
       setErrorCode(error.code);
     } finally {
@@ -123,6 +128,9 @@ export default function Settings() {
     try {
       await sendPasswordResetEmail(auth, email);
       setIsResetPassword(true);
+      alert('A password reset link has been sent to your email.');
+      await signOut(auth);
+      router.push('/sign-in');
     } catch (error: any) {
       const errorCode = error.code;
       const errorMessage = error.message;
