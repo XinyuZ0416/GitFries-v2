@@ -60,7 +60,7 @@ export default function SignUpPage() {
             if(auth.currentUser.emailVerified) {
               setIsVerified(true);
               clearInterval(interval);
-              window.location.reload();
+              router.push('/profile');
             }
           } 
         }, 1000);
