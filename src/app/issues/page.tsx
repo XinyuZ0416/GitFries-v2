@@ -1,9 +1,87 @@
-import IssuePreview from '@/components/issue-preview'
+'use client'
 import LanguageCarousel from '@/components/language-carousel'
-import React from 'react'
+import PreviewCard from '@/components/preview-card';
+import React, { useState } from 'react'
+
+type IssueType = {
+  issueId: string,
+  description: string,
+  difficulty: string,
+  isUrgent: boolean,
+  issueReporterUid: string,
+  language: string,
+  time: Date,
+  title: string,
+  url: string,
+}
 
 export default function IssuesPage() {
   // TODO: cannot view more than 1 page/ use search without verified log in
+  const [ currentPage, setCurrentPage ] = useState<number>(1);
+  const [ issuesPerPage, setIssuesPerPage] = useState<number>(10);
+
+  const allIssues: IssueType[] = [
+    { 
+      issueId: 'cVEFte2kA4i3mQEblc5e',
+      description: 'description',
+      difficulty: 'difficulty',
+      isUrgent: true,
+      issueReporterUid: 'jP0ygLVFw9TELMIFTIkfkJSal4j1',
+      language: 'c',
+      time: new Date(),
+      title: 'a',
+      url: 'https://www.baidu.com/',
+    } , { 
+      issueId: 'cVEFte2kA4i3mQEblc5e',
+      description: 'description',
+      difficulty: 'difficulty',
+      isUrgent: true,
+      issueReporterUid: 'jP0ygLVFw9TELMIFTIkfkJSal4j1',
+      language: 'c',
+      time: new Date(),
+      title: 'a',
+      url: 'https://www.baidu.com/',
+    } , { 
+      issueId: 'cVEFte2kA4i3mQEblc5e',
+      description: 'description',
+      difficulty: 'difficulty',
+      isUrgent: true,
+      issueReporterUid: 'jP0ygLVFw9TELMIFTIkfkJSal4j1',
+      language: 'c',
+      time: new Date(),
+      title: 'a',
+      url: 'https://www.baidu.com/',
+    } , { 
+      issueId: 'cVEFte2kA4i3mQEblc5e',
+      description: 'description',
+      difficulty: 'difficulty',
+      isUrgent: true,
+      issueReporterUid: 'jP0ygLVFw9TELMIFTIkfkJSal4j1',
+      language: 'c',
+      time: new Date(),
+      title: 'a',
+      url: 'https://www.baidu.com/',
+    }
+  ]
+  const totalIssuesCount: number = 50; // TODO: (IF PROJECT SCALES) improve performance: guessing the amount, then increase if not enough (see obsidian notes)
+  const currentPageLastIssueIndex: number  = currentPage * issuesPerPage;
+  const currentPageFirstIssueIndex: number  = currentPageLastIssueIndex - issuesPerPage;
+  const currentPageIssues: IssueType[] = allIssues.slice(currentPageFirstIssueIndex, currentPageLastIssueIndex);
+  
+  const pageNums: number[] = [];
+  // TODO: use 1, 2, 3, 4, 5, ..., 16, 17, 18, 19, 20
+  for (let i = 1; i <= Math.ceil(totalIssuesCount / issuesPerPage); i++) { 
+    pageNums.push(i);
+  }
+
+  const renderPageNum = pageNums.map((num) => {
+    return(
+      <button key={num} onClick={() => setCurrentPage(num)} className={`px-3 py-1 mx-1 border rounded ${currentPage === num ? 'bg-blue-500 text-white' : ''}`}>
+        {num}
+      </button>
+    );
+  });
+
   return (
     <>
     <div className="flex">
@@ -30,7 +108,11 @@ export default function IssuesPage() {
 
     <h2 className="text-2xl font-bold">Latest</h2>
 
-    <IssuePreview />
+    <div className='flex flex-col gap-3 mb-3'>
+      {currentPageIssues.map((issue) => (<PreviewCard key={issue.id} {...issue} />))}
+    </div>
+
+    <div className='mt-4 flex justify-center'>{renderPageNum}</div>
     </>
   )
 }
