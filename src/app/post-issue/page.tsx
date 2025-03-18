@@ -4,6 +4,8 @@ import RequireSignInSignUp from '@/components/require-signin-signup'
 import { Timestamp, addDoc, collection } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 import { db } from '../firebase';
+import MDEditor from '@uiw/react-md-editor';
+import rehypeSanitize from "rehype-sanitize";
 
 type FormDataType = {
   issueReporterUid: string,
@@ -61,15 +63,26 @@ export default function PostIssuePage() {
   }
 
   const handleChange = (e: any) => {
-    const { name, value, type, checked } = e.target;
+    if (typeof e === 'string') {
+      // Handle <MDEditor> markdown input
+      setFormData((prev) => {
+        return {
+          ...prev,
+          description: e,
+          time: new Date(),
+        }
+      });
+    } else {
+      const { name, value, type, checked } = e.target;
     
-    setFormData((prev) => {
-      return {
-        ...prev,
-        [name]: type ? (type === 'checkbox' ? checked : value) : value,
-        time: new Date(),
-      }
-    });
+      setFormData((prev) => {
+        return {
+          ...prev,
+          [name]: type ? (type === 'checkbox' ? checked : value) : value,
+          time: new Date(),
+        }
+      });
+    }
   }
   
   return (
@@ -77,27 +90,39 @@ export default function PostIssuePage() {
     {isVerified ? 
       <div className='flex justify-center items-center h-screen'>
         <form className="mx-auto w-2/5" onSubmit={handleSubmit}>
+          {/* issue url */}
           <fieldset className="mb-5">
             <label className={isValidUrl || isValidUrl === null ? "block mb-2 text-sm font-medium" :  "block mb-2 text-sm font-medium text-red-600" }
-              htmlFor="issue_url" >Issue URL *{isValidUrl || isValidUrl === null ? "" : " (Must be a valid URL)"}</label>
+              htmlFor="url" >Issue URL *{isValidUrl || isValidUrl === null ? "" : " (Must be a valid URL)"}</label>
             <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
-              type="text" id="issue_url" name='url' value={formData.url} onChange={handleChange} required />
+              type="text" id="url" name='url' value={formData.url} onChange={handleChange} required />
           </fieldset>
+          {/* issue title */}
           <fieldset className="mb-5">
-            <label htmlFor="issue_title" className="block mb-2 text-sm font-medium">Issue Title *</label>
+            <label htmlFor="title" className="block mb-2 text-sm font-medium">Issue Title *</label>
             <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
-              type="text" id="issue_title" name='title' value={formData.title} onChange={handleChange} required />
+              type="text" id="title" name='title' value={formData.title} onChange={handleChange} required />
           </fieldset>
+          {/* description */}
           <fieldset className="mb-5">
-            <label htmlFor="issue_description" className="block mb-2 text-sm font-medium">Description</label>
-            <textarea className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-              id="issue_description" name='description' rows={4} value={formData.description} onChange={handleChange}></textarea>
+            <label htmlFor="description" className="block mb-2 text-sm font-medium">Description</label>
+            <div className="container" data-color-mode="light">
+              <MDEditor
+                id="description"
+                value={formData.description}
+                onChange={handleChange}
+                previewOptions={{
+                  rehypePlugins: [[rehypeSanitize]],
+                }}
+              />
+            </div>
           </fieldset>
+          {/* language, difficulty, urgent */}
           <div className="mb-5 flex flex-row">
             <fieldset className="max-w-sm mx-auto">
-              <label htmlFor="issue_language" className="block mb-2 text-sm font-medium">Language *</label>
+              <label htmlFor="language" className="block mb-2 text-sm font-medium">Language *</label>
               <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                id="issue_language" name="language" value={formData.language} onChange={handleChange}>
+                id="language" name="language" value={formData.language} onChange={handleChange}>
                 <option value='C'>C</option>
                 <option value='C++'>C++</option>
                 <option value='C#'>C#</option>
@@ -122,19 +147,22 @@ export default function PostIssuePage() {
                 <option value='Others'>Others</option>
               </select>
             </fieldset>
+
             <fieldset className="max-w-sm mx-auto">
-              <label htmlFor="issue_difficulty" className="block mb-2 text-sm font-medium">Difficulty *</label>
-              <select id="issue_difficulty" name="difficulty" value={formData.difficulty} onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+              <label htmlFor="difficulty" className="block mb-2 text-sm font-medium">Difficulty *</label>
+              <select id="difficulty" name="difficulty" value={formData.difficulty} onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                 <option value='headache'>Headache</option>
                 <option value='beginner-friendly'>Beginner Friendly</option>
               </select>
             </fieldset>
+
             <fieldset className="flex items-center">
               <input className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2" 
-                type="checkbox" id="issue_isUrgent" name="isUrgent" checked={formData.isUrgent} onChange={handleChange} ></input>
-              <label htmlFor="checkbox-1" className="ms-2 text-sm font-medium">Urgent</label>
+                type="checkbox" id="isUrgent" name="isUrgent" checked={formData.isUrgent} onChange={handleChange} ></input>
+              <label htmlFor="isUrgent" className="ms-2 text-sm font-medium">Urgent</label>
             </fieldset>
           </div>
+
           <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Submit</button>
         </form>
       </div> :
