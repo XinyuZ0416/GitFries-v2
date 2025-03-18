@@ -3,7 +3,7 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/
 import React, { useEffect, useState } from 'react'
 import { auth } from '../firebase';
 import CheckUnchecked from '@/components/check-unchecked';
-import { useAuth } from '@/providers/auth-provider';
+import { useAuthProvider } from '@/providers/auth-provider';
 import { useRouter } from 'next/navigation';
 
 type PasswordCriteriaType = {
@@ -20,7 +20,7 @@ export default function SignUpPage() {
   const [ repeatPassword, setRepeatPassword ] = useState<string>('');
   const [ errorCode, setErrorCode ] = useState<string>('');
   const [ isLoading, setIsLoading ] = useState<boolean>(false);
-  const { isVerified, setIsVerified } = useAuth();
+  const { isVerified, setIsVerified } = useAuthProvider();
   const router = useRouter();
   const [ passwordCriteria, setPasswordCriteria ] = useState<PasswordCriteriaType>({
     isUpperCase: false,

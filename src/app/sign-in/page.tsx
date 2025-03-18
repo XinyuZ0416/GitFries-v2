@@ -1,5 +1,5 @@
 'use client'
-import { useAuth } from '@/providers/auth-provider';
+import { useAuthProvider } from '@/providers/auth-provider';
 import { browserLocalPersistence, browserSessionPersistence, sendPasswordResetEmail, setPersistence, signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
@@ -13,7 +13,7 @@ export default function SignInPage() {
   const [isRememberMe, setIsRememberMe] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
-  const { isVerified, setIsVerified, uid, setUid} = useAuth();
+  const { isVerified, setIsVerified, uid, setUid} = useAuthProvider();
 
   useEffect(() => {
     if (isVerified) {

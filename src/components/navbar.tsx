@@ -2,11 +2,11 @@
 import React from 'react'
 import Searchbar from './searchbar'
 import UserDropdown from './user-dropdown'
-import { useAuth } from '../providers/auth-provider';
+import { useAuthProvider } from '../providers/auth-provider';
 import Link from 'next/link';
 
 export default function Navbar() {
-  const { isVerified } = useAuth();
+  const { isVerified } = useAuthProvider();
 
   return (
     <>

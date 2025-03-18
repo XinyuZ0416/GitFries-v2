@@ -1,5 +1,5 @@
 'use client'
-import { useAuth } from '@/providers/auth-provider';
+import { useAuthProvider } from '@/providers/auth-provider';
 import RequireSignInSignUp from '@/components/require-signin-signup'
 import { Timestamp, addDoc, collection } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
@@ -19,7 +19,7 @@ type FormDataType = {
 export default function PostIssuePage() {
   const [ mounted, setMounted ] = useState<boolean>(false);
   const [ isValidUrl, setIsValidUrl ] = useState<boolean | null>(null);
-  const { uid, isVerified } = useAuth();
+  const { uid, isVerified } = useAuthProvider();
   const [ formData, setFormData ] = useState<FormDataType>({
     issueReporterUid: '',
     url: '',

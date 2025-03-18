@@ -1,11 +1,11 @@
 'use client'
 import Badge from '@/components/badge'
-import { useAuth } from '@/providers/auth-provider'
+import { useAuthProvider } from '@/providers/auth-provider'
 import RequireSignInSignUp from '@/components/require-signin-signup'
 import React from 'react'
 
 export default function AchievementsPage() {
-  const { isVerified } = useAuth();  
+  const { isVerified } = useAuthProvider();  
   return (
     <>
     <h2 className="text-2xl font-bold">All Achievements</h2>

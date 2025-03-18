@@ -4,12 +4,12 @@ import { auth } from '@/app/firebase';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '../providers/auth-provider';
+import { useAuthProvider } from '../providers/auth-provider';
 import Link from 'next/link';
 
 export default function UserDropdown() {
   const router = useRouter();
-  const { setUid, setIsVerified, userPicUrl } = useAuth();
+  const { setUid, setIsVerified, userPicUrl } = useAuthProvider();
 
   const handleSignOut = async() => {
     try {

@@ -4,10 +4,10 @@ import GitFriesBarChart from '@/components/bar-chart'
 import React from 'react'
 import GitFriesPieChart from '@/components/pie-chart'
 import RequireSignInSignUp from '@/components/require-signin-signup'
-import { useAuth } from '@/providers/auth-provider'
+import { useAuthProvider } from '@/providers/auth-provider'
 
 export default function DashboardPage() {
-  const { isVerified } = useAuth();  
+  const { isVerified } = useAuthProvider();  
   return (
     <>
     <div className='flex flex-col gap-2'>

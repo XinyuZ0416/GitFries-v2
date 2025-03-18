@@ -1,9 +1,9 @@
 'use client'
 import EmailSignUp from "@/components/email-signup";
-import { useAuth } from "@/providers/auth-provider";
+import { useAuthProvider } from "@/providers/auth-provider";
 
 export default function Home() {
-  const { isVerified } = useAuth();
+  const { isVerified } = useAuthProvider();
 
   return (
     <>
