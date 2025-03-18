@@ -4,7 +4,7 @@ import GitFriesBarChart from '@/components/bar-chart'
 import React from 'react'
 import GitFriesPieChart from '@/components/pie-chart'
 import RequireSignInSignUp from '@/components/require-signin-signup'
-import { useAuth } from '@/components/providers'
+import { useAuth } from '@/providers/auth-provider'
 
 export default function DashboardPage() {
   const { isVerified } = useAuth();  

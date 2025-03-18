@@ -2,7 +2,7 @@
 import { EmailAuthProvider, reauthenticateWithCredential, sendPasswordResetEmail, signOut, verifyBeforeUpdateEmail } from 'firebase/auth';
 import React, { useEffect, useState } from 'react'
 import { auth, db, storage } from '../firebase';
-import { useAuth } from '@/components/providers';
+import { useAuth } from '@/providers/auth-provider';
 import { useRouter } from 'next/navigation';
 import { deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';

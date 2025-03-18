@@ -1,5 +1,5 @@
 'use client'
-import { useAuth } from '@/components/providers';
+import { useAuth } from '@/providers/auth-provider';
 import RequireSignInSignUp from '@/components/require-signin-signup'
 import { Timestamp, addDoc, collection } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'

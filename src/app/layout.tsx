@@ -3,7 +3,7 @@ import { Ubuntu_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import { AuthProvider } from "@/components/providers";
+import { AuthProvider } from "@/providers/auth-provider";
 
 const ubuntuMono = Ubuntu_Mono({
   variable: "--font-ubuntu-mono",

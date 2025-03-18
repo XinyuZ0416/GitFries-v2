@@ -3,7 +3,7 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/
 import React, { useEffect, useState } from 'react'
 import { auth } from '../firebase';
 import CheckUnchecked from '@/components/check-unchecked';
-import { useAuth } from '@/components/providers';
+import { useAuth } from '@/providers/auth-provider';
 import { useRouter } from 'next/navigation';
 
 type PasswordCriteriaType = {

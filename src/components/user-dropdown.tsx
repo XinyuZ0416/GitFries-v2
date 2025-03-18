@@ -4,7 +4,7 @@ import { auth } from '@/app/firebase';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
-import { useAuth } from './providers';
+import { useAuth } from '../providers/auth-provider';
 import Link from 'next/link';
 
 export default function UserDropdown() {

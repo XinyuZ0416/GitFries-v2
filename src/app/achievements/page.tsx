@@ -1,6 +1,6 @@
 'use client'
 import Badge from '@/components/badge'
-import { useAuth } from '@/components/providers'
+import { useAuth } from '@/providers/auth-provider'
 import RequireSignInSignUp from '@/components/require-signin-signup'
 import React from 'react'
 

@@ -2,7 +2,7 @@
 import React from 'react'
 import Searchbar from './searchbar'
 import UserDropdown from './user-dropdown'
-import { useAuth } from './providers';
+import { useAuth } from '../providers/auth-provider';
 import Link from 'next/link';
 
 export default function Navbar() {

@@ -1,5 +1,5 @@
 'use client'
-import { useAuth } from '@/components/providers';
+import { useAuth } from '@/providers/auth-provider';
 import { browserLocalPersistence, browserSessionPersistence, sendPasswordResetEmail, setPersistence, signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
