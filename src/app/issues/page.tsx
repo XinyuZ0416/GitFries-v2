@@ -1,7 +1,7 @@
 'use client'
 import LanguageCarousel from '@/components/language-carousel'
 import PreviewCard from '@/components/preview-card';
-import { collection, getDoc, doc, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDoc, doc, getDocs, query, where, Timestamp } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 import { db, storage } from '../firebase';
 import { getDownloadURL, ref } from 'firebase/storage';
@@ -13,7 +13,7 @@ type IssueType = {
   isUrgent: boolean,
   issueReporterUid: string,
   language: string,
-  time: Date,
+  time: Timestamp,
   title: string,
   url: string,
   issueReporterUsername: string,
@@ -87,6 +87,7 @@ export default function IssuesPage() {
 
 
       setAllIssues(fetchedIssues);
+      console.log(fetchedIssues)
     }
 
     getAllIssues();
