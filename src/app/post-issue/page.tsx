@@ -43,7 +43,8 @@ export default function PostIssuePage() {
   if (!mounted) return null; // Avoid rendering until mounted on client-side
 
   const handleSubmit = async(e: any) => {
-    if(formData.url.includes("https://") || formData.url.includes("http://") ) {
+    const urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+    if(urlPattern.test(formData.url)) {
       setIsValidUrl(true);
       await addDoc(collection(db, "issues"), {
         issueReporterUid: formData.issueReporterUid,

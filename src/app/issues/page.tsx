@@ -31,36 +31,6 @@ export default function IssuesPage() {
       time: new Date(),
       title: 'a',
       url: 'https://www.baidu.com/',
-    } , { 
-      issueId: 'cVEFte2kA4i3mQEblc5e',
-      description: 'description',
-      difficulty: 'difficulty',
-      isUrgent: true,
-      issueReporterUid: 'jP0ygLVFw9TELMIFTIkfkJSal4j1',
-      language: 'c',
-      time: new Date(),
-      title: 'a',
-      url: 'https://www.baidu.com/',
-    } , { 
-      issueId: 'cVEFte2kA4i3mQEblc5e',
-      description: 'description',
-      difficulty: 'difficulty',
-      isUrgent: true,
-      issueReporterUid: 'jP0ygLVFw9TELMIFTIkfkJSal4j1',
-      language: 'c',
-      time: new Date(),
-      title: 'a',
-      url: 'https://www.baidu.com/',
-    } , { 
-      issueId: 'cVEFte2kA4i3mQEblc5e',
-      description: 'description',
-      difficulty: 'difficulty',
-      isUrgent: true,
-      issueReporterUid: 'jP0ygLVFw9TELMIFTIkfkJSal4j1',
-      language: 'c',
-      time: new Date(),
-      title: 'a',
-      url: 'https://www.baidu.com/',
     }
   ]
   const totalIssuesCount: number = 50; // TODO: (IF PROJECT SCALES) improve performance: guessing the amount, then increase if not enough (see obsidian notes)
@@ -109,7 +79,7 @@ export default function IssuesPage() {
     <h2 className="text-2xl font-bold">Latest</h2>
 
     <div className='flex flex-col gap-3 mb-3'>
-      {currentPageIssues.map((issue) => (<PreviewCard key={issue.id} {...issue} />))}
+      {currentPageIssues.map((issue) => (<PreviewCard key={issue.issueId} {...issue} />))}
     </div>
 
     <div className='mt-4 flex justify-center'>{renderPageNum}</div>
