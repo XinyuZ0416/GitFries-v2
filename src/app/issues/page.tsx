@@ -3,10 +3,10 @@ import LanguageCarousel from '@/components/language-carousel'
 import PreviewCard from '@/components/preview-card';
 import { collection, getDoc, doc, getDocs, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
-import { db } from '../firebase';
+import { db, storage } from '../firebase';
+import { getDownloadURL, ref } from 'firebase/storage';
 
 type IssueType = {
-  // from "issues" collection
   issueId: string,
   description: string,
   difficulty: string,
@@ -16,8 +16,8 @@ type IssueType = {
   time: Date,
   title: string,
   url: string,
-  // from "users" collection
   issueReporterUsername: string,
+  issueReporterPicUrl: string,
 }
 
 export default function IssuesPage() {
@@ -54,9 +54,21 @@ export default function IssuesPage() {
 
       const fetchedIssues: IssueType[] = await Promise.all(
         issuesQuerySnapshot.docs.map(async (document) => {
+          // get issue reporter info
           const userDocRef = doc(db, "users", document.data().issueReporterUid);
           const userDocSnap = await getDoc(userDocRef);
-  
+          
+          let picUrl = '/potato.png';
+          try {
+            picUrl = await getDownloadURL(ref(storage, `user-img/${document.data().issueReporterUid}`));
+          } catch(error: any) {
+            if(error.code === "storage/object-not-found") {
+              picUrl = '/potato.png';
+            } else {
+              console.error("Error fetching image:", error.code);
+            }
+          }
+ 
           return {
             issueId: document.id,
             description: document.data().description,
@@ -68,6 +80,7 @@ export default function IssuesPage() {
             title: document.data().title,
             url: document.data().url,
             issueReporterUsername: userDocSnap.exists() ? userDocSnap.data()!.username : "Unknown",
+            issueReporterPicUrl: picUrl,
           };
         })
       );
@@ -109,7 +122,6 @@ export default function IssuesPage() {
     <div className='flex flex-col gap-3 mb-3'>
       {currentPageIssues.map((issue) => (<PreviewCard key={issue.issueId} {...issue} />))}
     </div>
-    <PreviewCard />
     {/* bottom page nav */}
     <div className='mt-4 flex justify-center'>{renderPageNum}</div>
     </>
