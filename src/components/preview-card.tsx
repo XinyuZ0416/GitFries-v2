@@ -25,7 +25,10 @@ export default function PreviewCard({
 
   return (
     <>
-    <a href="/issues/1" className="flex flex-row p-3 items-center bg-white rounded-lg shadow-sm hover:bg-gray-100">
+    <a className={`flex flex-row p-3 items-center rounded-lg shadow-lg hover:bg-gray-100
+      ${isUrgent ? `shadow-red-500` : `shadow-grey`}
+      ${difficulty === `beginner-friendly` ? `bg-green-200` : `bg-white`}`}
+      href={`/issues/${issueId}`} >
       <div>
         <img className="rounded-full size-14" src={issueReporterPicUrl} alt="user profile" />
         <h6 className='text-lg font-bold'>{issueReporterUsername}</h6>
@@ -39,6 +42,7 @@ export default function PreviewCard({
       <div>
         <p className="font-normal text-gray-700">{formattedDate}</p>
         <p className="font-normal text-gray-700">{language}</p>
+        <p className="font-normal text-gray-700">{difficulty}</p>
       </div>
     </a>
     </>
