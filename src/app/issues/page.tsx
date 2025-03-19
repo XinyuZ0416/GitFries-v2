@@ -1,9 +1,12 @@
 'use client'
 import LanguageCarousel from '@/components/language-carousel'
 import PreviewCard from '@/components/preview-card';
-import React, { useState } from 'react'
+import { collection, getDoc, doc, getDocs, query, where } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react'
+import { db } from '../firebase';
 
 type IssueType = {
+  // from "issues" collection
   issueId: string,
   description: string,
   difficulty: string,
@@ -13,26 +16,16 @@ type IssueType = {
   time: Date,
   title: string,
   url: string,
+  // from "users" collection
+  issueReporterUsername: string,
 }
 
 export default function IssuesPage() {
   // TODO: cannot view more than 1 page/ use search without verified log in
   const [ currentPage, setCurrentPage ] = useState<number>(1);
   const [ issuesPerPage, setIssuesPerPage] = useState<number>(10);
+  const [ allIssues, setAllIssues ] = useState<IssueType[]>([])
 
-  const allIssues: IssueType[] = [
-    { 
-      issueId: 'cVEFte2kA4i3mQEblc5e',
-      description: 'description',
-      difficulty: 'difficulty',
-      isUrgent: true,
-      issueReporterUid: 'jP0ygLVFw9TELMIFTIkfkJSal4j1',
-      language: 'c',
-      time: new Date(),
-      title: 'a',
-      url: 'https://www.baidu.com/',
-    }
-  ]
   const totalIssuesCount: number = 50; // TODO: (IF PROJECT SCALES) improve performance: guessing the amount, then increase if not enough (see obsidian notes)
   const currentPageLastIssueIndex: number  = currentPage * issuesPerPage;
   const currentPageFirstIssueIndex: number  = currentPageLastIssueIndex - issuesPerPage;
@@ -51,6 +44,40 @@ export default function IssuesPage() {
       </button>
     );
   });
+
+  // Get "issues" collection
+  useEffect(() => {
+
+    const getAllIssues = async() => {
+      const issuesQ = query(collection(db, "issues"));
+      const issuesQuerySnapshot = await getDocs(issuesQ);
+
+      const fetchedIssues: IssueType[] = await Promise.all(
+        issuesQuerySnapshot.docs.map(async (document) => {
+          const userDocRef = doc(db, "users", document.data().issueReporterUid);
+          const userDocSnap = await getDoc(userDocRef);
+  
+          return {
+            issueId: document.id,
+            description: document.data().description,
+            difficulty: document.data().difficulty,
+            isUrgent: document.data().isUrgent,
+            issueReporterUid: document.data().issueReporterUid,
+            language: document.data().language,
+            time: document.data().time,
+            title: document.data().title,
+            url: document.data().url,
+            issueReporterUsername: userDocSnap.exists() ? userDocSnap.data()!.username : "Unknown",
+          };
+        })
+      );
+
+
+      setAllIssues(fetchedIssues);
+    }
+
+    getAllIssues();
+  }, []);
 
   return (
     <>
@@ -78,10 +105,12 @@ export default function IssuesPage() {
 
     <h2 className="text-2xl font-bold">Latest</h2>
 
+    {/* issue previews */}
     <div className='flex flex-col gap-3 mb-3'>
       {currentPageIssues.map((issue) => (<PreviewCard key={issue.issueId} {...issue} />))}
     </div>
-
+    <PreviewCard />
+    {/* bottom page nav */}
     <div className='mt-4 flex justify-center'>{renderPageNum}</div>
     </>
   )
