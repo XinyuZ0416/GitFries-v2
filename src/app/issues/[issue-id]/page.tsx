@@ -11,6 +11,7 @@ import React, { useEffect, useState } from 'react'
 
 type IssueDetailsType = {
   issueId: string,
+  url: string,
   title: string,
   description: string,
   time: Timestamp,
@@ -56,6 +57,7 @@ export default function IssueDetailsPage() {
 
         setIssueDetails({
           issueId: issueId,
+          url: issueDocSnap.data()!.url,
           title: issueDocSnap.data()!.title,
           description: issueDocSnap.data()!.description,
           time: issueDocSnap.data()!.time,
@@ -96,7 +98,9 @@ export default function IssueDetailsPage() {
             <p className="font-normal text-gray-700">{formatDate(issueDetails?.time.toDate() as Date)}</p>
             <p className="font-normal text-gray-700">{issueDetails?.language}</p>
             <p className="font-normal text-gray-700">{issueDetails?.difficulty}</p>
-            <img className="size-5" src="/link.png" alt="link" />
+            <a href={issueDetails?.url} target='_blank'>
+              <img className="size-5" src="/link.png" alt="link" />
+            </a>    
             <img className="size-5" src="/empty-fries.png" alt="favorite button" />
             {uid === issueDetails?.issueReporterUid && 
               <button onClick={handleDeleteIssue}>
