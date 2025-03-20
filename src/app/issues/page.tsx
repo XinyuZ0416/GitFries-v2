@@ -1,6 +1,6 @@
 'use client'
 import LanguageCarousel from '@/components/language-carousel'
-import PreviewCard from '@/components/preview-card';
+import PreviewCard from '@/components/issue-preview';
 import { collection, getDoc, doc, getDocs, query, where, Timestamp } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 import { db, storage } from '../firebase';

@@ -61,9 +61,8 @@ export default function IssueDetailsPage() {
           issueReporterUsername: userDocSnap.exists() ? userDocSnap.data()!.username : "Unknown",
           issueReporterPicUrl: picUrl,
         })
-        console.log(issueDocSnap.data());
       } catch (error) {
-
+        console.error(error)
       }
       
     }
