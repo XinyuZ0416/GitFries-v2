@@ -14,6 +14,7 @@ export default function CreditsPage() {
       <a href="https://www.flaticon.com/free-icons/solution" title="solution icons">Solution icons created by Canticons - Flaticon</a>
       <a href="https://www.flaticon.com/free-icons/post" title="post icons">Post icons created by Freepik - Flaticon</a>
       <a href="https://www.flaticon.com/free-icons/email" title="email icons">Email icons created by Those Icons - Flaticon</a>
+      <a href="https://www.flaticon.com/free-icons/recycle-bin" title="recycle bin icons">Recycle bin icons created by Freepik - Flaticon</a>
     </div>
     </>
   )

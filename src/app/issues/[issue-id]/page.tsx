@@ -2,6 +2,7 @@
 import { db, storage } from '@/app/firebase'
 import AddCommentBox from '@/components/add-comment-box'
 import IssueCommentCard from '@/components/issue-comment-card'
+import { useAuthProvider } from '@/providers/auth-provider'
 import formatDate from '@/utils/format-date'
 import { Timestamp, doc, getDoc } from 'firebase/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
@@ -16,6 +17,7 @@ type IssueDetailsType = {
   language: string,
   difficulty: string,
   isUrgent: boolean,
+  issueReporterUid: string,
   issueReporterUsername: string,
   issueReporterPicUrl: string,
 }
@@ -24,6 +26,7 @@ export default function IssueDetailsPage() {
   const { "issue-id": issueIdParam } = useParams();
   const issueId = Array.isArray(issueIdParam) ? issueIdParam[0] : issueIdParam; // Ensure only string 
   const [ issueDetails, setIssueDetails ] = useState<IssueDetailsType | null>(null);
+  const { uid } = useAuthProvider();
 
   useEffect(() => {
     if(!issueId) return;
@@ -58,6 +61,7 @@ export default function IssueDetailsPage() {
           language: issueDocSnap.data()!.language,
           difficulty: issueDocSnap.data()!.difficulty,
           isUrgent: issueDocSnap.data()!.isUrgent,
+          issueReporterUid: issueDocSnap.data()!.issueReporterUid,
           issueReporterUsername: userDocSnap.exists() ? userDocSnap.data()!.username : "Unknown",
           issueReporterPicUrl: picUrl,
         })
@@ -67,7 +71,7 @@ export default function IssueDetailsPage() {
       
     }
     getIssueDoc();
-  }, [issueId]);
+  }, [uid, issueId]);
 
   return (
     <>
@@ -87,6 +91,7 @@ export default function IssueDetailsPage() {
             <p className="font-normal text-gray-700">{issueDetails?.difficulty}</p>
             <img className="size-5" src="/link.png" alt="link" />
             <img className="size-5" src="/empty-fries.png" alt="favorite button" />
+            {uid === issueDetails?.issueReporterUid && <img className="size-5" src="/delete.png" alt="delete button" />}
           </div>
         </div>
       </div>
