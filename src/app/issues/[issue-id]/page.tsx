@@ -4,7 +4,7 @@ import AddCommentBox from '@/components/add-comment-box'
 import IssueCommentCard from '@/components/issue-comment-card'
 import { useAuthProvider } from '@/providers/auth-provider'
 import formatDate from '@/utils/format-date'
-import { Timestamp, deleteDoc, doc, getDoc } from 'firebase/firestore'
+import { Timestamp, arrayUnion, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -82,6 +82,16 @@ export default function IssueDetailsPage() {
     router.push('/issues');
   }
 
+  const handleFavIssue = async() => {
+    try {
+      // TODO: if issue already exists in favedissue field, remove
+      await updateDoc(doc(db, "users", uid), { favedIssues: arrayUnion(issueId) });
+      console.log('faved')
+    } catch(error) {
+      console.error("Error favoriting issue:", error);
+    }
+  }
+
   return (
     <>
     <div className="flex flex-col p-3 m-3 bg-white border border-gray-200 rounded-lg shadow-sm">
@@ -100,8 +110,10 @@ export default function IssueDetailsPage() {
             <p className="font-normal text-gray-700">{issueDetails?.difficulty}</p>
             <a href={issueDetails?.url} target='_blank'>
               <img className="size-5" src="/link.png" alt="link" />
-            </a>    
-            <img className="size-5" src="/empty-fries.png" alt="favorite button" />
+            </a> 
+            <button onClick={handleFavIssue}>
+              <img className="size-5" src="/empty-fries.png" alt="favorite button" />
+            </button>
             {uid === issueDetails?.issueReporterUid && 
               <button onClick={handleDeleteIssue}>
                 <img className="size-5" src="/delete.png" alt="delete button" />
