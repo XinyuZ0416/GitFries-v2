@@ -102,12 +102,12 @@ export default function IssueDetailsPage() {
     <>
     <div className="flex flex-col p-3 m-3 bg-white border border-gray-200 rounded-lg shadow-sm">
       <div className='flex flex-row'>
-        <div>
+        <section id='user-info'>
           <img className="rounded-full size-14" src="/potato.png" alt="user profile" />
           <h6 className='text-lg font-bold'>{issueDetails?.issueReporterUsername}</h6>
-        </div>
+        </section>
 
-        <div className="flex flex-col justify-between px-4 py-2">
+        <section id='issue-basic-info' className="flex flex-col justify-between px-4 py-2">
           <h5 className="text-xl font-bold">{issueDetails?.title}</h5>
           
           <div className='flex flex-row gap-2'>
@@ -126,12 +126,12 @@ export default function IssueDetailsPage() {
               </button>
             }
           </div>
-        </div>
+        </section>
       </div>
 
-      <div className='my-3'>
+      <section id='issue-description' className='my-3'>
         <p className="font-normal text-gray-700">{issueDetails?.description}</p>
-      </div>
+      </section>
 
       <AddCommentBox />
 
