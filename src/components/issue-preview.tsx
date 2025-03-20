@@ -1,5 +1,6 @@
 import formatDate from '@/utils/format-date';
 import { Timestamp } from 'firebase/firestore'
+import Link from 'next/link';
 import React from 'react'
 
 interface PreviewCardProps {
@@ -23,7 +24,7 @@ export default function PreviewCard({
 
   return (
     <>
-    <a className={`flex flex-row p-3 items-center rounded-lg shadow-lg hover:bg-gray-100
+    <Link className={`flex flex-row p-3 items-center rounded-lg shadow-lg hover:bg-gray-100
       ${isUrgent ? `shadow-red-500` : `shadow-grey`}
       ${difficulty === `beginner-friendly` ? `bg-green-200` : `bg-white`}`}
       href={`/issues/${issueId}`} >
@@ -42,7 +43,7 @@ export default function PreviewCard({
         <p className="font-normal text-gray-700">{language}</p>
         <p className="font-normal text-gray-700">{difficulty}</p>
       </div>
-    </a>
+    </Link>
     </>
   )
 }
