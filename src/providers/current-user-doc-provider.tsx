@@ -1,8 +1,6 @@
 'use client'
-import { auth, db, storage } from "@/app/firebase";
-import { onAuthStateChanged, updateProfile } from "firebase/auth";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { getDownloadURL, ref } from "firebase/storage";
+import { db } from "@/app/firebase";
+import { doc, getDoc } from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuthProvider } from "./auth-provider";
 
@@ -33,7 +31,7 @@ export const UserDocProvider = ({children}:{children: React.ReactNode}) => {
       }
     }
     getCurrentUserDoc();
-  }, [uid]);
+  }, [uid, favedIssues]);
 
   return(
     <CurrentUserDocContext.Provider 

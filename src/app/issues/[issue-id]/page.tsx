@@ -3,8 +3,9 @@ import { db, storage } from '@/app/firebase'
 import AddCommentBox from '@/components/add-comment-box'
 import IssueCommentCard from '@/components/issue-comment-card'
 import { useAuthProvider } from '@/providers/auth-provider'
+import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider'
 import formatDate from '@/utils/format-date'
-import { Timestamp, arrayUnion, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore'
+import { Timestamp, arrayRemove, arrayUnion, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -28,6 +29,7 @@ export default function IssueDetailsPage() {
   const issueId = Array.isArray(issueIdParam) ? issueIdParam[0] : issueIdParam; // Ensure only string 
   const [ issueDetails, setIssueDetails ] = useState<IssueDetailsType | null>(null);
   const { uid } = useAuthProvider();
+  const { favedIssues, setFavedIssues } = useCurrentUserDocProvider();
   const router = useRouter();
 
   useEffect(() => {
@@ -82,15 +84,19 @@ export default function IssueDetailsPage() {
     router.push('/issues');
   }
 
-  const handleFavIssue = async() => {
+  const toggleFavIssue = async () => {
     try {
-      // TODO: if issue already exists in favedissue field, remove
-      await updateDoc(doc(db, "users", uid), { favedIssues: arrayUnion(issueId) });
-      console.log('faved')
-    } catch(error) {
+      if (!favedIssues.includes(issueId as string)) {
+        await updateDoc(doc(db, "users", uid), { favedIssues: arrayUnion(issueId) });
+        setFavedIssues(prev => [...prev, issueId as string]);
+      } else {
+        await updateDoc(doc(db, "users", uid), { favedIssues: arrayRemove(issueId) });
+        setFavedIssues(prev => prev.filter(id => id !== issueId));
+      }
+    } catch (error) {
       console.error("Error favoriting issue:", error);
     }
-  }
+  };
 
   return (
     <>
@@ -111,8 +117,8 @@ export default function IssueDetailsPage() {
             <a href={issueDetails?.url} target='_blank'>
               <img className="size-5" src="/link.png" alt="link" />
             </a> 
-            <button onClick={handleFavIssue}>
-              <img className="size-5" src="/empty-fries.png" alt="favorite button" />
+            <button onClick={toggleFavIssue}>
+              <img className="size-5" src={favedIssues.includes(issueId as string) ? "/logo.png" : "/empty-fries.png" } alt="favorite button" />
             </button>
             {uid === issueDetails?.issueReporterUid && 
               <button onClick={handleDeleteIssue}>
