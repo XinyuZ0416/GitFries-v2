@@ -12,7 +12,7 @@ interface CurrentUserDocContextProps {
 
 const CurrentUserDocContext = createContext<CurrentUserDocContextProps | null>(null);
 
-export const UserDocProvider = ({children}:{children: React.ReactNode}) => {
+export const CurrentUserDocProvider = ({children}:{children: React.ReactNode}) => {
   const { uid } = useAuthProvider();
   const [ favedIssues, setFavedIssues ] = useState<string[]>([]);
 
@@ -31,7 +31,7 @@ export const UserDocProvider = ({children}:{children: React.ReactNode}) => {
       }
     }
     getCurrentUserDoc();
-  }, [uid, favedIssues]);
+  }, [uid]);
 
   return(
     <CurrentUserDocContext.Provider 

@@ -4,7 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { AuthProvider } from "@/providers/auth-provider";
-import { UserDocProvider } from "@/providers/current-user-doc-provider";
+import { CurrentUserDocProvider } from "@/providers/current-user-doc-provider";
 
 const ubuntuMono = Ubuntu_Mono({
   variable: "--font-ubuntu-mono",
@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <AuthProvider>
-      <UserDocProvider>
+      <CurrentUserDocProvider>
         <html lang="en">
           <body
             className={`${ubuntuMono.variable} antialiased`}
@@ -38,7 +38,7 @@ export default function RootLayout({
             <script src="https://unpkg.com/flowbite@3.1.2/dist/flowbite.js"></script>
           </body>
         </html>
-      </UserDocProvider>
+      </CurrentUserDocProvider>
     </AuthProvider>
   );
 }
