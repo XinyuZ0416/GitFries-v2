@@ -4,9 +4,9 @@ import AddCommentBox from '@/components/add-comment-box'
 import IssueCommentCard from '@/components/issue-comment-card'
 import { useAuthProvider } from '@/providers/auth-provider'
 import formatDate from '@/utils/format-date'
-import { Timestamp, doc, getDoc } from 'firebase/firestore'
+import { Timestamp, deleteDoc, doc, getDoc } from 'firebase/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 type IssueDetailsType = {
@@ -27,6 +27,7 @@ export default function IssueDetailsPage() {
   const issueId = Array.isArray(issueIdParam) ? issueIdParam[0] : issueIdParam; // Ensure only string 
   const [ issueDetails, setIssueDetails ] = useState<IssueDetailsType | null>(null);
   const { uid } = useAuthProvider();
+  const router = useRouter();
 
   useEffect(() => {
     if(!issueId) return;
@@ -73,6 +74,12 @@ export default function IssueDetailsPage() {
     getIssueDoc();
   }, [uid, issueId]);
 
+  const handleDeleteIssue = async() => {
+    // TODO: double check with user
+    await deleteDoc(doc(db, "issues", issueId as string));
+    router.push('/issues');
+  }
+
   return (
     <>
     <div className="flex flex-col p-3 m-3 bg-white border border-gray-200 rounded-lg shadow-sm">
@@ -91,7 +98,11 @@ export default function IssueDetailsPage() {
             <p className="font-normal text-gray-700">{issueDetails?.difficulty}</p>
             <img className="size-5" src="/link.png" alt="link" />
             <img className="size-5" src="/empty-fries.png" alt="favorite button" />
-            {uid === issueDetails?.issueReporterUid && <img className="size-5" src="/delete.png" alt="delete button" />}
+            {uid === issueDetails?.issueReporterUid && 
+              <button onClick={handleDeleteIssue}>
+                <img className="size-5" src="/delete.png" alt="delete button" />
+              </button>
+            }
           </div>
         </div>
       </div>
