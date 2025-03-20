@@ -11,11 +11,9 @@ type IssueType = {
   description: string,
   difficulty: string,
   isUrgent: boolean,
-  issueReporterUid: string,
   language: string,
   time: Timestamp,
   title: string,
-  url: string,
   issueReporterUsername: string,
   issueReporterPicUrl: string,
 }
@@ -45,7 +43,6 @@ export default function IssuesPage() {
     );
   });
 
-  // Get "issues" collection
   useEffect(() => {
 
     const getAllIssues = async() => {
@@ -74,11 +71,9 @@ export default function IssuesPage() {
             description: document.data().description,
             difficulty: document.data().difficulty,
             isUrgent: document.data().isUrgent,
-            issueReporterUid: document.data().issueReporterUid,
             language: document.data().language,
             time: document.data().time,
             title: document.data().title,
-            url: document.data().url,
             issueReporterUsername: userDocSnap.exists() ? userDocSnap.data()!.username : "Unknown",
             issueReporterPicUrl: picUrl,
           };

@@ -7,18 +7,16 @@ interface PreviewCardProps {
   description: string,
   difficulty: string,
   isUrgent: boolean,
-  issueReporterUid: string,
   language: string,
   time: Timestamp,
   title: string,
-  url: string,
   issueReporterUsername: string,
   issueReporterPicUrl: string,
 }
 
 export default function PreviewCard({
-  issueId, description, difficulty, isUrgent, issueReporterUid, 
-  language, time, title, url, issueReporterUsername, issueReporterPicUrl,
+  issueId, description, difficulty, isUrgent, 
+  language, time, title, issueReporterUsername, issueReporterPicUrl,
 } : PreviewCardProps) {
 
   const formattedDate = formatDate(time.toDate());

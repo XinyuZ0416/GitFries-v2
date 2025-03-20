@@ -1,5 +1,6 @@
-export default function formatDate(time: Date) {
-  const date = time;
+export default function formatDate(time?: Date) {
+  if(!time) return 'unknown date';
+
   const options: Intl.DateTimeFormatOptions = { month: 'short', day: '2-digit', year: 'numeric' };
-  return date.toLocaleDateString('en-US', options);
+  return time.toLocaleDateString('en-US', options);
 }
