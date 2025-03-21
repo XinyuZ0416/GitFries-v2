@@ -1,7 +1,7 @@
 'use client'
 import LanguageCarousel from '@/components/language-carousel'
 import PreviewCard from '@/components/issue-preview';
-import { collection, getDoc, doc, getDocs, query, where, Timestamp, orderBy } from 'firebase/firestore';
+import { collection, getDoc, doc, getDocs, query, where, Timestamp, orderBy, limit, startAfter } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 import { db, storage } from '../firebase';
 import { getDownloadURL, ref } from 'firebase/storage';
@@ -21,72 +21,76 @@ type IssueType = {
 export default function IssuesPage() {
   // TODO: cannot view more than 1 page/ use search without verified log in
   const [ currentPage, setCurrentPage ] = useState<number>(1);
-  const [ issuesPerPage, setIssuesPerPage] = useState<number>(10);
-  const [ allIssues, setAllIssues ] = useState<IssueType[]>([])
+  const [ lastVisibleIssue, setLastVisibleIssue ] = useState<IssueType | null>(null);
+  const [ currentPageIssues, setCurrentPageIssues ] = useState<IssueType[]>([])
+  const issuesPerPage = 10;
 
-  const totalIssuesCount: number = 50; // TODO: (IF PROJECT SCALES) improve performance: guessing the amount, then increase if not enough (see obsidian notes)
-  const currentPageLastIssueIndex: number  = currentPage * issuesPerPage;
-  const currentPageFirstIssueIndex: number  = currentPageLastIssueIndex - issuesPerPage;
-  const currentPageIssues: IssueType[] = allIssues.slice(currentPageFirstIssueIndex, currentPageLastIssueIndex);
-  
-  const pageNums: number[] = [];
-  // TODO: use 1, 2, 3, 4, 5, ..., 16, 17, 18, 19, 20
-  for (let i = 1; i <= Math.ceil(totalIssuesCount / issuesPerPage); i++) { 
-    pageNums.push(i);
-  }
-
-  const renderPageNum = pageNums.map((num) => {
-    return(
-      <button key={num} onClick={() => setCurrentPage(num)} className={`px-3 py-1 mx-1 border rounded ${currentPage === num ? 'bg-blue-500 text-white' : ''}`}>
-        {num}
-      </button>
-    );
-  });
 
   useEffect(() => {
+    const fetchIssuesOnCurrentPage = async(currentPage: number = 1) => {
+      let issuesQ;
+      
+      if (currentPage === 1) { // First page
+        issuesQ = query(collection(db, "issues"), orderBy("time", "desc"), limit(issuesPerPage));
+      } else { // Other pages
+        issuesQ = query(collection(db, "issues"), orderBy("time", "desc"), startAfter(lastVisibleIssue), limit(issuesPerPage));
+      }
 
-    const getAllIssues = async() => {
-      const issuesQ = query(collection(db, "issues"), orderBy("time", "desc"));
       const issuesQuerySnapshot = await getDocs(issuesQ);
-
-      const fetchedIssues: IssueType[] = await Promise.all(
-        issuesQuerySnapshot.docs.map(async (document) => {
-          // get issue reporter info
-          const userDocRef = doc(db, "users", document.data().issueReporterUid);
-          const userDocSnap = await getDoc(userDocRef);
-          
-          let picUrl = '/potato.png';
-          try {
-            picUrl = await getDownloadURL(ref(storage, `user-img/${document.data().issueReporterUid}`));
-          } catch(error: any) {
-            if(error.code === "storage/object-not-found") {
-              picUrl = '/potato.png';
-            } else {
-              console.error("Error fetching image:", error.code);
-            }
-          }
- 
-          return {
-            issueId: document.id,
-            description: document.data().description,
-            difficulty: document.data().difficulty,
-            isUrgent: document.data().isUrgent,
-            language: document.data().language,
-            time: document.data().time,
-            title: document.data().title,
-            issueReporterUsername: userDocSnap.exists() ? userDocSnap.data()!.username : "Unknown",
-            issueReporterPicUrl: picUrl,
-          };
-        })
-      );
-
-
-      setAllIssues(fetchedIssues);
-      console.log(fetchedIssues)
+      const fetchedIssues: IssueType[] = issuesQuerySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        issueId: doc.id,
+      }) as IssueType);
+      
+      setLastVisibleIssue(fetchedIssues[fetchedIssues.length - 1]);
+      setCurrentPageIssues(fetchedIssues);
     }
 
-    getAllIssues();
-  }, []);
+    fetchIssuesOnCurrentPage(currentPage);
+    
+
+    // const getAllIssues = async() => {
+    //   const issuesQ = query(collection(db, "issues"), orderBy("time", "desc"));
+    //   const issuesQuerySnapshot = await getDocs(issuesQ);
+
+    //   const fetchedIssues: IssueType[] = await Promise.all(
+    //     issuesQuerySnapshot.docs.map(async (document) => {
+    //       // get issue reporter info
+    //       const userDocRef = doc(db, "users", document.data().issueReporterUid);
+    //       const userDocSnap = await getDoc(userDocRef);
+          
+    //       let picUrl = '/potato.png';
+    //       try {
+    //         picUrl = await getDownloadURL(ref(storage, `user-img/${document.data().issueReporterUid}`));
+    //       } catch(error: any) {
+    //         if(error.code === "storage/object-not-found") {
+    //           picUrl = '/potato.png';
+    //         } else {
+    //           console.error("Error fetching image:", error.code);
+    //         }
+    //       }
+ 
+    //       return {
+    //         issueId: document.id,
+    //         description: document.data().description,
+    //         difficulty: document.data().difficulty,
+    //         isUrgent: document.data().isUrgent,
+    //         language: document.data().language,
+    //         time: document.data().time,
+    //         title: document.data().title,
+    //         issueReporterUsername: userDocSnap.exists() ? userDocSnap.data()!.username : "Unknown",
+    //         issueReporterPicUrl: picUrl,
+    //       };
+    //     })
+    //   );
+
+
+    //   setAllIssues(fetchedIssues);
+    //   console.log(fetchedIssues)
+    // }
+
+    // getAllIssues();
+  }, [currentPage]);
 
   return (
     <>
@@ -116,10 +120,10 @@ export default function IssuesPage() {
 
     {/* issue previews */}
     <div className='flex flex-col gap-3 mb-3'>
-      {currentPageIssues.map((issue) => (<PreviewCard key={issue.issueId} {...issue} />))}
+      {/* {currentPageIssues.map((issue) => (<PreviewCard key={issue.issueId} {...issue} />))} */}
     </div>
     {/* bottom page nav */}
-    <div className='mt-4 flex justify-center'>{renderPageNum}</div>
+    {/* <div className='mt-4 flex justify-center'>{renderPageNum}</div> */}
     </>
   )
 }
