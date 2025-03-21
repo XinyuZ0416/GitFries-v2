@@ -17,58 +17,50 @@ type IssueType = {
   issueReporterUsername: string,
 }
 
-type IssueReporterType = {
-  issueId: string,
-  issueReporterUid: string,
-  issueReporterUsername: string,
-}
-
 export default function IssuesPage() {
   // TODO: cannot view more than 1 page/ use search without verified log in
   const [ currentPage, setCurrentPage ] = useState<number>(1);
   const [ lastVisibleIssue, setLastVisibleIssue ] = useState<IssueType | null>(null);
   const [ currentPageIssues, setCurrentPageIssues ] = useState<IssueType[]>([])
   const issuesPerPage = 10;
-  const [ currentPageIssueReporters, setCurrentPageIssueReporters ] = useState<IssueReporterType[]>([])
 
   // Fetch issues when page changes
   useEffect(() => {
-    const fetchIssuesWithUsersOnCurrentPage = async(currentPage: number = 1) => {
+    const fetchIssues = async (page: number = 1) => {
       let issuesQ;
-      
-      if (currentPage === 1) { // First page
+
+      if (page === 1) {
         issuesQ = query(collection(db, "issues"), orderBy("time", "desc"), limit(issuesPerPage));
-      } else { // Other pages
+      } else {
         issuesQ = query(collection(db, "issues"), orderBy("time", "desc"), startAfter(lastVisibleIssue), limit(issuesPerPage));
       }
-  
-      const issuesQuerySnapshot = await getDocs(issuesQ);
-      const fetchedIssues: IssueType[] = issuesQuerySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        issueId: doc.id,
-      }) as IssueType);
-      
-      setLastVisibleIssue(fetchedIssues[fetchedIssues.length - 1] || null);
-      setCurrentPageIssues(fetchedIssues);
 
-      const fetchedIssueReporters: IssueReporterType[] = await Promise.all(
-        fetchedIssues.map(async(issue) => {
-          // Get user other info
-          const userDocRef = doc(db, "users", issue.issueReporterUid);
+      const issuesQuerySnapshot = await getDocs(issuesQ);
+      const fetchedIssues: IssueType[] = await Promise.all(
+        issuesQuerySnapshot.docs.map(async (docSnap) => {
+          const issueData = docSnap.data();
+          const userDocRef = doc(db, "users", issueData.issueReporterUid);
           const userDocSnap = await getDoc(userDocRef);
-          
+
           return {
-            issueId: issue.issueId,
-            issueReporterUid: issue.issueReporterUid,
-            issueReporterUsername: userDocSnap.exists() ? userDocSnap.data()!.username : "Unknown",
-          }
+            issueId: docSnap.id,
+            description: issueData.description,
+            difficulty: issueData.difficulty,
+            isUrgent: issueData.isUrgent,
+            language: issueData.language,
+            time: issueData.time,
+            title: issueData.title,
+            issueReporterUid: issueData.issueReporterUid,
+            issueReporterUsername: userDocSnap.exists() ? userDocSnap.data().username : "Unknown",
+          };
         })
       );
-      setCurrentPageIssueReporters(fetchedIssueReporters);
-    }
 
-    fetchIssuesWithUsersOnCurrentPage(currentPage);
-    
+      setLastVisibleIssue(fetchedIssues[fetchedIssues.length - 1] || null);
+      setCurrentPageIssues(fetchedIssues);
+    };
+
+    fetchIssues(currentPage);
   }, [currentPage]);
 
   return (
