@@ -5,6 +5,7 @@ import IssueCommentCard from '@/components/issue-comment-card'
 import { useAuthProvider } from '@/providers/auth-provider'
 import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider'
 import formatDate from '@/utils/format-date'
+import MDEditor from '@uiw/react-md-editor'
 import { Timestamp, arrayRemove, arrayUnion, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { useParams, useRouter } from 'next/navigation'
@@ -130,8 +131,8 @@ export default function IssueDetailsPage() {
         </section>
       </div>
 
-      <section id='issue-description' className='my-3'>
-        <p className="font-normal text-gray-700">{issueDetails?.description}</p>
+      <section id='issue-description' className='my-3' data-color-mode="light">
+        <MDEditor.Markdown source={issueDetails?.description} />
       </section>
 
       <AddCommentBox />
