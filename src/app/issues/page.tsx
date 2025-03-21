@@ -18,14 +18,22 @@ type IssueType = {
   issueReporterPicUrl: string,
 }
 
+type IssueReporterType = {
+  issueId: string,
+  issueReporterUid: string,
+  issueReporterUsername: string,
+  issueReporterPicUrl: string,
+}
+
 export default function IssuesPage() {
   // TODO: cannot view more than 1 page/ use search without verified log in
   const [ currentPage, setCurrentPage ] = useState<number>(1);
   const [ lastVisibleIssue, setLastVisibleIssue ] = useState<IssueType | null>(null);
   const [ currentPageIssues, setCurrentPageIssues ] = useState<IssueType[]>([])
   const issuesPerPage = 10;
+  const [ currentPageIssueReporters, setCurrentPageIssueReporters ] = useState<IssueReporterType[]>([])
 
-
+  // Fetch issues when page changes
   useEffect(() => {
     const fetchIssuesOnCurrentPage = async(currentPage: number = 1) => {
       let issuesQ;
@@ -35,62 +43,71 @@ export default function IssuesPage() {
       } else { // Other pages
         issuesQ = query(collection(db, "issues"), orderBy("time", "desc"), startAfter(lastVisibleIssue), limit(issuesPerPage));
       }
-
+  
       const issuesQuerySnapshot = await getDocs(issuesQ);
       const fetchedIssues: IssueType[] = issuesQuerySnapshot.docs.map((doc) => ({
         ...doc.data(),
         issueId: doc.id,
       }) as IssueType);
       
-      setLastVisibleIssue(fetchedIssues[fetchedIssues.length - 1]);
+      setLastVisibleIssue(fetchedIssues[fetchedIssues.length - 1] || null);
       setCurrentPageIssues(fetchedIssues);
+  
+      // Prepare IssueReporter data
+      let fetchedIssueReporters: IssueReporterType[] = [];
+      issuesQuerySnapshot.docs.forEach((doc) => {
+        fetchedIssueReporters.push({
+          issueId: doc.id,
+          issueReporterUid: doc.data().issueReporterUid,
+          issueReporterUsername: '',
+          issueReporterPicUrl: '',
+        })
+      });
+  
+      setCurrentPageIssueReporters(fetchedIssueReporters);
     }
 
     fetchIssuesOnCurrentPage(currentPage);
     
-
-    // const getAllIssues = async() => {
-    //   const issuesQ = query(collection(db, "issues"), orderBy("time", "desc"));
-    //   const issuesQuerySnapshot = await getDocs(issuesQ);
-
-    //   const fetchedIssues: IssueType[] = await Promise.all(
-    //     issuesQuerySnapshot.docs.map(async (document) => {
-    //       // get issue reporter info
-    //       const userDocRef = doc(db, "users", document.data().issueReporterUid);
-    //       const userDocSnap = await getDoc(userDocRef);
-          
-    //       let picUrl = '/potato.png';
-    //       try {
-    //         picUrl = await getDownloadURL(ref(storage, `user-img/${document.data().issueReporterUid}`));
-    //       } catch(error: any) {
-    //         if(error.code === "storage/object-not-found") {
-    //           picUrl = '/potato.png';
-    //         } else {
-    //           console.error("Error fetching image:", error.code);
-    //         }
-    //       }
- 
-    //       return {
-    //         issueId: document.id,
-    //         description: document.data().description,
-    //         difficulty: document.data().difficulty,
-    //         isUrgent: document.data().isUrgent,
-    //         language: document.data().language,
-    //         time: document.data().time,
-    //         title: document.data().title,
-    //         issueReporterUsername: userDocSnap.exists() ? userDocSnap.data()!.username : "Unknown",
-    //         issueReporterPicUrl: picUrl,
-    //       };
-    //     })
-    //   );
-
-
-    //   setAllIssues(fetchedIssues);
-    //   console.log(fetchedIssues)
-    // }
-
-    // getAllIssues();
   }, [currentPage]);
+
+  // Fetch issue reporters AFTER issues are loaded
+  useEffect(() => {
+    const fetchIssueReporterInfo = async() => {
+      if (currentPageIssueReporters.length === 0) return;
+  
+      const fetchedIssueReporters: IssueReporterType[] = await Promise.all(
+        currentPageIssueReporters.map(async(reporter) => {
+          // Get user pic
+          let picUrl = '/potato.png';
+          try {
+            picUrl = await getDownloadURL(ref(storage, `user-img/${reporter.issueReporterUid}`));
+          } catch(error: any) {
+            if(error.code === "storage/object-not-found") {
+              picUrl = '/potato.png';
+            } else {
+              console.error("Error fetching image:", error.code);
+            }
+          }
+  
+          // Get user other info
+          const userDocRef = doc(db, "users", reporter.issueReporterUid);
+          const userDocSnap = await getDoc(userDocRef);
+          console.log(userDocSnap)
+  
+          return {
+            ...reporter,
+            issueReporterUsername: userDocSnap.exists() ? userDocSnap.data()!.username : "Unknown",
+            issueReporterPicUrl: picUrl,
+          }
+          
+        })
+      );
+      
+      setCurrentPageIssueReporters(fetchedIssueReporters);
+    }
+    fetchIssueReporterInfo();
+  }, [currentPageIssueReporters]);
 
   return (
     <>
@@ -120,7 +137,7 @@ export default function IssuesPage() {
 
     {/* issue previews */}
     <div className='flex flex-col gap-3 mb-3'>
-      {/* {currentPageIssues.map((issue) => (<PreviewCard key={issue.issueId} {...issue} />))} */}
+      {currentPageIssues.map((issue) => (<PreviewCard key={issue.issueId} {...issue} />))}
     </div>
     {/* bottom page nav */}
     {/* <div className='mt-4 flex justify-center'>{renderPageNum}</div> */}
