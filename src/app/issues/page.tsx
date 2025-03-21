@@ -14,6 +14,7 @@ type IssueType = {
   language: string,
   time: Timestamp,
   title: string,
+  issueReporterUid: string,
   issueReporterUsername: string,
   issueReporterPicUrl: string,
 }
@@ -31,11 +32,11 @@ export default function IssuesPage() {
   const [ lastVisibleIssue, setLastVisibleIssue ] = useState<IssueType | null>(null);
   const [ currentPageIssues, setCurrentPageIssues ] = useState<IssueType[]>([])
   const issuesPerPage = 10;
-  const [ currentPageIssueReporters, setCurrentPageIssueReporters ] = useState<IssueReporterType[]>([])
+  const [ fetchedIssues, setCurrentPageIssueReporters ] = useState<IssueReporterType[]>([])
 
   // Fetch issues when page changes
   useEffect(() => {
-    const fetchIssuesOnCurrentPage = async(currentPage: number = 1) => {
+    const fetchIssuesWithUsersOnCurrentPage = async(currentPage: number = 1) => {
       let issuesQ;
       
       if (currentPage === 1) { // First page
@@ -52,36 +53,13 @@ export default function IssuesPage() {
       
       setLastVisibleIssue(fetchedIssues[fetchedIssues.length - 1] || null);
       setCurrentPageIssues(fetchedIssues);
-  
-      // Prepare IssueReporter data
-      let fetchedIssueReporters: IssueReporterType[] = [];
-      issuesQuerySnapshot.docs.forEach((doc) => {
-        fetchedIssueReporters.push({
-          issueId: doc.id,
-          issueReporterUid: doc.data().issueReporterUid,
-          issueReporterUsername: '',
-          issueReporterPicUrl: '',
-        })
-      });
-  
-      setCurrentPageIssueReporters(fetchedIssueReporters);
-    }
 
-    fetchIssuesOnCurrentPage(currentPage);
-    
-  }, [currentPage]);
-
-  // Fetch issue reporters AFTER issues are loaded
-  useEffect(() => {
-    const fetchIssueReporterInfo = async() => {
-      if (currentPageIssueReporters.length === 0) return;
-  
       const fetchedIssueReporters: IssueReporterType[] = await Promise.all(
-        currentPageIssueReporters.map(async(reporter) => {
+        fetchedIssues.map(async(issue) => {
           // Get user pic
           let picUrl = '/potato.png';
           try {
-            picUrl = await getDownloadURL(ref(storage, `user-img/${reporter.issueReporterUid}`));
+            picUrl = await getDownloadURL(ref(storage, `user-img/${issue.issueReporterUid}`));
           } catch(error: any) {
             if(error.code === "storage/object-not-found") {
               picUrl = '/potato.png';
@@ -91,23 +69,24 @@ export default function IssuesPage() {
           }
   
           // Get user other info
-          const userDocRef = doc(db, "users", reporter.issueReporterUid);
+          const userDocRef = doc(db, "users", issue.issueReporterUid);
           const userDocSnap = await getDoc(userDocRef);
           console.log(userDocSnap)
   
           return {
-            ...reporter,
+            issueId: issue.issueId,
+            issueReporterUid: issue.issueReporterUid,
             issueReporterUsername: userDocSnap.exists() ? userDocSnap.data()!.username : "Unknown",
             issueReporterPicUrl: picUrl,
           }
-          
         })
       );
-      
       setCurrentPageIssueReporters(fetchedIssueReporters);
     }
-    fetchIssueReporterInfo();
-  }, [currentPageIssueReporters]);
+
+    fetchIssuesWithUsersOnCurrentPage(currentPage);
+    
+  }, [currentPage]);
 
   return (
     <>
