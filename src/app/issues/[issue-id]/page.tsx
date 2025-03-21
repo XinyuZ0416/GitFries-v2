@@ -105,7 +105,7 @@ export default function IssueDetailsPage() {
     <div className="flex flex-col p-3 m-3 bg-white border border-gray-200 rounded-lg shadow-sm">
       <div className='flex flex-row'>
         <section id='user-info'>
-          <img className="rounded-full size-14" src={issueDetails?.issueReporterPicUrl} alt="user profile" />
+          <img className="rounded-full size-14" src={issueDetails?.issueReporterPicUrl ? issueDetails.issueReporterPicUrl : '/potato.png'} alt="user profile" />
           <h6 className='text-lg font-bold'>{issueDetails?.issueReporterUsername}</h6>
         </section>
 

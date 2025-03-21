@@ -4,7 +4,6 @@ import PreviewCard from '@/components/issue-preview';
 import { collection, getDoc, doc, getDocs, query, where, Timestamp, orderBy, limit, startAfter } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 import { db, storage } from '../firebase';
-import { getDownloadURL, ref } from 'firebase/storage';
 
 type IssueType = {
   issueId: string,
@@ -16,14 +15,12 @@ type IssueType = {
   title: string,
   issueReporterUid: string,
   issueReporterUsername: string,
-  issueReporterPicUrl: string,
 }
 
 type IssueReporterType = {
   issueId: string,
   issueReporterUid: string,
   issueReporterUsername: string,
-  issueReporterPicUrl: string,
 }
 
 export default function IssuesPage() {
@@ -32,7 +29,7 @@ export default function IssuesPage() {
   const [ lastVisibleIssue, setLastVisibleIssue ] = useState<IssueType | null>(null);
   const [ currentPageIssues, setCurrentPageIssues ] = useState<IssueType[]>([])
   const issuesPerPage = 10;
-  const [ fetchedIssues, setCurrentPageIssueReporters ] = useState<IssueReporterType[]>([])
+  const [ currentPageIssueReporters, setCurrentPageIssueReporters ] = useState<IssueReporterType[]>([])
 
   // Fetch issues when page changes
   useEffect(() => {
@@ -56,28 +53,14 @@ export default function IssuesPage() {
 
       const fetchedIssueReporters: IssueReporterType[] = await Promise.all(
         fetchedIssues.map(async(issue) => {
-          // Get user pic
-          let picUrl = '/potato.png';
-          try {
-            picUrl = await getDownloadURL(ref(storage, `user-img/${issue.issueReporterUid}`));
-          } catch(error: any) {
-            if(error.code === "storage/object-not-found") {
-              picUrl = '/potato.png';
-            } else {
-              console.error("Error fetching image:", error.code);
-            }
-          }
-  
           // Get user other info
           const userDocRef = doc(db, "users", issue.issueReporterUid);
           const userDocSnap = await getDoc(userDocRef);
-          console.log(userDocSnap)
-  
+          
           return {
             issueId: issue.issueId,
             issueReporterUid: issue.issueReporterUid,
             issueReporterUsername: userDocSnap.exists() ? userDocSnap.data()!.username : "Unknown",
-            issueReporterPicUrl: picUrl,
           }
         })
       );
