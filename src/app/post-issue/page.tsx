@@ -1,11 +1,12 @@
 'use client'
 import { useAuthProvider } from '@/providers/auth-provider';
 import RequireSignInSignUp from '@/components/require-signin-signup'
-import { Timestamp, addDoc, collection } from 'firebase/firestore';
+import { Timestamp, addDoc, arrayUnion, collection, doc, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 import { db } from '../firebase';
 import MDEditor from '@uiw/react-md-editor';
 import rehypeSanitize from "rehype-sanitize";
+import { useRouter } from 'next/navigation';
 
 type FormDataType = {
   issueReporterUid: string,
@@ -22,6 +23,7 @@ export default function PostIssuePage() {
   const [ mounted, setMounted ] = useState<boolean>(false);
   const [ isValidUrl, setIsValidUrl ] = useState<boolean | null>(null);
   const { uid, isVerified } = useAuthProvider();
+  const router = useRouter();
   const [ formData, setFormData ] = useState<FormDataType>({
     issueReporterUid: '',
     url: '',
@@ -44,9 +46,13 @@ export default function PostIssuePage() {
 
   const handleSubmit = async(e: any) => {
     const urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+    e.preventDefault();
+
     if(urlPattern.test(formData.url)) {
       setIsValidUrl(true);
-      await addDoc(collection(db, "issues"), {
+      
+      // Add entry to issues collection
+      const docRef = await addDoc(collection(db, "issues"), {
         issueReporterUid: formData.issueReporterUid,
         url: formData.url,
         title: formData.title,
@@ -56,9 +62,14 @@ export default function PostIssuePage() {
         isUrgent: formData.isUrgent,
         time: Timestamp.fromDate(formData.time),
       });
+      
+      // Add field to user collection
+      const issueId = docRef.id;
+      await updateDoc(doc(db, "users", uid), { postedIssues: arrayUnion(issueId) });
+
+      router.push(`/issues/${issueId}`);
     } else {
       setIsValidUrl(false);
-      e.preventDefault();
       return;
     }
   }
