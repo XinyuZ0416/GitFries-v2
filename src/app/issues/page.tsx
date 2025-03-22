@@ -2,7 +2,7 @@
 import LanguageCarousel from '@/components/language-carousel'
 import PreviewCard from '@/components/issue-preview';
 import { collection, getDocs, query, Timestamp, orderBy, limit, startAfter, getCountFromServer } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { db } from '../firebase';
 
 type IssueType = {
@@ -18,7 +18,7 @@ type IssueType = {
 export default function IssuesPage() {
   // TODO: cannot view more than 1 page/ use search without verified log in
   const [ currentPage, setCurrentPage ] = useState<number>(1);
-  const [ lastVisibleIssue, setLastVisibleIssue ] = useState<IssueType | null>(null);
+  const lastVisibleIssueRef = useRef<IssueType | null>(null);
   const [ currentPageIssues, setCurrentPageIssues ] = useState<IssueType[]>([])
   const [ allIssuesCount, setAllIssuesCount ] = useState<number>();
   const issuesPerPage = 10;
@@ -34,19 +34,6 @@ export default function IssuesPage() {
     countAllIssues();
   }, []);
 
-  // Count total amount of issues and set page numbers
-  for (let i = 1; i <= Math.ceil(allIssuesCount! / issuesPerPage); i++) {
-    pageNums.push(i);
-  }
-
-  const renderPageNum = pageNums.map((num) => {
-    return(
-      <button key={num} onClick={() => setCurrentPage(num)} className={`px-3 py-1 mx-1 border rounded ${currentPage === num ? 'bg-blue-500 text-white' : ''}`}>
-        {num}
-      </button>
-    )
-  });
-
   // Fetch issues when page changes
   useEffect(() => {
     const fetchIssues = async (page: number = 1) => {
@@ -55,7 +42,7 @@ export default function IssuesPage() {
       if (page === 1) {
         issuesQ = query(collection(db, "issues"), orderBy("time", "desc"), limit(issuesPerPage));
       } else {
-        issuesQ = query(collection(db, "issues"), orderBy("time", "desc"), startAfter(lastVisibleIssue), limit(issuesPerPage));
+        issuesQ = query(collection(db, "issues"), orderBy("time", "desc"), startAfter(lastVisibleIssueRef.current!.time), limit(issuesPerPage));
       }
 
       const issuesQuerySnapshot = await getDocs(issuesQ);
@@ -75,12 +62,25 @@ export default function IssuesPage() {
         })
       );
 
-      setLastVisibleIssue(fetchedIssues[fetchedIssues.length - 1] || null);
+      lastVisibleIssueRef.current = fetchedIssues[fetchedIssues.length - 1] || null;
       setCurrentPageIssues(fetchedIssues);
     };
 
     fetchIssues(currentPage);
   }, [currentPage]);
+
+  // Count total amount of issues and set page numbers
+  for (let i = 1; i <= Math.ceil(allIssuesCount! / issuesPerPage); i++) {
+    pageNums.push(i);
+  }
+
+  const renderPageNum = pageNums.map((num) => {
+    return(
+      <button key={num} onClick={() => setCurrentPage(num)} className={`px-3 py-1 mx-1 border rounded ${currentPage === num ? 'bg-blue-500 text-white' : ''}`}>
+        {num}
+      </button>
+    )
+  });
 
   return (
     <>
