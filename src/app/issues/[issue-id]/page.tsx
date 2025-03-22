@@ -86,7 +86,7 @@ export default function IssueDetailsPage() {
     router.push('/issues');
   }
 
-  const toggleFavIssue = async () => {
+  const toggleFavIssue = async() => {
     try {
       if (!favedIssues.includes(issueId as string)) {
         await updateDoc(doc(db, "users", uid), { favedIssues: arrayUnion(issueId) });
@@ -99,6 +99,10 @@ export default function IssueDetailsPage() {
       console.error("Error favoriting issue:", error);
     }
   };
+
+  const handleClaimIssue = async() => {
+
+  }
 
   return (
     <>
@@ -117,16 +121,18 @@ export default function IssueDetailsPage() {
             <p className="font-normal text-gray-700">{issueDetails?.language}</p>
             <p className="font-normal text-gray-700">{issueDetails?.difficulty}</p>
             <a href={issueDetails?.url} target='_blank'>
-              <img className="size-5" src="/link.png" alt="link" />
+              <img className="size-5" src="/link.png" alt="link" title="link to original issue" />
             </a> 
             <button onClick={toggleFavIssue}>
-              <img className="size-5" src={favedIssues.includes(issueId as string) ? "/logo.png" : "/empty-fries.png" } alt="favorite button" />
+              <img className="size-5" src={favedIssues.includes(issueId as string) ? "/logo.png" : "/empty-fries.png" } alt="favorite button" title="favorite issue" />
+            </button>
+            <button onClick={handleClaimIssue}>
+              <img className="size-5" src="/claim.png" alt="claim issue button" title="claim issue" />
             </button>
             {uid === issueDetails?.issueReporterUid && 
               <button onClick={handleDeleteIssue}>
-                <img className="size-5" src="/delete.png" alt="delete button" />
-              </button>
-            }
+                <img className="size-5" src="/delete.png" alt="delete button" title="delete issue" />
+              </button>}            
           </div>
         </section>
       </div>
