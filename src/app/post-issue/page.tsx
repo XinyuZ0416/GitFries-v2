@@ -135,28 +135,34 @@ export default function PostIssuePage() {
               <label htmlFor="language" className="block mb-2 text-sm font-medium">Language *</label>
               <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 id="language" name="language" value={formData.language} onChange={handleChange}>
-                <option value='C'>C</option>
-                <option value='C++'>C++</option>
-                <option value='C#'>C#</option>
-                <option value='CSS'>CSS</option>
-                <option value='Go'>Go</option>
-                <option value='HTML'>HTML</option>
-                <option value='Java'>Java</option>
-                <option value='Javascript'>Javascript</option>
-                <option value='Kotlin'>Kotlin</option>
-                <option value='Matlab'>Matlab</option>
-                <option value='NoSQL'>NoSQL</option>
-                <option value='Perl'>Perl</option>
-                <option value='PHP'>PHP</option>
-                <option value='Python'>Python</option>
-                <option value='R'>R</option>
-                <option value='Ruby'>Ruby</option>
-                <option value='Rust'>Rust</option>
-                <option value='Scala'>Scala</option>
-                <option value='SQL'>SQL</option>
-                <option value='Swift'>Swift</option>
-                <option value='TypeScript'>TypeScript</option>
-                <option value='Others'>Others</option>
+                <option value="C">C</option>
+                <option value="C++">C++</option>
+                <option value="C#">C#</option>
+                <option value="Java">Java</option>
+                <option value="PHP">PHP</option>
+                <option value="JavaScript">JavaScript</option>
+                <option value="TypeScript">TypeScript</option>
+                <option value="HTML">HTML</option>
+                <option value="CSS">CSS</option>
+                <option value="Python">Python</option>
+                <option value="Go">Go</option>
+                <option value="Ruby">Ruby</option>
+                <option value="Rust">Rust</option>
+                <option value="Kotlin">Kotlin</option>
+                <option value="Swift">Swift</option>
+                <option value="Dart">Dart</option>
+                <option value="Scala">Scala</option>
+                <option value="R">R</option>
+                <option value="Perl">Perl</option>
+                <option value="Elixir">Elixir</option>
+                <option value="Haskell">Haskell</option>
+                <option value="Erlang">Erlang</option>
+                <option value="Assembly">Assembly</option>
+                <option value="Matlab">Matlab</option>
+                <option value="Visual Basic">Visual Basic</option>
+                <option value="SQL">SQL</option>
+                <option value="Lua">Lua</option>
+                <option value="Others">Others</option>
               </select>
             </fieldset>
 

@@ -2,6 +2,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import React from 'react'
 
 export default function Searchbar() {
+  // TODO: bann search unless logged in
   return (
     <>
     <div className="flex">
