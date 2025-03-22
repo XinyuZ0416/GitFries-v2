@@ -31,6 +31,7 @@ export default function IssueDetailsPage() {
   const [ issueDetails, setIssueDetails ] = useState<IssueDetailsType | null>(null);
   const { uid } = useAuthProvider();
   const { favedIssues, setFavedIssues } = useCurrentUserDocProvider();
+  const { claimedIssues, setClaimedIssues } = useCurrentUserDocProvider();
   const router = useRouter();
 
   useEffect(() => {
@@ -87,6 +88,7 @@ export default function IssueDetailsPage() {
   }
 
   const toggleFavIssue = async() => {
+    // TODO: redirect logged out users to sign in
     try {
       if (!favedIssues.includes(issueId as string)) {
         await updateDoc(doc(db, "users", uid), { favedIssues: arrayUnion(issueId) });
@@ -100,8 +102,19 @@ export default function IssueDetailsPage() {
     }
   };
 
-  const handleClaimIssue = async() => {
-
+  const toggleClaimIssue = async() => {
+    // TODO: prompt fill in claim issue request message to issue owner
+    try {
+      if (!claimedIssues.includes(issueId as string)) {
+        await updateDoc(doc(db, "users", uid), { claimedIssues: arrayUnion(issueId) });
+        setClaimedIssues(prev => [...prev, issueId as string]);
+      } else {
+        await updateDoc(doc(db, "users", uid), { claimedIssues: arrayRemove(issueId) });
+        setClaimedIssues(prev => prev.filter(id => id !== issueId));
+      }
+    } catch (error) {
+      console.error("Error claiming issue:", error);
+    }
   }
 
   return (
@@ -126,8 +139,8 @@ export default function IssueDetailsPage() {
             <button onClick={toggleFavIssue}>
               <img className="size-5" src={favedIssues.includes(issueId as string) ? "/logo.png" : "/empty-fries.png" } alt="favorite button" title="favorite issue" />
             </button>
-            <button onClick={handleClaimIssue}>
-              <img className="size-5" src="/claim.png" alt="claim issue button" title="claim issue" />
+            <button onClick={toggleClaimIssue}>
+              <img className="size-5" src={claimedIssues.includes(issueId as string) ? "/claimed.png" : "/claim.png" } alt="claim issue button" title="claim issue" />
             </button>
             {uid === issueDetails?.issueReporterUid && 
               <button onClick={handleDeleteIssue}>
