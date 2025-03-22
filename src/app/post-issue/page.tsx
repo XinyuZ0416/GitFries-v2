@@ -60,7 +60,7 @@ export default function PostIssuePage() {
         language: formData.language,
         difficulty: formData.difficulty,
         isUrgent: formData.isUrgent,
-        time: Timestamp.fromDate(formData.time),
+        time: Timestamp.fromDate(new Date()),
       });
       
       // Add field to user collection
@@ -81,7 +81,6 @@ export default function PostIssuePage() {
         return {
           ...prev,
           description: e,
-          time: new Date(),
         }
       });
     } else {
@@ -91,7 +90,6 @@ export default function PostIssuePage() {
         return {
           ...prev,
           [name]: type ? (type === 'checkbox' ? checked : value) : value,
-          time: new Date(),
         }
       });
     }
