@@ -1,7 +1,7 @@
 import formatDate from '@/utils/format-date';
 import { Timestamp } from 'firebase/firestore'
 import Link from 'next/link';
-import React, { useEffect } from 'react'
+import React from 'react'
 
 interface PreviewCardProps {
   issueId: string,
@@ -11,12 +11,11 @@ interface PreviewCardProps {
   language: string,
   time: Timestamp,
   title: string,
-  issueReporterUsername: string,
 }
 
 export default function PreviewCard({
   issueId, description, difficulty, isUrgent, 
-  language, time, title, issueReporterUsername,
+  language, time, title,
 } : PreviewCardProps) {
 
   const formattedDate = formatDate(time.toDate());
@@ -27,10 +26,6 @@ export default function PreviewCard({
       ${isUrgent ? `shadow-red-500` : `shadow-grey`}
       ${difficulty === `beginner-friendly` ? `bg-green-200` : `bg-white`}`}
       href={`/issues/${issueId}`} >
-      <div>
-        <h6 className='text-lg font-bold'>{issueReporterUsername}</h6>
-      </div>
-
       <div className="flex flex-col justify-between px-4 py-2">
         <h5 className="text-xl font-bold">{title}</h5>
         <p className="font-normal text-gray-700">{description}</p>

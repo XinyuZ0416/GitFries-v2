@@ -1,9 +1,9 @@
 'use client'
 import LanguageCarousel from '@/components/language-carousel'
 import PreviewCard from '@/components/issue-preview';
-import { collection, getDoc, doc, getDocs, query, where, Timestamp, orderBy, limit, startAfter, getCountFromServer } from 'firebase/firestore';
+import { collection, getDocs, query, Timestamp, orderBy, limit, startAfter, getCountFromServer } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
-import { db, storage } from '../firebase';
+import { db } from '../firebase';
 
 type IssueType = {
   issueId: string,
@@ -13,8 +13,6 @@ type IssueType = {
   language: string,
   time: Timestamp,
   title: string,
-  issueReporterUid: string,
-  issueReporterUsername: string,
 }
 
 export default function IssuesPage() {
@@ -64,8 +62,6 @@ export default function IssuesPage() {
       const fetchedIssues: IssueType[] = await Promise.all(
         issuesQuerySnapshot.docs.map(async (docSnap) => {
           const issueData = docSnap.data();
-          const userDocRef = doc(db, "users", issueData.issueReporterUid);
-          const userDocSnap = await getDoc(userDocRef);
 
           return {
             issueId: docSnap.id,
@@ -75,8 +71,6 @@ export default function IssuesPage() {
             language: issueData.language,
             time: issueData.time,
             title: issueData.title,
-            issueReporterUid: issueData.issueReporterUid,
-            issueReporterUsername: userDocSnap.exists() ? userDocSnap.data().username : "Unknown",
           };
         })
       );
