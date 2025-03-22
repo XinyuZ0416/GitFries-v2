@@ -1,7 +1,7 @@
 'use client'
 import LanguageCarousel from '@/components/language-carousel'
 import PreviewCard from '@/components/issue-preview';
-import { collection, getDoc, doc, getDocs, query, where, Timestamp, orderBy, limit, startAfter } from 'firebase/firestore';
+import { collection, getDoc, doc, getDocs, query, where, Timestamp, orderBy, limit, startAfter, getCountFromServer } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 import { db, storage } from '../firebase';
 
@@ -22,7 +22,32 @@ export default function IssuesPage() {
   const [ currentPage, setCurrentPage ] = useState<number>(1);
   const [ lastVisibleIssue, setLastVisibleIssue ] = useState<IssueType | null>(null);
   const [ currentPageIssues, setCurrentPageIssues ] = useState<IssueType[]>([])
+  const [ allIssuesCount, setAllIssuesCount ] = useState<number>();
   const issuesPerPage = 10;
+  const pageNums: number[] = [];
+
+  // Count total amount of issues
+  useEffect(() => {
+    const countAllIssues = async() => {
+      const coll = collection(db, "issues");
+      const snapshot = await getCountFromServer(coll);
+      setAllIssuesCount(snapshot.data().count);
+    }
+    countAllIssues();
+  }, []);
+
+  // Count total amount of issues and set page numbers
+  for (let i = 1; i <= Math.ceil(allIssuesCount! / issuesPerPage); i++) {
+    pageNums.push(i);
+  }
+
+  const renderPageNum = pageNums.map((num) => {
+    return(
+      <button key={num} onClick={() => setCurrentPage(num)} className={`px-3 py-1 mx-1 border rounded ${currentPage === num ? 'bg-blue-500 text-white' : ''}`}>
+        {num}
+      </button>
+    )
+  });
 
   // Fetch issues when page changes
   useEffect(() => {
@@ -94,7 +119,7 @@ export default function IssuesPage() {
       {currentPageIssues.map((issue) => (<PreviewCard key={issue.issueId} {...issue} />))}
     </div>
     {/* bottom page nav */}
-    {/* <div className='mt-4 flex justify-center'>{renderPageNum}</div> */}
+    <div className='mt-4 flex justify-center'>{renderPageNum}</div>
     </>
   )
 }
