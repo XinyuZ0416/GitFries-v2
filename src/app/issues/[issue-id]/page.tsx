@@ -5,8 +5,9 @@ import IssueCommentCard from '@/components/issue-comment-card'
 import { useAuthProvider } from '@/providers/auth-provider'
 import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider'
 import formatDate from '@/utils/format-date'
+import { NotificationType } from '@/utils/notification-types'
 import MDEditor from '@uiw/react-md-editor'
-import { Timestamp, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore'
+import { Timestamp, addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -30,6 +31,7 @@ export default function IssueDetailsPage() {
   const issueId = Array.isArray(issueIdParam) ? issueIdParam[0] : issueIdParam; // Ensure only string 
   const [ issueDetails, setIssueDetails ] = useState<IssueDetailsType | null>(null);
   const [ isRequesting, setIsRequesting ] = useState<boolean>(false);
+  const [ requestMessage, setRequestMessage ] = useState<string>();
   const { uid } = useAuthProvider();
   const { 
     favedIssues, setFavedIssues, 
@@ -136,13 +138,26 @@ export default function IssueDetailsPage() {
 
         // TODO: 1. only show "claimed" logo after issue owner approves
         if (requestMessage !== null && requestMessage !== "") { // Must send a request message
+          setRequestMessage(requestMessage);
+
           // Add to current user coll requestingToClaimIssues
           await updateDoc(doc(db, "users", uid), { requestingToClaimIssues: arrayUnion(issueId) });
           setRequestingToClaimIssues(prev => [...prev, issueId as string]);
 
-          // Add to issue owner's issuesBeingRequested
+          // Add to issue owner's issuesBeingRequested (TODO: maybe can delete this)
           await updateDoc(doc(db, "users", issueDetails!.issueReporterUid), { issuesBeingRequested: arrayUnion(issueId) });
           setIssuesBeingRequested(prev => [...prev, issueId as string]);
+
+          // Create notification
+          await addDoc(collection(db, "notifications"), {
+            recipientId: issueDetails?.issueReporterUid,
+            senderId: uid,
+            issueId: issueId,
+            type: NotificationType.REQ_C_I,
+            message: requestMessage,
+            timestamp: Timestamp.fromDate(new Date()),
+            read: false
+          });
           
           setIsRequesting(true);
           
