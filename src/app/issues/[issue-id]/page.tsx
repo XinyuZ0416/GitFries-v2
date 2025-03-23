@@ -30,8 +30,7 @@ export default function IssueDetailsPage() {
   const issueId = Array.isArray(issueIdParam) ? issueIdParam[0] : issueIdParam; // Ensure only string 
   const [ issueDetails, setIssueDetails ] = useState<IssueDetailsType | null>(null);
   const { uid } = useAuthProvider();
-  const { favedIssues, setFavedIssues } = useCurrentUserDocProvider();
-  const { claimedIssues, setClaimedIssues } = useCurrentUserDocProvider();
+  const { favedIssues, setFavedIssues, claimedIssues, setClaimedIssues, disclaimedIssuesCount, setDisclaimedIssuesCount } = useCurrentUserDocProvider();
   const router = useRouter();
 
   useEffect(() => {
@@ -116,11 +115,14 @@ export default function IssueDetailsPage() {
           await updateDoc(doc(db, "users", uid), { claimedIssues: arrayUnion(issueId) });
           setClaimedIssues(prev => [...prev, issueId as string]);
         }
-      } else { // Unclaim an issue
-        if (confirm('Are you sure to abandon this issue? This action will be recoreded and shown in your profile.')) {
-          // TODO: add to user db coll "abandonedIssueCount"
-          await updateDoc(doc(db, "users", uid), { claimedIssues: arrayRemove(issueId) });
+      } else { // Disclaim an issue
+        if (confirm('Are you sure to disclaim this issue? The amount of disclaimed issues will be displayed on your profile.')) {
+          await updateDoc(doc(db, "users", uid), { 
+            claimedIssues: arrayRemove(issueId),
+            disclaimedIssuesCount: disclaimedIssuesCount + 1,
+          });
           setClaimedIssues(prev => prev.filter(id => id !== issueId));
+          setDisclaimedIssuesCount(prev => prev + 1);
           alert('Abandoned issue!');
         }
       }
@@ -155,7 +157,7 @@ export default function IssueDetailsPage() {
               </button>
 
               <button onClick={toggleClaimIssue}>
-                <img className="size-5" src={claimedIssues.includes(issueId as string) ? "/claimed.png" : "/claim.png" } alt="claim issue button" title={claimedIssues.includes(issueId as string) ? "abandon issue" : "claim issue" } />
+                <img className="size-5" src={claimedIssues.includes(issueId as string) ? "/claimed.png" : "/claim.png" } alt="claim issue button" title={claimedIssues.includes(issueId as string) ? "disclaim issue" : "claim issue" } />
               </button>
               </>
             }

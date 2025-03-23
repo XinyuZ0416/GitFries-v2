@@ -10,6 +10,8 @@ interface CurrentUserDocContextProps {
   setFavedIssues: React.Dispatch<React.SetStateAction<string[]>>,
   claimedIssues: string[],
   setClaimedIssues: React.Dispatch<React.SetStateAction<string[]>>,
+  disclaimedIssuesCount: number,
+  setDisclaimedIssuesCount: React.Dispatch<React.SetStateAction<number>>,
 }
 
 const CurrentUserDocContext = createContext<CurrentUserDocContextProps | null>(null);
@@ -18,6 +20,8 @@ export const CurrentUserDocProvider = ({children}:{children: React.ReactNode}) =
   const { uid } = useAuthProvider();
   const [ favedIssues, setFavedIssues ] = useState<string[]>([]);
   const [ claimedIssues, setClaimedIssues ] = useState<string[]>([]);
+  const [ disclaimedIssuesCount, setDisclaimedIssuesCount ] = useState<number>(0);
+  
 
   useEffect(() => {
     const getCurrentUserDoc = async() => {
@@ -29,6 +33,7 @@ export const CurrentUserDocProvider = ({children}:{children: React.ReactNode}) =
 
           setFavedIssues(data?.favedIssues ? data?.favedIssues : []);
           setClaimedIssues(data?.claimedIssues ? data?.claimedIssues : []);
+          setDisclaimedIssuesCount(data?.abandonedIssueCount ? data?.abandonedIssueCount : 0);
         } catch (error: any) {
           console.error(error.code)
         }
@@ -41,7 +46,8 @@ export const CurrentUserDocProvider = ({children}:{children: React.ReactNode}) =
     <CurrentUserDocContext.Provider 
       value={{
         favedIssues, setFavedIssues,
-        claimedIssues, setClaimedIssues
+        claimedIssues, setClaimedIssues,
+        disclaimedIssuesCount, setDisclaimedIssuesCount,
       }}>
       {children}
     </CurrentUserDocContext.Provider>
