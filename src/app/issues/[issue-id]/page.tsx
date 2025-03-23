@@ -30,7 +30,13 @@ export default function IssueDetailsPage() {
   const issueId = Array.isArray(issueIdParam) ? issueIdParam[0] : issueIdParam; // Ensure only string 
   const [ issueDetails, setIssueDetails ] = useState<IssueDetailsType | null>(null);
   const { uid } = useAuthProvider();
-  const { favedIssues, setFavedIssues, claimedIssues, setClaimedIssues, disclaimedIssuesCount, setDisclaimedIssuesCount } = useCurrentUserDocProvider();
+  const { 
+    favedIssues, setFavedIssues, 
+    claimedIssues, setClaimedIssues, 
+    disclaimedIssuesCount, setDisclaimedIssuesCount, 
+    requestingToClaimIssues, setRequestingToClaimIssues,
+    issuesBeingRequested, setIssuesBeingRequested,
+  } = useCurrentUserDocProvider();
   const router = useRouter();
 
   useEffect(() => {
@@ -106,13 +112,20 @@ export default function IssueDetailsPage() {
   const toggleClaimIssue = async() => {
     try {
       if (!claimedIssues.includes(issueId as string)) { // Claim an issue
-        // Only allow claiming an issue with a request message
         const requestMessage = prompt('To claim an issue, please leave a request message to the issue owner:');
 
         // TODO: 1. only show "claimed" logo after issue owner approves 2. show pending icon after request is sent and disallow repeat send
         if (requestMessage !== null && requestMessage !== "") {
-          await updateDoc(doc(db, "users", uid), { claimedIssues: arrayUnion(issueId) });
-          setClaimedIssues(prev => [...prev, issueId as string]);
+          // Add to current user coll requestingToClaimIssues
+          await updateDoc(doc(db, "users", uid), { requestingToClaimIssues: arrayUnion(issueId) });
+          setRequestingToClaimIssues(prev => [...prev, issueId as string]);
+
+          // Add to issue owner's issuesBeingRequested
+          await updateDoc(doc(db, "users", issueDetails!.issueReporterUid), { issuesBeingRequested: arrayUnion(issueId) });
+          setIssuesBeingRequested(prev => [...prev, issueId as string]);
+
+          // await updateDoc(doc(db, "users", uid), { claimedIssues: arrayUnion(issueId) });
+          // setClaimedIssues(prev => [...prev, issueId as string]);
         }
       } else { // Disclaim an issue
         if (confirm('Are you sure to disclaim this issue? The amount of disclaimed issues will be displayed on your profile.')) {

@@ -18,6 +18,7 @@ export default function CreditsPage() {
       <a href="https://www.flaticon.com/free-icons/ketchup" title="ketchup icons">Ketchup icons created by Smashicons - Flaticon</a>
       <a href="https://www.flaticon.com/free-icons/tomato" title="tomato icons">Tomato icons created by AomAm - Flaticon</a>
       <a href="https://www.flaticon.com/free-icons/warning" title="warning icons">Warning icons created by Freepik - Flaticon</a>
+      <a href="https://www.flaticon.com/free-icons/waiting" title="waiting icons">Waiting icons created by Eucalyp - Flaticon</a>
     </div>
     </>
   )
