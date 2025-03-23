@@ -28,9 +28,10 @@ export default function Navbar() {
             <li>
               <Link href="/achievements" className="block py-2 px-3 rounded-sm md:hover:bg-transparent md:p-0 md:dark:hover:bg-transparent">Achievements</Link>
             </li>
-            <li>
-              <Link href="/membership" className="block py-2 px-3 rounded-sm md:hover:bg-transparent md:p-0 md:dark:hover:bg-transparent">Membership</Link>
-            </li>
+            {isVerified && // if user is logged in & verified
+              <li>
+                <Link href="/membership" className="block py-2 px-3 rounded-sm md:hover:bg-transparent md:p-0 md:dark:hover:bg-transparent">Membership</Link>
+              </li>}
           </ul>
         </div>
         
@@ -38,23 +39,19 @@ export default function Navbar() {
 
         <Link href="/post-issue" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">Post an issue</Link>
 
-        { // if user is logged in & verified
-          isVerified && 
+        {isVerified && // if user is logged in & verified
           <>
           <Link href='/notifications'>
             <img src="/notification.png" className="h-8" alt="no notification" />
           </Link>
           <UserDropdown />
-          </>
-        }
+          </>}
         
-        { // if user is logged out or not verified
-          isVerified !== null && !isVerified && 
+        {isVerified !== null && !isVerified && // if user is logged out or not verified
           <>
           <Link href="/sign-in" className="hover:underline">Sign In</Link>
           <Link href="/sign-up" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">Sign Up</Link>
-          </>
-        }
+          </>}
       </div>
     </nav>
     </>
