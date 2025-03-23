@@ -104,7 +104,6 @@ export default function IssueDetailsPage() {
   };
 
   const toggleClaimIssue = async() => {
-    // TODO: prompt fill in claim issue request message to issue owner
     try {
       if (!claimedIssues.includes(issueId as string)) { // Claim an issue
         // Only allow claiming an issue with a request message
@@ -131,6 +130,10 @@ export default function IssueDetailsPage() {
     }
   }
 
+  const handleReportIssue = async() => {
+
+  }
+
   return (
     <>
     <div className="flex flex-col p-3 m-3 bg-white border border-gray-200 rounded-lg shadow-sm">
@@ -150,7 +153,7 @@ export default function IssueDetailsPage() {
             <a href={issueDetails?.url} target='_blank'>
               <img className="size-5" src="/link.png" alt="link" title="link to original issue" />
             </a> 
-            { uid !== issueDetails?.issueReporterUid && 
+            {uid !== issueDetails?.issueReporterUid && 
               <>
               <button onClick={toggleFavIssue}>
                 <img className="size-5" src={favedIssues.includes(issueId as string) ? "/logo.png" : "/empty-fries.png" } alt="favorite button" title={favedIssues.includes(issueId as string) ? "unfavorite issue" : "favorite issue" } />
@@ -159,13 +162,17 @@ export default function IssueDetailsPage() {
               <button onClick={toggleClaimIssue}>
                 <img className="size-5" src={claimedIssues.includes(issueId as string) ? "/claimed.png" : "/claim.png" } alt="claim issue button" title={claimedIssues.includes(issueId as string) ? "disclaim issue" : "claim issue" } />
               </button>
-              </>
-            }
+              </>}
             
             {uid === issueDetails?.issueReporterUid && 
               <button onClick={handleDeleteIssue}>
                 <img className="size-5" src="/delete.png" alt="delete button" title="delete issue" />
-              </button>}            
+              </button>}       
+
+            {uid !== issueDetails?.issueReporterUid && 
+              <button onClick={handleReportIssue}>
+                <img className="size-5" src="/report.png" alt="report button" title="report issue" />
+              </button>}  
           </div>
         </section>
       </div>
