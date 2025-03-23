@@ -5,17 +5,18 @@ import { useAuthProvider } from '@/providers/auth-provider'
 import { doc, getDoc } from 'firebase/firestore'
 import React, { useEffect } from 'react'
 import { db } from '../firebase'
+import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider'
 
 export default function NotificatonsPage() {
-  const { uid, userData } = useAuthProvider();
+  const { userDocData } = useCurrentUserDocProvider();
 
   useEffect(() => {
     const getUnreadNotif = () => {
-      console.log(userData)
+      console.log(userDocData)
     }
 
     getUnreadNotif();
-  }, [userData]);
+  }, [userDocData]);
 
   return (
     <>

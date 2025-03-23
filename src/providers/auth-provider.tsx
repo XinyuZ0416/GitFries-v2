@@ -17,7 +17,7 @@ interface AuthContextProps {
   setIsVerified: React.Dispatch<React.SetStateAction<boolean | null>>,
   userPicUrl: string,
   setUserPicUrl: React.Dispatch<React.SetStateAction<string>>,
-  userData: DocumentData,
+  
 }
 
 const AuthContext = createContext<AuthContextProps | null>(null);
@@ -29,7 +29,6 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
   const [ username, setUsername] = useState<string>('');
   const [ bio, setBio ] = useState<string>('');
   const [ isVerified, setIsVerified ] = useState<boolean | null>(null);
-  const [ userData, setUserData ] = useState<DocumentData>({});
 
   // Set user basic info if user has signed in
   useEffect(() => {
@@ -67,7 +66,7 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
 
       // Update username and bio
       const userData = userDocSnap.data();
-      setUserData(userData || {});
+      
       setUsername(userData?.username || '');
       setBio(userData?.bio || '');
 
@@ -110,7 +109,7 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
         bio,
         isVerified, setIsVerified, 
         userPicUrl, setUserPicUrl,
-        userData}}>
+        }}>
       {children}
     </AuthContext.Provider>
   );
