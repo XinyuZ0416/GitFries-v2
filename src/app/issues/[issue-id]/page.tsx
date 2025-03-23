@@ -136,12 +136,18 @@ export default function IssueDetailsPage() {
             <a href={issueDetails?.url} target='_blank'>
               <img className="size-5" src="/link.png" alt="link" title="link to original issue" />
             </a> 
-            <button onClick={toggleFavIssue}>
-              <img className="size-5" src={favedIssues.includes(issueId as string) ? "/logo.png" : "/empty-fries.png" } alt="favorite button" title="favorite issue" />
-            </button>
-            <button onClick={toggleClaimIssue}>
-              <img className="size-5" src={claimedIssues.includes(issueId as string) ? "/claimed.png" : "/claim.png" } alt="claim issue button" title="claim issue" />
-            </button>
+            { uid !== issueDetails?.issueReporterUid && 
+              <>
+              <button onClick={toggleFavIssue}>
+                <img className="size-5" src={favedIssues.includes(issueId as string) ? "/logo.png" : "/empty-fries.png" } alt="favorite button" title="favorite issue" />
+              </button>
+
+              <button onClick={toggleClaimIssue}>
+                <img className="size-5" src={claimedIssues.includes(issueId as string) ? "/claimed.png" : "/claim.png" } alt="claim issue button" title="claim issue" />
+              </button>
+              </>
+            }
+            
             {uid === issueDetails?.issueReporterUid && 
               <button onClick={handleDeleteIssue}>
                 <img className="size-5" src="/delete.png" alt="delete button" title="delete issue" />
