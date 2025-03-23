@@ -4,9 +4,11 @@ import Searchbar from './searchbar'
 import UserDropdown from './user-dropdown'
 import { useAuthProvider } from '../providers/auth-provider';
 import Link from 'next/link';
+import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider';
 
 export default function Navbar() {
   const { isVerified } = useAuthProvider();
+  const { issuesBeingRequested } = useCurrentUserDocProvider();
 
   return (
     <>
@@ -42,7 +44,7 @@ export default function Navbar() {
         {isVerified && // if user is logged in & verified
           <>
           <Link href='/notifications'>
-            <img src="/notification.png" className="h-8" alt="no notification" />
+            <img src={issuesBeingRequested.length > 0 ? "notification-new.png": "/notification.png"} className="h-8" alt="notification" />
           </Link>
           <UserDropdown />
           </>}
