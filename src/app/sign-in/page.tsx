@@ -58,7 +58,7 @@ export default function SignInPage() {
   return (
     <>
     { isVerified ? 
-      'You have signed in. Redirecting to profile page...' :  // TODO: implement redirect
+      'Redirecting to profile page...' :  // TODO: implement redirect
       <div className='flex flex-col justify-center items-center h-screen'>
       <form className="flex flex-col mx-auto w-2/5" onSubmit={handleSubmit} >
         <div className="mb-5">

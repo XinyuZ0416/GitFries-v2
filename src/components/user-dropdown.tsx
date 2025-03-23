@@ -38,6 +38,9 @@ export default function UserDropdown() {
           <Link href='/profile' type='button' className="group flex w-full items-center justify-center rounded-lg py-1.5 px-3">Profile</Link>
         </MenuItem>
         <MenuItem>
+          <Link href='/claimed-issues' type='button' className="group flex w-full items-center justify-center rounded-lg py-1.5 px-3">Claimed Issues</Link>
+        </MenuItem>
+        <MenuItem>
           <Link href='/settings' type='button' className="group flex w-full items-center justify-center rounded-lg py-1.5 px-3">Settings</Link>
         </MenuItem>
         <MenuItem>
