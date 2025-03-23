@@ -8,6 +8,7 @@ import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider
 
 export default function Navbar() {
   const { isVerified } = useAuthProvider();
+  const { unreadNotif } = useCurrentUserDocProvider();
 
   return (
     <>
@@ -43,7 +44,7 @@ export default function Navbar() {
         {isVerified && // if user is logged in & verified
           <>
           <Link href='/notifications'>
-            <img src="/notification.png" className="h-8" alt="notification" />
+            <img src={unreadNotif.length > 0 ? "/notification-new.png" : "/notification.png"} className="h-8" alt="notification" />
           </Link>
           <UserDropdown />
           </>}

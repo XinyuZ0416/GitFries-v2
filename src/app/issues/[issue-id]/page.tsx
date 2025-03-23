@@ -135,7 +135,7 @@ export default function IssueDetailsPage() {
         
         const requestMessage = prompt('To claim an issue, please leave a request message to the issue owner:');
 
-        // TODO: 1. only show "claimed" logo after issue owner approves
+        // TODO: only show "claimed" logo after issue owner approves
         if (requestMessage !== null && requestMessage !== "") { // Must send a request message
           setRequestMessage(requestMessage);
 
