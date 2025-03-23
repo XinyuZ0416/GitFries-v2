@@ -93,9 +93,11 @@ export default function IssueDetailsPage() {
       if (!favedIssues.includes(issueId as string)) {
         await updateDoc(doc(db, "users", uid), { favedIssues: arrayUnion(issueId) });
         setFavedIssues(prev => [...prev, issueId as string]);
+        alert('Favorited!');
       } else {
         await updateDoc(doc(db, "users", uid), { favedIssues: arrayRemove(issueId) });
         setFavedIssues(prev => prev.filter(id => id !== issueId));
+        alert('Removed from favorited issues!');
       }
     } catch (error) {
       console.error("Error favoriting issue:", error);
@@ -105,12 +107,22 @@ export default function IssueDetailsPage() {
   const toggleClaimIssue = async() => {
     // TODO: prompt fill in claim issue request message to issue owner
     try {
-      if (!claimedIssues.includes(issueId as string)) {
-        await updateDoc(doc(db, "users", uid), { claimedIssues: arrayUnion(issueId) });
-        setClaimedIssues(prev => [...prev, issueId as string]);
-      } else {
-        await updateDoc(doc(db, "users", uid), { claimedIssues: arrayRemove(issueId) });
-        setClaimedIssues(prev => prev.filter(id => id !== issueId));
+      if (!claimedIssues.includes(issueId as string)) { // Claim an issue
+        // Only allow claiming an issue with a request message
+        const requestMessage = prompt('To claim an issue, please leave a request message to the issue owner:');
+
+        // TODO: 1. only show "claimed" logo after issue owner approves 2. show pending icon after request is sent and disallow repeat send
+        if (requestMessage !== null && requestMessage !== "") {
+          await updateDoc(doc(db, "users", uid), { claimedIssues: arrayUnion(issueId) });
+          setClaimedIssues(prev => [...prev, issueId as string]);
+        }
+      } else { // Unclaim an issue
+        if (confirm('Are you sure to abandon this issue? This action will be recoreded and shown in your profile.')) {
+          // TODO: add to user db coll "abandonedIssueCount"
+          await updateDoc(doc(db, "users", uid), { claimedIssues: arrayRemove(issueId) });
+          setClaimedIssues(prev => prev.filter(id => id !== issueId));
+          alert('Abandoned issue!');
+        }
       }
     } catch (error) {
       console.error("Error claiming issue:", error);
@@ -139,11 +151,11 @@ export default function IssueDetailsPage() {
             { uid !== issueDetails?.issueReporterUid && 
               <>
               <button onClick={toggleFavIssue}>
-                <img className="size-5" src={favedIssues.includes(issueId as string) ? "/logo.png" : "/empty-fries.png" } alt="favorite button" title="favorite issue" />
+                <img className="size-5" src={favedIssues.includes(issueId as string) ? "/logo.png" : "/empty-fries.png" } alt="favorite button" title={favedIssues.includes(issueId as string) ? "unfavorite issue" : "favorite issue" } />
               </button>
 
               <button onClick={toggleClaimIssue}>
-                <img className="size-5" src={claimedIssues.includes(issueId as string) ? "/claimed.png" : "/claim.png" } alt="claim issue button" title="claim issue" />
+                <img className="size-5" src={claimedIssues.includes(issueId as string) ? "/claimed.png" : "/claim.png" } alt="claim issue button" title={claimedIssues.includes(issueId as string) ? "abandon issue" : "claim issue" } />
               </button>
               </>
             }
