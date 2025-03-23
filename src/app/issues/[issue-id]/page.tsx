@@ -38,7 +38,6 @@ export default function IssueDetailsPage() {
     claimedIssues, setClaimedIssues, 
     disclaimedIssuesCount, setDisclaimedIssuesCount, 
     requestingToClaimIssues, setRequestingToClaimIssues,
-    issuesBeingRequested, setIssuesBeingRequested,
   } = useCurrentUserDocProvider();
   const router = useRouter();
 
@@ -143,10 +142,6 @@ export default function IssueDetailsPage() {
           // Add to current user coll requestingToClaimIssues
           await updateDoc(doc(db, "users", uid), { requestingToClaimIssues: arrayUnion(issueId) });
           setRequestingToClaimIssues(prev => [...prev, issueId as string]);
-
-          // Add to issue owner's issuesBeingRequested (TODO: maybe can delete this)
-          await updateDoc(doc(db, "users", issueDetails!.issueReporterUid), { issuesBeingRequested: arrayUnion(issueId) });
-          setIssuesBeingRequested(prev => [...prev, issueId as string]);
 
           // Create notification
           const notifDocRef = await addDoc(collection(db, "notifications"), {
