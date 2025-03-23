@@ -149,7 +149,7 @@ export default function IssueDetailsPage() {
           setIssuesBeingRequested(prev => [...prev, issueId as string]);
 
           // Create notification
-          await addDoc(collection(db, "notifications"), {
+          const notifDocRef = await addDoc(collection(db, "notifications"), {
             recipientId: issueDetails?.issueReporterUid,
             senderId: uid,
             issueId: issueId,
@@ -158,6 +158,9 @@ export default function IssueDetailsPage() {
             timestamp: Timestamp.fromDate(new Date()),
             read: false
           });
+          
+          // Add to issue owner coll unreadNotif
+          await updateDoc(doc(db, "users", issueDetails!.issueReporterUid), { unreadNotif: arrayUnion(notifDocRef.id) });
           
           setIsRequesting(true);
           
