@@ -6,7 +6,7 @@ import { useAuthProvider } from '@/providers/auth-provider'
 import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider'
 import formatDate from '@/utils/format-date'
 import MDEditor from '@uiw/react-md-editor'
-import { Timestamp, arrayRemove, arrayUnion, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore'
+import { Timestamp, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -29,6 +29,7 @@ export default function IssueDetailsPage() {
   const { "issue-id": issueIdParam } = useParams();
   const issueId = Array.isArray(issueIdParam) ? issueIdParam[0] : issueIdParam; // Ensure only string 
   const [ issueDetails, setIssueDetails ] = useState<IssueDetailsType | null>(null);
+  const [ isRequesting, setIsRequesting ] = useState<boolean>(false);
   const { uid } = useAuthProvider();
   const { 
     favedIssues, setFavedIssues, 
@@ -83,7 +84,21 @@ export default function IssueDetailsPage() {
       }
       
     }
+
+    const checkIfHasRequestedToClaim = async() => {
+      try {
+        const q = query(collection(db, "users"), where("requestingToClaimIssues", "array-contains", issueId));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          setIsRequesting(true);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
     getIssueDoc();
+    checkIfHasRequestedToClaim();
   }, [uid, issueId]);
 
   const handleDeleteIssue = async() => {
@@ -111,11 +126,16 @@ export default function IssueDetailsPage() {
 
   const toggleClaimIssue = async() => {
     try {
-      if (!claimedIssues.includes(issueId as string)) { // Claim an issue
+      if (!claimedIssues.includes(issueId as string)) { // Request to claim an issue if it hasn't be claimed
+        if (isRequesting) {
+          alert('You have already requested to claim this issue.');
+          return;
+        }
+        
         const requestMessage = prompt('To claim an issue, please leave a request message to the issue owner:');
 
-        // TODO: 1. only show "claimed" logo after issue owner approves 2. show pending icon after request is sent and disallow repeat send
-        if (requestMessage !== null && requestMessage !== "") {
+        // TODO: 1. only show "claimed" logo after issue owner approves
+        if (requestMessage !== null && requestMessage !== "") { // Must send a request message
           // Add to current user coll requestingToClaimIssues
           await updateDoc(doc(db, "users", uid), { requestingToClaimIssues: arrayUnion(issueId) });
           setRequestingToClaimIssues(prev => [...prev, issueId as string]);
@@ -123,7 +143,10 @@ export default function IssueDetailsPage() {
           // Add to issue owner's issuesBeingRequested
           await updateDoc(doc(db, "users", issueDetails!.issueReporterUid), { issuesBeingRequested: arrayUnion(issueId) });
           setIssuesBeingRequested(prev => [...prev, issueId as string]);
-
+          
+          setIsRequesting(true);
+          
+          // TODO: if issue owner accepts, then setClaimedIssues, setIsRequesting(false)
           // await updateDoc(doc(db, "users", uid), { claimedIssues: arrayUnion(issueId) });
           // setClaimedIssues(prev => [...prev, issueId as string]);
         }
@@ -173,7 +196,7 @@ export default function IssueDetailsPage() {
               </button>
 
               <button onClick={toggleClaimIssue}>
-                <img className="size-5" src={claimedIssues.includes(issueId as string) ? "/claimed.png" : "/claim.png" } alt="claim issue button" title={claimedIssues.includes(issueId as string) ? "disclaim issue" : "claim issue" } />
+                <img className="size-5" src={ isRequesting ? "/waiting.png" : claimedIssues.includes(issueId as string) ? "/claimed.png" : "/claim.png" } alt="claim issue button" title={isRequesting ? "waiting to be accepted" : claimedIssues.includes(issueId as string) ? "disclaim issue" : "claim issue" } />
               </button>
               </>}
             
