@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Searchbar from './searchbar'
 import UserDropdown from './user-dropdown'
 import { useAuthProvider } from '../providers/auth-provider';

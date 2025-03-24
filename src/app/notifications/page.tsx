@@ -8,6 +8,21 @@ import { db } from '../firebase'
 import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider'
 
 export default function NotificatonsPage() {
+  const { uid } = useAuthProvider();
+  const{ unreadNotif, setUnreadNotif } = useCurrentUserDocProvider();
+
+  // Clean up unread notifications
+  useEffect(() => {
+    if (unreadNotif.length > 0) {
+      const cleanUpUnreadNotif = async() => {
+        const ref = doc(db, "users", uid);
+        await updateDoc(ref, {unreadNotif:[]});
+
+        setUnreadNotif([]);
+      }
+      cleanUpUnreadNotif();
+    }
+  }, []);
 
   return (
     <>
