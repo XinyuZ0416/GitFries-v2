@@ -16,7 +16,6 @@ interface CurrentUserDocContextProps {
   setRequestingToClaimIssues: React.Dispatch<React.SetStateAction<string[]>>,
   unreadNotif: string[],
   setUnreadNotif: React.Dispatch<React.SetStateAction<string[]>>,
-  userDocData: DocumentData,
 }
 
 const CurrentUserDocContext = createContext<CurrentUserDocContextProps | null>(null);
@@ -28,7 +27,6 @@ export const CurrentUserDocProvider = ({children}:{children: React.ReactNode}) =
   const [ disclaimedIssuesCount, setDisclaimedIssuesCount ] = useState<number>(0);
   const [ requestingToClaimIssues, setRequestingToClaimIssues ] = useState<string[]>([])
   const [ unreadNotif, setUnreadNotif ] = useState<string[]>([])
-  const [ userDocData, setUserDocData ] = useState<DocumentData>({});
 
   useEffect(() => {
     const getCurrentUserDoc = async() => {
@@ -43,7 +41,6 @@ export const CurrentUserDocProvider = ({children}:{children: React.ReactNode}) =
           setDisclaimedIssuesCount(data?.abandonedIssueCount ? data?.abandonedIssueCount : 0);
           setRequestingToClaimIssues(data?.requestingToClaimIssues ? data?.requestingToClaimIssues : []);
           setUnreadNotif(data?.unreadNotif ? data?.unreadNotif : []);
-          setUserDocData(docSnap.data() || {});
         } catch (error: any) {
           console.error(error.code)
         }
@@ -60,7 +57,6 @@ export const CurrentUserDocProvider = ({children}:{children: React.ReactNode}) =
         disclaimedIssuesCount, setDisclaimedIssuesCount,
         requestingToClaimIssues, setRequestingToClaimIssues,
         unreadNotif, setUnreadNotif,
-        userDocData
       }}>
       {children}
     </CurrentUserDocContext.Provider>
