@@ -149,6 +149,7 @@ export default function IssueDetailsPage() {
             senderId: uid,
             senderUsername: username,
             issueId: issueId,
+            issueTitle: issueDetails?.title,
             type: NotificationType.REQ_C_I,
             message: requestMessage,
             timestamp: Timestamp.fromDate(new Date()),

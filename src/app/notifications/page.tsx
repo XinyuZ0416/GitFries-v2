@@ -62,6 +62,7 @@ export default function NotificatonsPage() {
       <NotificationsClaimCard
         senderUsername={claimIssueNotif?.senderUsername}
         issueId={claimIssueNotif?.issueId}
+        issueTitle={claimIssueNotif?.issueTitle}
         message={claimIssueNotif?.message}
         issueDescription={claimIssueNotif?.issueDescription}
         time={claimIssueNotif?.timestamp}

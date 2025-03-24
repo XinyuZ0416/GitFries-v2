@@ -7,12 +7,13 @@ import React, { useEffect, useState } from 'react'
 interface NotificationsClaimCardProps {
   senderUsername: string,
   issueId: string,
+  issueTitle: string,
   message: string,
   issueDescription: string,
   time: Timestamp,
 }
 
-export default function NotificationsClaimCard({senderUsername, issueId, message, issueDescription, time}: NotificationsClaimCardProps) {
+export default function NotificationsClaimCard({senderUsername, issueId, issueTitle, message, issueDescription, time}: NotificationsClaimCardProps) {
   const [ description, setDescription] = useState<string>();
   useEffect(() => {
     if (!issueId) return;
@@ -33,7 +34,7 @@ export default function NotificationsClaimCard({senderUsername, issueId, message
   return (
     <>
     <div className='flex flex-col rounded-lg shadow-sm p-4 gap-2 bg-white hover:bg-gray-100'>
-      <h3 className='text-lg font-semibold'>@{senderUsername} would like to claim your issue "{issueId}"</h3>
+      <h3 className='text-lg font-semibold'>@{senderUsername} would like to claim your issue "{issueTitle}"</h3>
       <p className="font-normal">{message}</p>
       <div className='border-l-4 pl-3'>
         <p className="font-normal text-gray-400">{description}</p>
