@@ -6,6 +6,7 @@ import { DocumentData, arrayUnion, doc, getDoc, updateDoc } from 'firebase/fires
 import React, { useEffect, useState } from 'react'
 import { db } from '../firebase'
 import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider'
+import NotificationsClaimCard from '@/components/notifications-claim-card'
 
 export default function NotificatonsPage() {
   const [ readNotif, setReadNotif ] = useState<string[]>([])
@@ -57,6 +58,7 @@ export default function NotificatonsPage() {
     <>
     <div className='flex flex-col gap-2'>
       Your notifications will be automatically deleted after 1 month
+      <NotificationsClaimCard />
       <NotificationsCommentCard />
       <NotificationsReplyCard />
     </div>
