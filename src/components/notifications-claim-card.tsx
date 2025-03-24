@@ -1,15 +1,25 @@
+import formatDate from '@/utils/format-date'
+import { Timestamp } from 'firebase/firestore'
 import React from 'react'
 
-export default function NotificationsClaimCard() {
+interface NotificationsClaimCardProps {
+  senderId: string,
+  issueId: string,
+  message: string,
+  issueDescription: string,
+  time: Timestamp,
+}
+
+export default function NotificationsClaimCard({senderId, issueId, message, issueDescription, time}: NotificationsClaimCardProps) {
   return (
     <>
     <div className='flex flex-col rounded-lg shadow-sm p-4 gap-2 bg-white hover:bg-gray-100'>
-      <h3 className='text-lg font-semibold'>@Banana would like to claim your issue "aaaaaa"</h3>
-      <p className="font-normal">Please lemme take it</p>
+      <h3 className='text-lg font-semibold'>@{senderId} would like to claim your issue "{issueId}"</h3>
+      <p className="font-normal">{message}</p>
       <div className='border-l-4 pl-3'>
-        <p className="font-normal text-gray-400">When outputting downloaded file in it should create directory with correct name according to music metadata. Instead, it creates None directory for all downloaded music from one YTM Playlist.</p>
+        <p className="font-normal text-gray-400">{issueDescription}</p>
       </div>
-      <p className="font-normal">Today</p>
+      <p className="font-normal">{formatDate(time.toDate() as Date)}</p>
       <div className="grid grid-cols-2 gap-2">
         <div>
           <a href="#" className="inline-flex justify-center w-full px-2 py-1.5 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300">Accept</a>
