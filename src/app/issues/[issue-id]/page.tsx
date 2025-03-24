@@ -151,7 +151,6 @@ export default function IssueDetailsPage() {
             type: NotificationType.REQ_C_I,
             message: requestMessage,
             timestamp: Timestamp.fromDate(new Date()),
-            read: false
           });
           
           // Add to issue owner coll unreadNotif
