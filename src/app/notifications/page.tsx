@@ -10,7 +10,7 @@ import NotificationsClaimCard from '@/components/notifications-claim-card'
 
 export default function NotificatonsPage() {
   const [ readNotif, setReadNotif ] = useState<string[]>([])
-  const [ readNotifObj, setReadNotifObj ] = useState<DocumentData | undefined>()
+  const [ claimIssueNotif, setClaimIssueNotif ] = useState<DocumentData | undefined>()
   const { uid } = useAuthProvider();
   const{ unreadNotif, setUnreadNotif } = useCurrentUserDocProvider();
 
@@ -42,23 +42,30 @@ export default function NotificatonsPage() {
 
         for (let notif of readNotifArr) {
           const docSnap = await getDoc(doc(db, "notifications", notif));
-          setReadNotifObj(docSnap.data());
+
+          if(docSnap.data()?.type === "request_claim_issue") {
+            setClaimIssueNotif(docSnap.data());
+          }
         }
         
       } else {
-        // docSnap.data() will be undefined in this case
-        console.log("No such document!");
+        // TODO: error handling
       }
     }
     fetchReadNotif();
-
   }, [uid]);
   
   return (
     <>
     <div className='flex flex-col gap-2'>
       Your notifications will be automatically deleted after 1 month
-      <NotificationsClaimCard />
+      <NotificationsClaimCard
+        senderUsername={claimIssueNotif?.senderUsername}
+        issueId={claimIssueNotif?.issueId}
+        message={claimIssueNotif?.message}
+        issueDescription={claimIssueNotif?.issueDescription}
+        time={claimIssueNotif?.timestamp}
+      />
       <NotificationsCommentCard />
       <NotificationsReplyCard />
     </div>

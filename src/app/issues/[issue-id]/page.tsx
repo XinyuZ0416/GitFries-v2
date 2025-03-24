@@ -32,7 +32,7 @@ export default function IssueDetailsPage() {
   const [ issueDetails, setIssueDetails ] = useState<IssueDetailsType | null>(null);
   const [ isRequesting, setIsRequesting ] = useState<boolean>(false);
   const [ requestMessage, setRequestMessage ] = useState<string>();
-  const { uid } = useAuthProvider();
+  const { uid, username } = useAuthProvider();
   const { 
     favedIssues, setFavedIssues, 
     claimedIssues, setClaimedIssues, 
@@ -147,6 +147,7 @@ export default function IssueDetailsPage() {
           const notifDocRef = await addDoc(collection(db, "notifications"), {
             recipientId: issueDetails?.issueReporterUid,
             senderId: uid,
+            senderUsername: username,
             issueId: issueId,
             type: NotificationType.REQ_C_I,
             message: requestMessage,
