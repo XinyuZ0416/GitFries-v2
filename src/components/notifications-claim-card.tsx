@@ -18,7 +18,7 @@ interface NotificationsClaimCardProps {
 
 export default function NotificationsClaimCard({senderUsername, senderId, issueId, issueTitle, message, issueDescription, time}: NotificationsClaimCardProps) {
   const [ description, setDescription] = useState<string>();
-  const [ newNotif, setNewNotif] = useState();
+  const [ notifId, setNotifId] = useState<string>();
   const { uid, username } = useAuthProvider();
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function NotificationsClaimCard({senderUsername, senderId, issueI
     await updateDoc(doc(db, "users", senderId), { requestingToClaimIssues: arrayRemove(issueId) });
   }
   
-  const createNotif = async(notifType: NotificationType) => {
+  const createNotifAndAddToSenderUnreadNotif = async(notifType: NotificationType) => {
     const notifDocRef = await addDoc(collection(db, "notifications"), {
       recipientId: senderId,
       senderId: uid,
@@ -52,19 +52,18 @@ export default function NotificationsClaimCard({senderUsername, senderId, issueI
       message: '',
       timestamp: Timestamp.fromDate(new Date()),
     });
+
+    await addToSendersUnreadNotif(notifDocRef.id);
   }
   
 
-  const addToSendersUnreadNotif = async() => {
-    await updateDoc(doc(db, "users", senderId), { unreadNotif: arrayUnion(notifDocRef.id) });
+  const addToSendersUnreadNotif = async(notifId: string) => {
+    await updateDoc(doc(db, "users", senderId), { unreadNotif: arrayUnion(notifId) });
   }
 
   const handleAccept = () =>{
-    // Remove from request sender's requestingToClaimIssues
     removeFromRequestingToClaimIssues();
-
-    // Create notification
-    createNotif(NotificationType.REQ_C_I_A);
+    createNotifAndAddToSenderUnreadNotif(NotificationType.REQ_C_I_A);
 
     // Add to request sender's claimed issues
 
@@ -76,14 +75,8 @@ export default function NotificationsClaimCard({senderUsername, senderId, issueI
   }
 
   const handleDecline = () =>{
-    // Remove from request sender's requestingToClaimIssues
     removeFromRequestingToClaimIssues();
-
-    // Create notification
-    createNotif(NotificationType.REQ_C_I_D);
-
-    // Add to request sender's unread notifications
-        
+    createNotifAndAddToSenderUnreadNotif(NotificationType.REQ_C_I_D);
     // Mute btns
   }
 
