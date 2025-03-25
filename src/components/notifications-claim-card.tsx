@@ -35,9 +35,21 @@ export default function NotificationsClaimCard({currentNotifId, senderUsername, 
         // TODO: error handling
       }
     }
+
+    const getNotifDecision = async() => {
+      const docSnap = await getDoc(doc(db, "notifications", currentNotifId));
+
+      if (docSnap.exists()) {
+        if (docSnap.data().accepted !== undefined){
+          setIsAccepted(docSnap.data().accepted);
+        }
+      } else {
+        // TODO: error handling
+      }
+    }
     
-    getIssueDescription();
-  }, [issueId]);
+    getNotifDecision();
+  }, [issueId, currentNotifId]);
 
   const removeFromRequestingToClaimIssues = async() => {
     await updateDoc(doc(db, "users", senderId), { requestingToClaimIssues: arrayRemove(issueId) });
