@@ -10,7 +10,7 @@ import NotificationsClaimCard from '@/components/notifications-claim-card'
 
 export default function NotificatonsPage() {
   const [ readNotif, setReadNotif ] = useState<string[]>([])
-  const [ claimIssueNotifArr, setClaimIssueNotifArr ] = useState<DocumentData>([])
+  const [ readNotifArr, setReadNotifArr ] = useState<DocumentData>([])
   const { uid } = useAuthProvider();
   const{ unreadNotif, setUnreadNotif } = useCurrentUserDocProvider();
 
@@ -43,16 +43,18 @@ export default function NotificatonsPage() {
 
         for (let notif of readNotifArr) {
           const docSnap = await getDoc(doc(db, "notifications", notif));
-
-          if(docSnap.data()?.type === "request_claim_issue") {
-            arr.push({
-              id: docSnap.id,
-              ...docSnap.data()
-            })
-          }
+          console.log(docSnap.data().timestamp)
+          arr.push({
+            id: docSnap.id,
+            ...docSnap.data()
+          })
         }
 
-        setClaimIssueNotifArr(arr);
+        // Sort by time
+        arr.sort((a, b) => b.timestamp.seconds - a.timestamp.seconds);
+
+        setReadNotifArr(arr);
+        console.log(arr)
         
       } else {
         // TODO: error handling
@@ -66,21 +68,23 @@ export default function NotificatonsPage() {
     <div className='flex flex-col gap-2'>
       Your notifications will be automatically deleted after 1 month
       {
-        claimIssueNotifArr.map((notif) => (
-          <NotificationsClaimCard
-            key={notif?.id}
-            senderUsername={notif?.senderUsername}
-            issueId={notif?.issueId}
-            issueTitle={notif?.issueTitle}
-            message={notif?.message}
-            issueDescription={notif?.issueDescription}
-            time={notif?.timestamp}
-          />
+        readNotifArr.map((notif) => (
+          notif.type === "request_claim_issue" ? 
+            <NotificationsClaimCard
+              key={notif?.id}
+              senderUsername={notif?.senderUsername}
+              issueId={notif?.issueId}
+              issueTitle={notif?.issueTitle}
+              message={notif?.message}
+              issueDescription={notif?.issueDescription}
+              time={notif?.timestamp}
+            /> : 
+          ''
         ))
       }
       
-      <NotificationsCommentCard />
-      <NotificationsReplyCard />
+      {/* <NotificationsCommentCard />
+      <NotificationsReplyCard /> */}
     </div>
     </>
   )
