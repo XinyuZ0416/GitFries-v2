@@ -45,6 +45,10 @@ export default function NotificationsClaimCard({senderUsername, senderId, issueI
   const addToClaimedIssues = async() => {
     await updateDoc(doc(db, "users", senderId), { claimedIssues: arrayUnion(issueId) });
   }
+
+  const addToClaimedBy = async() => {
+    await updateDoc(doc(db, "issues", issueId), { claimedBy: arrayUnion(uid) });
+  }
   
   const notificationUpdate = async(notifType: NotificationType) => {
     // Create notification
@@ -67,7 +71,7 @@ export default function NotificationsClaimCard({senderUsername, senderId, issueI
     removeFromRequestingToClaimIssues();
     notificationUpdate(NotificationType.REQ_C_I_A);
     addToClaimedIssues();
-    // Add to issue coll claimedBy field
+    addToClaimedBy();
 
     // Add to claim-request sender's unread notifications
 
