@@ -7,6 +7,7 @@ import { Timestamp, addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, up
 import React, { useEffect, useState } from 'react'
 
 interface NotificationsClaimCardProps {
+  currentNotifId: string
   senderUsername: string,
   senderId: string,
   issueId: string,
@@ -16,7 +17,7 @@ interface NotificationsClaimCardProps {
   time: Timestamp,
 }
 
-export default function NotificationsClaimCard({senderUsername, senderId, issueId, issueTitle, message, issueDescription, time}: NotificationsClaimCardProps) {
+export default function NotificationsClaimCard({currentNotifId, senderUsername, senderId, issueId, issueTitle, message, issueDescription, time}: NotificationsClaimCardProps) {
   const [ description, setDescription] = useState<string>();
   const [ notifId, setNotifId] = useState<string>();
   const { uid, username } = useAuthProvider();
@@ -46,11 +47,15 @@ export default function NotificationsClaimCard({senderUsername, senderId, issueI
     await updateDoc(doc(db, "users", senderId), { claimedIssues: arrayUnion(issueId) });
   }
 
-  const addToClaimedBy = async() => {
-    await updateDoc(doc(db, "issues", issueId), { claimedBy: arrayUnion(uid) });
+  const addClaimedBy = async() => {
+    await updateDoc(doc(db, "issues", issueId), { claimedBy: uid });
+  }
+
+  const updateCurrentNotifDecision = async(decision: boolean) => {
+    await updateDoc(doc(db, "notifications", currentNotifId), { accepted: decision });
   }
   
-  const notificationUpdate = async(notifType: NotificationType) => {
+  const createNewUnreadNotif = async(notifType: NotificationType) => {
     // Create notification
     const notifDocRef = await addDoc(collection(db, "notifications"), {
       recipientId: senderId,
@@ -69,19 +74,17 @@ export default function NotificationsClaimCard({senderUsername, senderId, issueI
 
   const handleAccept = () =>{
     removeFromRequestingToClaimIssues();
-    notificationUpdate(NotificationType.REQ_C_I_A);
+    createNewUnreadNotif(NotificationType.REQ_C_I_A);
     addToClaimedIssues();
-    addToClaimedBy();
-
-    // Add to claim-request sender's unread notifications
-
-    // Update decision to db and show on page
+    addClaimedBy();
+    updateCurrentNotifDecision(true);
     setIsAccepted(true);
   }
 
   const handleDecline = () =>{
     removeFromRequestingToClaimIssues();
-    notificationUpdate(NotificationType.REQ_C_I_D);
+    createNewUnreadNotif(NotificationType.REQ_C_I_D);
+    updateCurrentNotifDecision(false);
     setIsAccepted(false);
   }
 

@@ -68,6 +68,7 @@ export default function NotificatonsPage() {
           notif.type === "request_claim_issue" ? 
             <NotificationsClaimCard
               key={notif?.id}
+              currentNotifId={notif?.id}
               senderUsername={notif?.senderUsername}
               senderId={notif?.senderId}
               issueId={notif?.issueId}
