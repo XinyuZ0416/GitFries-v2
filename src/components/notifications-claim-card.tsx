@@ -15,6 +15,7 @@ interface NotificationsClaimCardProps {
 
 export default function NotificationsClaimCard({senderUsername, issueId, issueTitle, message, issueDescription, time}: NotificationsClaimCardProps) {
   const [ description, setDescription] = useState<string>();
+
   useEffect(() => {
     if (!issueId) return;
 
@@ -31,6 +32,26 @@ export default function NotificationsClaimCard({senderUsername, issueId, issueTi
     getIssueDescription();
   }, [issueId]);
 
+  const handleAccept = () =>{
+    // Remove from request sender's requesting to claim
+
+    // Add to request sender's claimed issues
+
+    // Add to issue coll claimedBy field
+
+    // Add to request sender's unread notifications
+
+    // Create notification
+  }
+
+  const handleDecline = () =>{
+    // Remove from request sender's requesting to claim
+
+    // Add to request sender's unread notifications
+
+    // Create notification
+  }
+
   return (
     <>
     <div className='flex flex-col rounded-lg shadow-sm p-4 gap-2 bg-white hover:bg-gray-100'>
@@ -42,10 +63,16 @@ export default function NotificationsClaimCard({senderUsername, issueId, issueTi
       <p className="font-normal">{formatDate(time?.toDate() as Date)}</p>
       <div className="grid grid-cols-2 gap-2">
         <div>
-          <a href="#" className="inline-flex justify-center w-full px-2 py-1.5 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300">Accept</a>
+          <button className="inline-flex justify-center w-full px-2 py-1.5 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300"
+            onClick={handleAccept}>
+            Accept
+          </button>
         </div>
         <div>
-          <a href="#" className="inline-flex justify-center w-full px-2 py-1.5 text-xs font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200">Decline</a> 
+          <button className="inline-flex justify-center w-full px-2 py-1.5 text-xs font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200"
+            onClick={handleDecline}>
+            Decline
+          </button>
         </div>
       </div>    
     </div>
