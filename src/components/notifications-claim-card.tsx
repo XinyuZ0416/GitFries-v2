@@ -20,6 +20,8 @@ export default function NotificationsClaimCard({senderUsername, senderId, issueI
   const [ description, setDescription] = useState<string>();
   const [ notifId, setNotifId] = useState<string>();
   const { uid, username } = useAuthProvider();
+  const [ isDeclined, setIsDeclined ] = useState<boolean>(false);
+  const [ isAccepted, setIsAccepted ] = useState<boolean>(false);
 
   useEffect(() => {
     if (!issueId) return;
@@ -71,13 +73,15 @@ export default function NotificationsClaimCard({senderUsername, senderId, issueI
 
     // Add to request sender's unread notifications
 
-    // Mute btns
+    // Update decision to db and show on page
+    setIsAccepted(true);
   }
 
   const handleDecline = () =>{
-    removeFromRequestingToClaimIssues();
-    createNotifAndAddToSenderUnreadNotif(NotificationType.REQ_C_I_D);
-    // Mute btns
+    // removeFromRequestingToClaimIssues();
+    // createNotifAndAddToSenderUnreadNotif(NotificationType.REQ_C_I_D);
+    // Update decision to db and show on page
+    setIsDeclined(true);
   }
 
   return (
@@ -90,18 +94,25 @@ export default function NotificationsClaimCard({senderUsername, senderId, issueI
       </div>
       <p className="font-normal">{formatDate(time?.toDate() as Date)}</p>
       <div className="grid grid-cols-2 gap-2">
-        <div>
-          <button className="inline-flex justify-center w-full px-2 py-1.5 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300"
-            onClick={handleAccept}>
-            Accept
-          </button>
-        </div>
-        <div>
-          <button className="inline-flex justify-center w-full px-2 py-1.5 text-xs font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200"
-            onClick={handleDecline}>
-            Decline
-          </button>
-        </div>
+        { 
+          isAccepted ? 'You have accepted this request' :
+          isDeclined ? 'You have declined this request' :
+          <>
+            <div>
+              <button className="inline-flex justify-center w-full px-2 py-1.5 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300"
+                onClick={handleAccept}>
+                Accept
+              </button>
+            </div>
+            <div>
+              <button className="inline-flex justify-center w-full px-2 py-1.5 text-xs font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200"
+                onClick={handleDecline}>
+                Decline
+              </button>
+            </div>
+          </>
+        }
+        
       </div>    
     </div>
     </>
