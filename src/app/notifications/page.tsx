@@ -10,7 +10,7 @@ import NotificationsClaimCard from '@/components/notifications-claim-card'
 
 export default function NotificatonsPage() {
   const [ readNotif, setReadNotif ] = useState<string[]>([])
-  const [ readNotifArr, setReadNotifArr ] = useState<DocumentData>([])
+  const [ readNotifArr, setReadNotifArr ] = useState<DocumentData[]>([])
   const { uid } = useAuthProvider();
   const{ unreadNotif, setUnreadNotif } = useCurrentUserDocProvider();
 
@@ -39,23 +39,19 @@ export default function NotificatonsPage() {
 
       if (docSnap.exists()) {
         const readNotifArr = docSnap.data().readNotif;
-        const arr = [];
+        const arr: { id: string, timestamp: { seconds: number}}[] = [];
 
         for (let notif of readNotifArr) {
           const docSnap = await getDoc(doc(db, "notifications", notif));
-          console.log(docSnap.data().timestamp)
           arr.push({
             id: docSnap.id,
-            ...docSnap.data()
+            ...(docSnap.data() as {timestamp: { seconds: number}})
           })
         }
 
         // Sort by time
         arr.sort((a, b) => b.timestamp.seconds - a.timestamp.seconds);
-
         setReadNotifArr(arr);
-        console.log(arr)
-        
       } else {
         // TODO: error handling
       }
