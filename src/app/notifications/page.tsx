@@ -10,7 +10,7 @@ import NotificationsClaimCard from '@/components/notifications-claim-card'
 
 export default function NotificatonsPage() {
   const [ readNotif, setReadNotif ] = useState<string[]>([])
-  const [ claimIssueNotif, setClaimIssueNotif ] = useState<DocumentData | undefined>()
+  const [ claimIssueNotifArr, setClaimIssueNotifArr ] = useState<DocumentData>([])
   const { uid } = useAuthProvider();
   const{ unreadNotif, setUnreadNotif } = useCurrentUserDocProvider();
 
@@ -39,14 +39,20 @@ export default function NotificatonsPage() {
 
       if (docSnap.exists()) {
         const readNotifArr = docSnap.data().readNotif;
+        const arr = [];
 
         for (let notif of readNotifArr) {
           const docSnap = await getDoc(doc(db, "notifications", notif));
 
           if(docSnap.data()?.type === "request_claim_issue") {
-            setClaimIssueNotif(docSnap.data());
+            arr.push({
+              id: docSnap.id,
+              ...docSnap.data()
+            })
           }
         }
+
+        setClaimIssueNotifArr(arr);
         
       } else {
         // TODO: error handling
@@ -59,14 +65,20 @@ export default function NotificatonsPage() {
     <>
     <div className='flex flex-col gap-2'>
       Your notifications will be automatically deleted after 1 month
-      <NotificationsClaimCard
-        senderUsername={claimIssueNotif?.senderUsername}
-        issueId={claimIssueNotif?.issueId}
-        issueTitle={claimIssueNotif?.issueTitle}
-        message={claimIssueNotif?.message}
-        issueDescription={claimIssueNotif?.issueDescription}
-        time={claimIssueNotif?.timestamp}
-      />
+      {
+        claimIssueNotifArr.map((notif) => (
+          <NotificationsClaimCard
+            key={notif?.id}
+            senderUsername={notif?.senderUsername}
+            issueId={notif?.issueId}
+            issueTitle={notif?.issueTitle}
+            message={notif?.message}
+            issueDescription={notif?.issueDescription}
+            time={notif?.timestamp}
+          />
+        ))
+      }
+      
       <NotificationsCommentCard />
       <NotificationsReplyCard />
     </div>
