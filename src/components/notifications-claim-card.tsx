@@ -1,11 +1,14 @@
 'use client'
 import { db } from '@/app/firebase';
+import { useAuthProvider } from '@/providers/auth-provider';
 import formatDate from '@/utils/format-date'
-import { Timestamp, doc, getDoc } from 'firebase/firestore'
+import { NotificationType } from '@/utils/notification-types';
+import { Timestamp, addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, updateDoc } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 
 interface NotificationsClaimCardProps {
   senderUsername: string,
+  senderId: string,
   issueId: string,
   issueTitle: string,
   message: string,
@@ -13,8 +16,10 @@ interface NotificationsClaimCardProps {
   time: Timestamp,
 }
 
-export default function NotificationsClaimCard({senderUsername, issueId, issueTitle, message, issueDescription, time}: NotificationsClaimCardProps) {
+export default function NotificationsClaimCard({senderUsername, senderId, issueId, issueTitle, message, issueDescription, time}: NotificationsClaimCardProps) {
   const [ description, setDescription] = useState<string>();
+  const [ newNotif, setNewNotif] = useState();
+  const { uid, username } = useAuthProvider();
 
   useEffect(() => {
     if (!issueId) return;
@@ -32,8 +37,34 @@ export default function NotificationsClaimCard({senderUsername, issueId, issueTi
     getIssueDescription();
   }, [issueId]);
 
+  const removeFromRequestingToClaimIssues = async() => {
+    await updateDoc(doc(db, "users", senderId), { requestingToClaimIssues: arrayRemove(issueId) });
+  }
+  
+  const createNotif = async(notifType: NotificationType) => {
+    const notifDocRef = await addDoc(collection(db, "notifications"), {
+      recipientId: senderId,
+      senderId: uid,
+      senderUsername: username,
+      issueId: issueId,
+      issueTitle: issueTitle,
+      type: notifType,
+      message: '',
+      timestamp: Timestamp.fromDate(new Date()),
+    });
+  }
+  
+
+  const addToSendersUnreadNotif = async() => {
+    await updateDoc(doc(db, "users", senderId), { unreadNotif: arrayUnion(notifDocRef.id) });
+  }
+
   const handleAccept = () =>{
-    // Remove from request sender's requesting to claim
+    // Remove from request sender's requestingToClaimIssues
+    removeFromRequestingToClaimIssues();
+
+    // Create notification
+    createNotif(NotificationType.REQ_C_I_A);
 
     // Add to request sender's claimed issues
 
@@ -41,15 +72,19 @@ export default function NotificationsClaimCard({senderUsername, issueId, issueTi
 
     // Add to request sender's unread notifications
 
-    // Create notification
+    // Mute btns
   }
 
   const handleDecline = () =>{
-    // Remove from request sender's requesting to claim
-
-    // Add to request sender's unread notifications
+    // Remove from request sender's requestingToClaimIssues
+    removeFromRequestingToClaimIssues();
 
     // Create notification
+    createNotif(NotificationType.REQ_C_I_D);
+
+    // Add to request sender's unread notifications
+        
+    // Mute btns
   }
 
   return (
