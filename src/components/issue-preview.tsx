@@ -27,7 +27,6 @@ export default function PreviewCard({
     if (uid && claimedBy != null) {
       setIsClaimed(true);
     }
-    console.log('hi')
   }, [uid, claimedBy]);
 
   return (

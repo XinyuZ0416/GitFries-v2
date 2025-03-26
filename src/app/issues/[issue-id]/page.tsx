@@ -24,6 +24,7 @@ type IssueDetailsType = {
   issueReporterUid: string,
   issueReporterUsername: string,
   issueReporterPicUrl: string,
+  claimedBy?: string
 }
 
 export default function IssueDetailsPage() {
@@ -79,6 +80,7 @@ export default function IssueDetailsPage() {
           issueReporterUid: issueDocSnap.data()!.issueReporterUid,
           issueReporterUsername: userDocSnap.exists() ? userDocSnap.data()!.username : "Unknown",
           issueReporterPicUrl: picUrl,
+          claimedBy: issueDocSnap.data()!.claimedBy,
         })
       } catch (error) {
         console.error(error)
@@ -192,6 +194,7 @@ export default function IssueDetailsPage() {
   return (
     <>
     <div className="flex flex-col p-3 m-3 bg-white border border-gray-200 rounded-lg shadow-sm">
+    { issueDetails?.claimedBy != undefined && <h2 className="text-2xl font-bold text-red-600">CLAIMED</h2>}
       <div className='flex flex-row'>
         <section id='user-info'>
           <img className="rounded-full size-14" src={issueDetails?.issueReporterPicUrl ? issueDetails.issueReporterPicUrl : '/potato.png'} alt="user profile" />
@@ -213,15 +216,16 @@ export default function IssueDetailsPage() {
               <button onClick={toggleFavIssue}>
                 <img className="size-5" src={favedIssues.includes(issueId as string) ? "/logo.png" : "/empty-fries.png" } alt="favorite button" title={favedIssues.includes(issueId as string) ? "unfavorite issue" : "favorite issue" } />
               </button>
-
+              
+              {issueDetails?.claimedBy == undefined &&
               <button onClick={toggleClaimIssue}>
                 <img className="size-5" src={ 
                   !uid ? "/claim.png" :
-                  isRequesting ? "/waiting.png" : 
-                  claimedIssues.includes(issueId as string) ? "/claimed.png" : "/claim.png" 
+                  isRequesting ? "/waiting.png" : "/claim.png" 
                   } alt="claim issue button" title={isRequesting ? "waiting to be accepted" : claimedIssues.includes(issueId as string) ? "disclaim issue" : "claim issue" } />
-              </button>
-              </>}
+              </button>}
+              </>
+            }
             
             {uid === issueDetails?.issueReporterUid && 
               <button onClick={handleDeleteIssue}>
