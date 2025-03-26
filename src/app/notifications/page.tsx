@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react'
 import { db } from '../firebase'
 import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider'
 import NotificationsClaimCard from '@/components/notifications-claim-card'
+import IssueClaimDecisionCard from '@/components/issue-claim-decision-card'
 
 export default function NotificatonsPage() {
   const [ readNotif, setReadNotif ] = useState<string[]>([])
@@ -77,6 +78,24 @@ export default function NotificatonsPage() {
               issueDescription={notif?.issueDescription}
               time={notif?.timestamp}
             /> : 
+          notif.type === "request_claim_issue_accept" ? 
+            <IssueClaimDecisionCard
+              key={notif?.id}
+              decision={notif.type}
+              senderUsername={notif?.senderUsername}
+              issueId={notif?.issueId}
+              issueTitle={notif?.issueTitle}
+              time={notif?.timestamp}
+            /> :
+          notif.type === "request_claim_issue_decline" ? 
+            <IssueClaimDecisionCard
+              key={notif?.id}
+              decision={notif.type}
+              senderUsername={notif?.senderUsername}
+              issueId={notif?.issueId}
+              issueTitle={notif?.issueTitle}
+              time={notif?.timestamp}
+            /> :
           ''
         ))
       }
