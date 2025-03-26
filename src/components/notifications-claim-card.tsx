@@ -4,6 +4,7 @@ import { useAuthProvider } from '@/providers/auth-provider';
 import formatDate from '@/utils/format-date'
 import { NotificationType } from '@/utils/notification-types';
 import { Timestamp, addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, updateDoc } from 'firebase/firestore'
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 
 interface NotificationsClaimCardProps {
@@ -19,7 +20,6 @@ interface NotificationsClaimCardProps {
 
 export default function NotificationsClaimCard({currentNotifId, senderUsername, senderId, issueId, issueTitle, message, issueDescription, time}: NotificationsClaimCardProps) {
   const [ description, setDescription] = useState<string>();
-  const [ notifId, setNotifId] = useState<string>();
   const { uid, username } = useAuthProvider();
   const [ isAccepted, setIsAccepted ] = useState<boolean | null>(null);
 
@@ -103,12 +103,14 @@ export default function NotificationsClaimCard({currentNotifId, senderUsername, 
   return (
     <>
     <div className='flex flex-col rounded-lg shadow-sm p-4 gap-2 bg-white hover:bg-gray-100'>
+      <Link href={`/issues/${issueId}`}>
       <h3 className='text-lg font-semibold'>@{senderUsername} would like to claim your issue "{issueTitle}"</h3>
       <p className="font-normal">{message}</p>
       <div className='border-l-4 pl-3'>
         <p className="font-normal text-gray-400">{description}</p>
       </div>
       <p className="font-normal">{formatDate(time?.toDate() as Date)}</p>
+      </Link>
       <div className="grid grid-cols-2 gap-2">
         { 
           isAccepted === null ? 
