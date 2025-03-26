@@ -57,6 +57,7 @@ export default function IssuesPage() {
             language: issueData.language,
             time: issueData.time,
             title: issueData.title,
+            claimedBy: issueData.claimedBy,
           };
         })
       );
