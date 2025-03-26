@@ -126,6 +126,11 @@ export default function IssueDetailsPage() {
   };
 
   const toggleClaimIssue = async() => {
+    if (!uid) {
+      alert('Please sign in to claim an issue');
+      router.push('/sign-in');
+      return;
+    }
     try {
       if (!claimedIssues.includes(issueId as string)) { // Request to claim an issue if it hasn't be claimed
         if (isRequesting) {
@@ -210,7 +215,11 @@ export default function IssueDetailsPage() {
               </button>
 
               <button onClick={toggleClaimIssue}>
-                <img className="size-5" src={ isRequesting ? "/waiting.png" : claimedIssues.includes(issueId as string) ? "/claimed.png" : "/claim.png" } alt="claim issue button" title={isRequesting ? "waiting to be accepted" : claimedIssues.includes(issueId as string) ? "disclaim issue" : "claim issue" } />
+                <img className="size-5" src={ 
+                  !uid ? "/claim.png" :
+                  isRequesting ? "/waiting.png" : 
+                  claimedIssues.includes(issueId as string) ? "/claimed.png" : "/claim.png" 
+                  } alt="claim issue button" title={isRequesting ? "waiting to be accepted" : claimedIssues.includes(issueId as string) ? "disclaim issue" : "claim issue" } />
               </button>
               </>}
             
