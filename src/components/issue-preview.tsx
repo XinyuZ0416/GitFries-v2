@@ -1,7 +1,8 @@
+import { useAuthProvider } from '@/providers/auth-provider';
 import formatDate from '@/utils/format-date';
 import { Timestamp } from 'firebase/firestore'
 import Link from 'next/link';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 interface PreviewCardProps {
   issueId: string,
@@ -18,12 +19,16 @@ export default function PreviewCard({
   issueId, description, difficulty, isUrgent, 
   language, time, title, claimedBy
 } : PreviewCardProps) {
-
+  const [ isClaimed, setIsClaimed ] = useState<boolean>(false);
+  const { uid } = useAuthProvider();
   const formattedDate = formatDate(time.toDate());
 
   useEffect(() => {
-    console.log(claimedBy)
-  }, [claimedBy]);
+    if (uid && claimedBy != null) {
+      setIsClaimed(true);
+    }
+    console.log('hi')
+  }, [uid, claimedBy]);
 
   return (
     <>
@@ -32,14 +37,14 @@ export default function PreviewCard({
       ${difficulty === `beginner-friendly` ? `bg-green-200` : `bg-white`}`}
       href={`/issues/${issueId}`} >
       <div className="flex flex-col justify-between px-4 py-2">
-        <h5 className={`text-xl font-bold ${claimedBy != null && `text-gray-300`}`}>{title}</h5>
-        <p className={`font-normal ${claimedBy != null ? `text-gray-300` : `text-gray-700`}`}>{description}</p>
+        <h5 className={`text-xl font-bold ${isClaimed && `text-gray-300`}`}>{title}</h5>
+        <p className={`font-normal ${isClaimed ? `text-gray-300` : `text-gray-700`}`}>{description}</p>
       </div>
 
       <div>
-        <p className={`font-normal ${claimedBy != null ? `text-gray-300` : `text-gray-700`}`}>{formattedDate}</p>
-        <p className={`font-normal ${claimedBy != null ? `text-gray-300` : `text-gray-700`}`}>{language}</p>
-        <p className={`font-normal ${claimedBy != null ? `text-gray-300` : `text-gray-700`}`}>{difficulty}</p>
+        <p className={`font-normal ${isClaimed ? `text-gray-300` : `text-gray-700`}`}>{formattedDate}</p>
+        <p className={`font-normal ${isClaimed ? `text-gray-300` : `text-gray-700`}`}>{language}</p>
+        <p className={`font-normal ${isClaimed ? `text-gray-300` : `text-gray-700`}`}>{difficulty}</p>
       </div>
     </Link>
     </>
