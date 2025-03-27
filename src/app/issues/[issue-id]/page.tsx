@@ -87,24 +87,25 @@ export default function IssueDetailsPage() {
     
   }
 
+  const checkIfHasRequestedToClaim = async() => {
+    try {
+      if (!issueId) return;
+
+      const q = query(collection(db, "users"), where("requestingToClaimIssues", "array-contains", issueId));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        setIsRequesting(true);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   useEffect(() => {
     if(!issueId) return;
 
-    getIssueDoc();
-
-    const checkIfHasRequestedToClaim = async() => {
-      try {
-        const q = query(collection(db, "users"), where("requestingToClaimIssues", "array-contains", issueId));
-        const querySnapshot = await getDocs(q);
-
-        if (!querySnapshot.empty) {
-          setIsRequesting(true);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    
+    getIssueDoc(); 
     checkIfHasRequestedToClaim();
   }, [uid, issueId]);
 
