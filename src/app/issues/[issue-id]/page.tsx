@@ -38,55 +38,59 @@ export default function IssueDetailsPage() {
     favedIssues, setFavedIssues, 
     claimedIssues, setClaimedIssues, 
     disclaimedIssuesCount, setDisclaimedIssuesCount, 
-    requestingToClaimIssues, setRequestingToClaimIssues,
+    setRequestingToClaimIssues,
   } = useCurrentUserDocProvider();
   const router = useRouter();
+
+  const getIssueDoc = async() => {
+    try {
+      if (!issueId) return;
+      
+      const issueDocRef = doc(db, "issues", issueId);
+      const issueDocSnap = await getDoc(issueDocRef);
+
+      if(!issueDocSnap.data()) return;
+
+      // get issue reporter info
+      const userDocRef = doc(db, "users", issueDocSnap.data()!.issueReporterUid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      let picUrl = '/potato.png';
+      try {
+        picUrl = await getDownloadURL(ref(storage, `user-img/${issueDocSnap.data()!.issueReporterUid}`));
+        console.log(picUrl)
+      } catch(error: any) {
+        if(error.code === "storage/object-not-found") {
+          picUrl = '/potato.png';
+        } else {
+          console.error("Error fetching image:", error.code);
+        }
+      }
+
+      setIssueDetails({
+        issueId: issueId,
+        url: issueDocSnap.data()!.url,
+        title: issueDocSnap.data()!.title,
+        description: issueDocSnap.data()!.description,
+        time: issueDocSnap.data()!.time,
+        language: issueDocSnap.data()!.language,
+        difficulty: issueDocSnap.data()!.difficulty,
+        isUrgent: issueDocSnap.data()!.isUrgent,
+        issueReporterUid: issueDocSnap.data()!.issueReporterUid,
+        issueReporterUsername: userDocSnap.exists() ? userDocSnap.data()!.username : "Unknown",
+        issueReporterPicUrl: picUrl,
+        claimedBy: issueDocSnap.data()!.claimedBy,
+      })
+    } catch (error) {
+      console.error(error)
+    }
+    
+  }
 
   useEffect(() => {
     if(!issueId) return;
 
-    const getIssueDoc = async() => {
-      try {
-        const issueDocRef = doc(db, "issues", issueId);
-        const issueDocSnap = await getDoc(issueDocRef);
-
-        if(!issueDocSnap.data()) return;
-
-        // get issue reporter info
-        const userDocRef = doc(db, "users", issueDocSnap.data()!.issueReporterUid);
-        const userDocSnap = await getDoc(userDocRef);
-
-        let picUrl = '/potato.png';
-        try {
-          picUrl = await getDownloadURL(ref(storage, `user-img/${issueDocSnap.data()!.issueReporterUid}`));
-          console.log(picUrl)
-        } catch(error: any) {
-          if(error.code === "storage/object-not-found") {
-            picUrl = '/potato.png';
-          } else {
-            console.error("Error fetching image:", error.code);
-          }
-        }
-
-        setIssueDetails({
-          issueId: issueId,
-          url: issueDocSnap.data()!.url,
-          title: issueDocSnap.data()!.title,
-          description: issueDocSnap.data()!.description,
-          time: issueDocSnap.data()!.time,
-          language: issueDocSnap.data()!.language,
-          difficulty: issueDocSnap.data()!.difficulty,
-          isUrgent: issueDocSnap.data()!.isUrgent,
-          issueReporterUid: issueDocSnap.data()!.issueReporterUid,
-          issueReporterUsername: userDocSnap.exists() ? userDocSnap.data()!.username : "Unknown",
-          issueReporterPicUrl: picUrl,
-          claimedBy: issueDocSnap.data()!.claimedBy,
-        })
-      } catch (error) {
-        console.error(error)
-      }
-      
-    }
+    getIssueDoc();
 
     const checkIfHasRequestedToClaim = async() => {
       try {
@@ -100,7 +104,7 @@ export default function IssueDetailsPage() {
         console.error(error);
       }
     }
-    getIssueDoc();
+    
     checkIfHasRequestedToClaim();
   }, [uid, issueId]);
 
