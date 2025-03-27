@@ -150,7 +150,10 @@ export default function IssueDetailsPage() {
           await updateDoc(doc(db, "users", uid), { requestingToClaimIssues: arrayUnion(issueId) });
           setRequestingToClaimIssues(prev => [...prev, issueId as string]);
 
-          // Create notification
+          // Create notification (expire in 1 month)
+          const now = new Date();
+          const expiryDate = new Date();
+          expiryDate.setMonth(now.getMonth() + 1);
           const notifDocRef = await addDoc(collection(db, "notifications"), {
             recipientId: issueDetails?.issueReporterUid,
             senderId: uid,
@@ -159,7 +162,8 @@ export default function IssueDetailsPage() {
             issueTitle: issueDetails?.title,
             type: NotificationType.REQ_C_I,
             message: requestMessage,
-            timestamp: Timestamp.fromDate(new Date()),
+            timestamp: Timestamp.fromDate(now),
+            expiry: Timestamp.fromDate(expiryDate),
           });
           
           // Add to issue owner coll unreadNotif
@@ -194,7 +198,7 @@ export default function IssueDetailsPage() {
   return (
     <>
     <div className="flex flex-col p-3 m-3 bg-white border border-gray-200 rounded-lg shadow-sm">
-    { issueDetails?.claimedBy != undefined && <h2 className="text-2xl font-bold text-red-600">CLAIMED</h2>}
+    { uid && issueDetails?.claimedBy != undefined && <h2 className="text-2xl font-bold text-red-600">CLAIMED</h2>}
       <div className='flex flex-row'>
         <section id='user-info'>
           <img className="rounded-full size-14" src={issueDetails?.issueReporterPicUrl ? issueDetails.issueReporterPicUrl : '/potato.png'} alt="user profile" />
@@ -216,14 +220,23 @@ export default function IssueDetailsPage() {
               <button onClick={toggleFavIssue}>
                 <img className="size-5" src={favedIssues.includes(issueId as string) ? "/logo.png" : "/empty-fries.png" } alt="favorite button" title={favedIssues.includes(issueId as string) ? "unfavorite issue" : "favorite issue" } />
               </button>
-              
-              {issueDetails?.claimedBy == undefined &&
-              <button onClick={toggleClaimIssue}>
-                <img className="size-5" src={ 
-                  !uid ? "/claim.png" :
-                  isRequesting ? "/waiting.png" : "/claim.png" 
-                  } alt="claim issue button" title={isRequesting ? "waiting to be accepted" : claimedIssues.includes(issueId as string) ? "disclaim issue" : "claim issue" } />
-              </button>}
+
+              { uid ? 
+                // If user signed in, show real issue claimed status
+                // Only show button when issue hasn't been claimed
+                (issueDetails?.claimedBy == undefined && 
+                  <button onClick={toggleClaimIssue}> 
+                    <img className="size-5" 
+                      src={ isRequesting ? "/waiting.png" : "/claim.png" } 
+                      alt={isRequesting ? "waiting to be accepted" : "claim issue" } 
+                      title={isRequesting ? "waiting to be accepted" : "claim issue" } 
+                    />
+                  </button>) :
+                // If user signed out, always show issue as not claimed
+                <button onClick={toggleClaimIssue}>
+                  <img className="size-5" src="/claim.png" alt="claim issue button" title="claim issue" />
+                </button>
+              }
               </>
             }
             

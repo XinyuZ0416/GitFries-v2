@@ -68,7 +68,10 @@ export default function NotificationsClaimCard({currentNotifId, senderUsername, 
   }
   
   const createNewUnreadNotif = async(notifType: NotificationType) => {
-    // Create notification
+    // Create notification (expire in 1 month)
+    const now = new Date();
+    const expiryDate = new Date();
+    expiryDate.setMonth(now.getMonth() + 1);
     const notifDocRef = await addDoc(collection(db, "notifications"), {
       recipientId: senderId,
       senderId: uid,
@@ -77,7 +80,8 @@ export default function NotificationsClaimCard({currentNotifId, senderUsername, 
       issueTitle: issueTitle,
       type: notifType,
       message: '',
-      timestamp: Timestamp.fromDate(new Date()),
+      timestamp: Timestamp.fromDate(now),
+      expiry: Timestamp.fromDate(expiryDate),
     });
 
     // Add to claim-request sender's unreadNotif
