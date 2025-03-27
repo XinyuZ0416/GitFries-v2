@@ -55,16 +55,11 @@ export default function IssueDetailsPage() {
       const userDocRef = doc(db, "users", issueDocSnap.data()!.issueReporterUid);
       const userDocSnap = await getDoc(userDocRef);
 
-      let picUrl = '/potato.png';
+      let picUrl;
       try {
         picUrl = await getDownloadURL(ref(storage, `user-img/${issueDocSnap.data()!.issueReporterUid}`));
-        console.log(picUrl)
       } catch(error: any) {
-        if(error.code === "storage/object-not-found") {
-          picUrl = '/potato.png';
-        } else {
-          console.error("Error fetching image:", error.code);
-        }
+        picUrl = '/potato.png';
       }
 
       setIssueDetails({
@@ -175,10 +170,6 @@ export default function IssueDetailsPage() {
           await updateDoc(doc(db, "users", issueDetails!.issueReporterUid), { unreadNotif: arrayUnion(notifDocRef.id) });
           
           setIsRequesting(true);
-          
-          // TODO: if issue owner accepts, then setClaimedIssues, setIsRequesting(false)
-          // await updateDoc(doc(db, "users", uid), { claimedIssues: arrayUnion(issueId) });
-          // setClaimedIssues(prev => [...prev, issueId as string]);
         }
       } else { // Disclaim an issue
         if (confirm('Are you sure to disclaim this issue? The amount of disclaimed issues will be displayed on your profile.')) {
