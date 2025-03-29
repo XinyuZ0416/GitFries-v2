@@ -38,26 +38,30 @@ export default function NotificatonsPage() {
     // Render read notifications
     const fetchReadNotif = async() => {
       const docSnap = await getDoc(doc(db, "users", uid));
-
+    
       if (docSnap.exists()) {
-        const readNotifArr = docSnap.data().readNotif;
-        const arr: { id: string, timestamp: { seconds: number}}[] = [];
-
+        const readNotifArr = docSnap.data().readNotif || [];
+        const arr: { id: string; timestamp?: { seconds: number }}[] = [];
+    
         for (let notif of readNotifArr) {
-          const docSnap = await getDoc(doc(db, "notifications", notif));
-          arr.push({
-            id: docSnap.id,
-            ...(docSnap.data() as {timestamp: { seconds: number}})
-          })
+          const notifSnap = await getDoc(doc(db, "notifications", notif));
+          if (notifSnap.exists()) {
+            const data = notifSnap.data() as { timestamp?: { seconds: number } };
+            arr.push({
+              id: notifSnap.id,
+              ...data,
+            });
+          }
         }
-
-        // Sort by time
-        arr.sort((a, b) => b.timestamp.seconds - a.timestamp.seconds);
+    
+        // Sort only if timestamp exists
+        arr.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
         setReadNotifArr(arr);
       } else {
-        // TODO: error handling
+        console.error("User document not found");
       }
-    }
+    };
+    
     fetchReadNotif();
   }, [uid]);
   

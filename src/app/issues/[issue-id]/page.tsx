@@ -49,33 +49,29 @@ export default function IssueDetailsPage() {
       
       const issueDocRef = doc(db, "issues", issueId);
       const issueDocSnap = await getDoc(issueDocRef);
+      const issueData = issueDocSnap.data();
 
-      if(!issueDocSnap.data()) return;
+      if(!issueData) return;
 
       // get issue reporter info
-      const userDocRef = doc(db, "users", issueDocSnap.data()!.issueReporterUid);
+      const userDocRef = doc(db, "users", issueData!.issueReporterUid);
       const userDocSnap = await getDoc(userDocRef);
 
-      let picUrl;
-      try {
-        picUrl = await getDownloadURL(ref(storage, `user-img/${issueDocSnap.data()!.issueReporterUid}`));
-      } catch(error: any) {
-        picUrl = '/potato.png';
-      }
+      const picUrl = await getDownloadURL(ref(storage, `user-img/${issueData.issueReporterUid}`)).catch(() => '/potato.png');
 
       setIssueDetails({
         issueId: issueId,
-        url: issueDocSnap.data()!.url,
-        title: issueDocSnap.data()!.title,
-        description: issueDocSnap.data()!.description,
-        time: issueDocSnap.data()!.time,
-        language: issueDocSnap.data()!.language,
-        difficulty: issueDocSnap.data()!.difficulty,
-        isUrgent: issueDocSnap.data()!.isUrgent,
-        issueReporterUid: issueDocSnap.data()!.issueReporterUid,
+        url: issueData!.url,
+        title: issueData!.title,
+        description: issueData!.description,
+        time: issueData!.time,
+        language: issueData!.language,
+        difficulty: issueData!.difficulty,
+        isUrgent: issueData!.isUrgent,
+        issueReporterUid: issueData!.issueReporterUid,
         issueReporterUsername: userDocSnap.exists() ? userDocSnap.data()!.username : "Unknown",
         issueReporterPicUrl: picUrl,
-        claimedBy: issueDocSnap.data()!.claimedBy,
+        claimedBy: issueData!.claimedBy,
       })
     } catch (error) {
       console.error(error)
@@ -84,15 +80,13 @@ export default function IssueDetailsPage() {
   }
 
   const checkIfHasRequestedToClaim = async() => {
-    try {
-      if (!issueId) return;
+    if (!issueId) return;
 
+    try {
       const q = query(collection(db, "users"), where("requestingToClaimIssues", "array-contains", issueId));
       const querySnapshot = await getDocs(q);
 
-      if (!querySnapshot.empty) {
-        setIsRequesting(true);
-      }
+      setIsRequesting(!querySnapshot.empty);
     } catch (error) {
       console.error(error);
     }
@@ -114,15 +108,13 @@ export default function IssueDetailsPage() {
   const toggleFavIssue = async() => {
     // TODO: redirect logged out users to sign in
     try {
-      if (!favedIssues.includes(issueId as string)) {
-        await updateDoc(doc(db, "users", uid), { favedIssues: arrayUnion(issueId) });
-        dispatch({ type: "SET_FAVED_ISSUES", payload: [...favedIssues, issueId as string] });
-        alert('Favorited!');
-      } else {
-        await updateDoc(doc(db, "users", uid), { favedIssues: arrayRemove(issueId) });
-        dispatch({ type: "SET_FAVED_ISSUES", payload: favedIssues.filter(id => id !== issueId) });
-        alert('Removed from favorited issues!');
-      }
+      await updateDoc(doc(db, "users", uid), { 
+        favedIssues: favedIssues.includes(issueId as string) ? arrayRemove(issueId) : arrayUnion(issueId) 
+      });
+      dispatch({ 
+        type: "SET_FAVED_ISSUES", 
+        payload: favedIssues.includes(issueId as string) ? favedIssues.filter(id => id !== issueId) : [...favedIssues, issueId as string] 
+      });
     } catch (error) {
       console.error("Error favoriting issue:", error);
     }
