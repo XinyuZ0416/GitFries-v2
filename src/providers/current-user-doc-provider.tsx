@@ -36,11 +36,11 @@ export const CurrentUserDocProvider = ({children}:{children: React.ReactNode}) =
           const docSnap = await getDoc(ref);
           const data = docSnap.data();
 
-          setFavedIssues(data?.favedIssues ? data?.favedIssues : []);
-          setClaimedIssues(data?.claimedIssues ? data?.claimedIssues : []);
-          setDisclaimedIssuesCount(data?.abandonedIssueCount ? data?.abandonedIssueCount : 0);
-          setRequestingToClaimIssues(data?.requestingToClaimIssues ? data?.requestingToClaimIssues : []);
-          setUnreadNotif(data?.unreadNotif ? data?.unreadNotif : []);
+          setFavedIssues(data?.favedIssues ?? []);
+          setClaimedIssues(data?.claimedIssues ?? []);
+          setDisclaimedIssuesCount(data?.abandonedIssueCount ?? 0);
+          setRequestingToClaimIssues(data?.requestingToClaimIssues ?? []);
+          setUnreadNotif(data?.unreadNotif ?? []);
         } catch (error: any) {
           console.error(error.code)
         }
