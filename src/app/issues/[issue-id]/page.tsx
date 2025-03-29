@@ -196,7 +196,7 @@ export default function IssueDetailsPage() {
   return (
     <>
     <div className="flex flex-col p-3 m-3 bg-white border border-gray-200 rounded-lg shadow-sm">
-    { uid && issueDetails?.claimedBy != undefined && <h2 className="text-2xl font-bold text-red-600">CLAIMED</h2>}
+    { issueId && uid && claimedIssues.includes(issueId) && <h2 className="text-2xl font-bold text-red-600">CLAIMED</h2>}
       <div className='flex flex-row'>
         <section id='user-info'>
           <img className="rounded-full size-14" src={issueDetails?.issueReporterPicUrl ? issueDetails.issueReporterPicUrl : '/potato.png'} alt="user profile" />
@@ -219,17 +219,22 @@ export default function IssueDetailsPage() {
                 <img className="size-5" src={favedIssues.includes(issueId as string) ? "/logo.png" : "/empty-fries.png" } alt="favorite button" title={favedIssues.includes(issueId as string) ? "unfavorite issue" : "favorite issue" } />
               </button>
 
-              { uid ? 
+              { issueId && uid ? 
                 // If user signed in, show real issue claimed status
-                // Only show button when issue hasn't been claimed
-                (issueDetails?.claimedBy == undefined && 
+                ( claimedIssues.includes(issueId) ? 
+                  // If user has claimed, show disclaim button
+                  <button onClick={toggleClaimIssue}> 
+                    <img className="size-5" src="/disclaim.png" alt="disclaim issue" title="disclaim issue" />
+                  </button> :
+                  // waiting btn and claim btn
                   <button onClick={toggleClaimIssue}> 
                     <img className="size-5" 
                       src={ isRequesting ? "/waiting.png" : "/claim.png" } 
-                      alt={isRequesting ? "waiting to be accepted" : "claim issue" } 
+                      alt={ isRequesting ? "waiting to be accepted" : "claim issue" } 
                       title={isRequesting ? "waiting to be accepted" : "claim issue" } 
                     />
-                  </button>) :
+                  </button>
+                ) :
                 // If user signed out, always show issue as not claimed
                 <button onClick={toggleClaimIssue}>
                   <img className="size-5" src="/claim.png" alt="claim issue button" title="claim issue" />
