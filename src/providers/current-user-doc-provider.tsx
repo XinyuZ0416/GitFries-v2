@@ -1,32 +1,56 @@
 'use client'
 import { db } from "@/app/firebase";
 import { DocumentData, doc, getDoc } from "firebase/firestore";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useReducer, useState } from "react";
 import { useAuthProvider } from "./auth-provider";
 
 // current user context
 interface CurrentUserDocContextProps {
+  dispatch: React.Dispatch<Action>,
   favedIssues: string[],
-  setFavedIssues: React.Dispatch<React.SetStateAction<string[]>>,
   claimedIssues: string[],
-  setClaimedIssues: React.Dispatch<React.SetStateAction<string[]>>,
   disclaimedIssuesCount: number,
-  setDisclaimedIssuesCount: React.Dispatch<React.SetStateAction<number>>,
   requestingToClaimIssues: string[],
-  setRequestingToClaimIssues: React.Dispatch<React.SetStateAction<string[]>>,
   unreadNotif: string[],
-  setUnreadNotif: React.Dispatch<React.SetStateAction<string[]>>,
 }
+
+type Action = { type: "SET_FAVED_ISSUES"; payload: string[] } |
+              { type: "SET_CLAIMED_ISSUES"; payload: string[] } |
+              { type: "SET_DISCLAIMED_ISSUES_COUNT"; payload: number } |
+              { type: "SET_REQUESTING_TO_CLAIM_ISSUES"; payload: string[] } |
+              { type: "SET_UNREAD_NOTIF"; payload: string[] };
 
 const CurrentUserDocContext = createContext<CurrentUserDocContextProps | null>(null);
 
 export const CurrentUserDocProvider = ({children}:{children: React.ReactNode}) => {
   const { uid } = useAuthProvider();
-  const [ favedIssues, setFavedIssues ] = useState<string[]>([]);
-  const [ claimedIssues, setClaimedIssues ] = useState<string[]>([]);
-  const [ disclaimedIssuesCount, setDisclaimedIssuesCount ] = useState<number>(0);
-  const [ requestingToClaimIssues, setRequestingToClaimIssues ] = useState<string[]>([])
-  const [ unreadNotif, setUnreadNotif ] = useState<string[]>([])
+
+  const initialState = {
+    favedIssues: [] as string[],
+    claimedIssues: [] as string[],
+    disclaimedIssuesCount: 0,
+    requestingToClaimIssues: [] as string[],
+    unreadNotif: [] as string[],
+  }
+
+  const reducer = (state: typeof initialState, action: Action) => {
+    switch (action.type) {
+      case "SET_FAVED_ISSUES":
+        return { ...state, favedIssues: action.payload };
+      case "SET_CLAIMED_ISSUES":
+        return { ...state, claimedIssues: action.payload };
+      case "SET_DISCLAIMED_ISSUES_COUNT":
+        return { ...state, disclaimedIssuesCount: action.payload }
+      case "SET_REQUESTING_TO_CLAIM_ISSUES":
+        return { ...state, requestingToClaimIssues: action.payload };
+      case "SET_UNREAD_NOTIF":
+        return { ...state, unreadNotif: action.payload };
+      default:
+        return state;
+    }
+  }
+
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     const getCurrentUserDoc = async() => {
@@ -35,12 +59,12 @@ export const CurrentUserDocProvider = ({children}:{children: React.ReactNode}) =
           const ref = doc(db, "users", uid);
           const docSnap = await getDoc(ref);
           const data = docSnap.data();
-
-          setFavedIssues(data?.favedIssues ?? []);
-          setClaimedIssues(data?.claimedIssues ?? []);
-          setDisclaimedIssuesCount(data?.abandonedIssueCount ?? 0);
-          setRequestingToClaimIssues(data?.requestingToClaimIssues ?? []);
-          setUnreadNotif(data?.unreadNotif ?? []);
+        
+          dispatch({ type: "SET_FAVED_ISSUES", payload: data?.favedIssues ?? []});
+          dispatch({ type: "SET_CLAIMED_ISSUES", payload: data?.claimedIssues ?? []});
+          dispatch({ type: "SET_DISCLAIMED_ISSUES_COUNT", payload: data?.disclaimedIssuesCount ?? 0});
+          dispatch({ type: "SET_REQUESTING_TO_CLAIM_ISSUES", payload: data?.requestingToClaimIssues ?? []});
+          dispatch({ type: "SET_UNREAD_NOTIF", payload: data?.unreadNotif ?? []});
         } catch (error: any) {
           console.error(error.code)
         }
@@ -52,11 +76,12 @@ export const CurrentUserDocProvider = ({children}:{children: React.ReactNode}) =
   return(
     <CurrentUserDocContext.Provider 
       value={{
-        favedIssues, setFavedIssues,
-        claimedIssues, setClaimedIssues,
-        disclaimedIssuesCount, setDisclaimedIssuesCount,
-        requestingToClaimIssues, setRequestingToClaimIssues,
-        unreadNotif, setUnreadNotif,
+        dispatch,
+        favedIssues: state.favedIssues,
+        claimedIssues: state.claimedIssues,
+        disclaimedIssuesCount: state.disclaimedIssuesCount, 
+        requestingToClaimIssues: state.requestingToClaimIssues,
+        unreadNotif: state.unreadNotif,
       }}>
       {children}
     </CurrentUserDocContext.Provider>

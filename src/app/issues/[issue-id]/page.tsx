@@ -35,10 +35,11 @@ export default function IssueDetailsPage() {
   const [ requestMessage, setRequestMessage ] = useState<string>();
   const { uid, username } = useAuthProvider();
   const { 
-    favedIssues, setFavedIssues, 
-    claimedIssues, setClaimedIssues, 
-    disclaimedIssuesCount, setDisclaimedIssuesCount, 
-    setRequestingToClaimIssues,
+    favedIssues, 
+    claimedIssues, 
+    disclaimedIssuesCount,
+    requestingToClaimIssues,
+    dispatch
   } = useCurrentUserDocProvider();
   const router = useRouter();
 
@@ -115,11 +116,11 @@ export default function IssueDetailsPage() {
     try {
       if (!favedIssues.includes(issueId as string)) {
         await updateDoc(doc(db, "users", uid), { favedIssues: arrayUnion(issueId) });
-        setFavedIssues(prev => [...prev, issueId as string]);
+        dispatch({ type: "SET_FAVED_ISSUES", payload: [...favedIssues, issueId as string] });
         alert('Favorited!');
       } else {
         await updateDoc(doc(db, "users", uid), { favedIssues: arrayRemove(issueId) });
-        setFavedIssues(prev => prev.filter(id => id !== issueId));
+        dispatch({ type: "SET_FAVED_ISSUES", payload: favedIssues.filter(id => id !== issueId) });
         alert('Removed from favorited issues!');
       }
     } catch (error) {
@@ -148,7 +149,7 @@ export default function IssueDetailsPage() {
 
           // Add to current user coll requestingToClaimIssues
           await updateDoc(doc(db, "users", uid), { requestingToClaimIssues: arrayUnion(issueId) });
-          setRequestingToClaimIssues(prev => [...prev, issueId as string]);
+          dispatch({ type: "SET_REQUESTING_TO_CLAIM_ISSUES", payload: [...requestingToClaimIssues, issueId as string] });
 
           // Create notification (expire in 1 month)
           const now = new Date();
@@ -177,9 +178,10 @@ export default function IssueDetailsPage() {
             claimedIssues: arrayRemove(issueId),
             disclaimedIssuesCount: disclaimedIssuesCount + 1,
           });
-          setClaimedIssues(prev => prev.filter(id => id !== issueId));
-          setDisclaimedIssuesCount(prev => prev + 1);
-          alert('Abandoned issue!');
+
+          dispatch({ type: "SET_CLAIMED_ISSUES", payload: claimedIssues.filter(id => id !== issueId) });
+          dispatch({ type: "SET_DISCLAIMED_ISSUES_COUNT", payload: disclaimedIssuesCount + 1 });
+          alert('Disclaimed issue!');
         }
       }
     } catch (error) {

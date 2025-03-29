@@ -13,7 +13,7 @@ export default function NotificatonsPage() {
   const [ readNotif, setReadNotif ] = useState<string[]>([])
   const [ readNotifArr, setReadNotifArr ] = useState<DocumentData[]>([])
   const { uid } = useAuthProvider();
-  const{ unreadNotif, setUnreadNotif } = useCurrentUserDocProvider();
+  const{ unreadNotif, dispatch } = useCurrentUserDocProvider();
 
   
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function NotificatonsPage() {
 
         // Remove from unread
         await updateDoc(doc(db, "users", uid), {unreadNotif:[]});
-        setUnreadNotif([]);
+        dispatch({ type: "SET_UNREAD_NOTIF", payload: [] });
       }
       moveNotif();
     }
