@@ -100,9 +100,23 @@ export default function IssueDetailsPage() {
   }, [uid, issueId]);
 
   const handleDeleteIssue = async() => {
-    // TODO: double check with user
-    await deleteDoc(doc(db, "issues", issueId as string));
-    router.push('/issues');
+    if (issueDetails?.claimedBy) {
+      alert('You cannot delete a claimed issue!');
+      return;
+    }
+
+    if(!confirm("Are you sure you want to delete this issue? This action cannot be undone.")) return;
+    
+    try{
+      await deleteDoc(doc(db, "issues", issueId as string));
+      await updateDoc(doc(db, "users", uid), {
+        ostedIssues : arrayRemove(issueId),
+        requestingToClaimIssues : arrayRemove(issueId)
+      });
+      router.push('/issues');
+    } catch (error) {
+      console.error("Error deleting issue:", error);
+    }
   }
 
   const toggleFavIssue = async() => {
@@ -210,7 +224,7 @@ export default function IssueDetailsPage() {
   return (
     <>
     <div className="flex flex-col p-3 m-3 bg-white border border-gray-200 rounded-lg shadow-sm">
-    { issueId && uid && claimedIssues.includes(issueId) && <h2 className="text-2xl font-bold text-red-600">CLAIMED</h2>}
+    { issueId && uid && issueDetails?.claimedBy && <h2 className="text-2xl font-bold text-red-600">CLAIMED</h2>}
       <div className='flex flex-row'>
         <section id='user-info'>
           <img className="rounded-full size-14" src={issueDetails?.issueReporterPicUrl ? issueDetails.issueReporterPicUrl : '/potato.png'} alt="user profile" />
