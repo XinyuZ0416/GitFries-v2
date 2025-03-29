@@ -198,6 +198,9 @@ export default function IssueDetailsPage() {
           // Add to issue owner coll unreadNotif
           await updateDoc(doc(db, "users", issueDetails!.issueReporterUid), { unreadNotif: arrayUnion(notifDocRef.id) });
 
+          // Remomve issue claimedBy content
+          await updateDoc(doc(db, "issues", issueId!), { claimedBy: null });
+
           dispatch({ type: "SET_CLAIMED_ISSUES", payload: claimedIssues.filter(id => id !== issueId) });
           dispatch({ type: "SET_DISCLAIMED_ISSUES_COUNT", payload: disclaimedIssuesCount + 1 });
           alert('Disclaimed issue!');
