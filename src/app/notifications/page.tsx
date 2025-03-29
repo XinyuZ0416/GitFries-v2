@@ -8,6 +8,7 @@ import { db } from '../firebase'
 import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider'
 import NotificationsClaimCard from '@/components/notifications-claim-card'
 import IssueClaimDecisionCard from '@/components/issue-claim-decision-card'
+import DisclaimIssueCard from '@/components/disclaim-issue-card'
 
 export default function NotificatonsPage() {
   const [ readNotif, setReadNotif ] = useState<string[]>([])
@@ -78,6 +79,14 @@ export default function NotificatonsPage() {
               issueDescription={notif?.issueDescription}
               time={notif?.timestamp}
             /> : 
+          notif.type === "disclaim_issue" ? 
+            <DisclaimIssueCard
+              key={notif?.id}
+              senderUsername={notif?.senderUsername}
+              issueId={notif?.issueId}
+              issueTitle={notif?.issueTitle}
+              time={notif?.timestamp}
+            /> :
           notif.type === "request_claim_issue_accept" ? 
             <IssueClaimDecisionCard
               key={notif?.id}
