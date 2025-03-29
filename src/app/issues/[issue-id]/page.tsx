@@ -7,7 +7,7 @@ import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider
 import formatDate from '@/utils/format-date'
 import { NotificationType } from '@/utils/notification-types'
 import MDEditor from '@uiw/react-md-editor'
-import { Timestamp, addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore'
+import { Timestamp, addDoc, arrayRemove, arrayUnion, collection, deleteDoc, deleteField, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -199,7 +199,7 @@ export default function IssueDetailsPage() {
           await updateDoc(doc(db, "users", issueDetails!.issueReporterUid), { unreadNotif: arrayUnion(notifDocRef.id) });
 
           // Remomve issue claimedBy content
-          await updateDoc(doc(db, "issues", issueId!), { claimedBy: null });
+          await updateDoc(doc(db, "issues", issueId!), { claimedBy: deleteField() });
 
           dispatch({ type: "SET_CLAIMED_ISSUES", payload: claimedIssues.filter(id => id !== issueId) });
           dispatch({ type: "SET_DISCLAIMED_ISSUES_COUNT", payload: disclaimedIssuesCount + 1 });
