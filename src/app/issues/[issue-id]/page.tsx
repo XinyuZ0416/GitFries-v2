@@ -120,7 +120,12 @@ export default function IssueDetailsPage() {
   }
 
   const toggleFavIssue = async() => {
-    // TODO: redirect logged out users to sign in
+    if (!uid) {
+      alert('Please sign in to favorite an issue');
+      router.push('/sign-in');
+      return;
+    }
+
     try {
       await updateDoc(doc(db, "users", uid), { 
         favedIssues: favedIssues.includes(issueId as string) ? arrayRemove(issueId) : arrayUnion(issueId) 
