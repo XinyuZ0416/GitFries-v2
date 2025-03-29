@@ -179,6 +179,25 @@ export default function IssueDetailsPage() {
             disclaimedIssuesCount: disclaimedIssuesCount + 1,
           });
 
+          // Create notification (expire in 1 month)
+          const now = new Date();
+          const expiryDate = new Date();
+          expiryDate.setMonth(now.getMonth() + 1);
+          const notifDocRef = await addDoc(collection(db, "notifications"), {
+            recipientId: issueDetails?.issueReporterUid,
+            senderId: uid,
+            senderUsername: username,
+            issueId: issueId,
+            issueTitle: issueDetails?.title,
+            type: NotificationType.DIS_I,
+            message: '',
+            timestamp: Timestamp.fromDate(now),
+            expiry: Timestamp.fromDate(expiryDate),
+          });
+          
+          // Add to issue owner coll unreadNotif
+          await updateDoc(doc(db, "users", issueDetails!.issueReporterUid), { unreadNotif: arrayUnion(notifDocRef.id) });
+
           dispatch({ type: "SET_CLAIMED_ISSUES", payload: claimedIssues.filter(id => id !== issueId) });
           dispatch({ type: "SET_DISCLAIMED_ISSUES_COUNT", payload: disclaimedIssuesCount + 1 });
           alert('Disclaimed issue!');
