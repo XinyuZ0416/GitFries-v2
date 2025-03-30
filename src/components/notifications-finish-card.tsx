@@ -4,21 +4,20 @@ import { useAuthProvider } from '@/providers/auth-provider';
 import createNotif from '@/utils/create-notif';
 import formatDate from '@/utils/format-date'
 import { NotificationType } from '@/utils/notification-types';
-import { Timestamp, addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, updateDoc } from 'firebase/firestore'
+import { Timestamp, arrayRemove, arrayUnion, deleteField, doc, getDoc, updateDoc } from 'firebase/firestore'
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 
-interface NotificationsClaimCardProps {
+interface NotificationsFinishCardProps {
   currentNotifId: string
   senderUsername: string,
   senderId: string,
   issueId: string,
   issueTitle: string,
-  message: string,
   time: Timestamp,
 }
 
-export default function IssueClaimCard({currentNotifId, senderUsername, senderId, issueId, issueTitle, message, time}: NotificationsClaimCardProps) {
+export default function IssueFinishCard({currentNotifId, senderUsername, senderId, issueId, issueTitle, time}: NotificationsFinishCardProps) {
   const { uid, username } = useAuthProvider();
   const [ isAccepted, setIsAccepted ] = useState<boolean | null>(null);
 
@@ -40,16 +39,20 @@ export default function IssueClaimCard({currentNotifId, senderUsername, senderId
     getNotifDecision();
   }, [issueId, currentNotifId]);
 
-  const removeFromRequestingToClaimIssues = async() => {
-    await updateDoc(doc(db, "users", senderId), { requestingToClaimIssues: arrayRemove(issueId) });
+  const removeFromRequestingToFinishIssues = async() => {
+    await updateDoc(doc(db, "users", senderId), { requestingToFinishIssues: arrayRemove(issueId) });
   }
 
-  const addToClaimedIssues = async() => {
-    await updateDoc(doc(db, "users", senderId), { claimedIssues: arrayUnion(issueId) });
+  const addToFinishedIssues = async() => {
+    await updateDoc(doc(db, "users", senderId), { finishedIssues: arrayUnion(issueId) });
   }
 
-  const addClaimedBy = async() => {
-    await updateDoc(doc(db, "issues", issueId), { claimedBy: senderId });
+  const addFinishedBy = async() => {
+    await updateDoc(doc(db, "issues", issueId), { finishedBy: senderId });
+  }
+
+  const deleteClaimedBy = async() => {
+    await updateDoc(doc(db, "issues", issueId), { claimedBy: deleteField() });
   }
 
   // For rendering decisions on screen
@@ -58,31 +61,33 @@ export default function IssueClaimCard({currentNotifId, senderUsername, senderId
   }
 
   const handleAccept = () =>{
-    removeFromRequestingToClaimIssues();
+    removeFromRequestingToFinishIssues();
     createNotif(
       senderId, 
       uid, 
       username, 
       issueId!, 
       issueTitle, 
-      NotificationType.REQ_C_I_A, 
+      NotificationType.REQ_F_I_A, 
       ""
     );
-    addToClaimedIssues();
-    addClaimedBy();
+    addToFinishedIssues();
+    addFinishedBy();
+    deleteClaimedBy();
     updateCurrentNotifDecision(true);
     setIsAccepted(true);
   }
 
+  // TODO: modify
   const handleDecline = () =>{
-    removeFromRequestingToClaimIssues();
+    removeFromRequestingToFinishIssues();
     createNotif(
       senderId, 
       uid, 
       username, 
       issueId!, 
       issueTitle, 
-      NotificationType.REQ_C_I_D, 
+      NotificationType.REQ_F_I_D, 
       ""
     );
     updateCurrentNotifDecision(false);
@@ -93,8 +98,7 @@ export default function IssueClaimCard({currentNotifId, senderUsername, senderId
     <>
     <div className='flex flex-col rounded-lg shadow-sm p-4 gap-2 bg-white hover:bg-gray-100'>
       <Link href={`/issues/${issueId}`}>
-      <h3 className='text-lg font-semibold'>@{senderUsername} would like to claim your issue "{issueTitle}"</h3>
-      <p className="font-normal">{message}</p>
+      <h3 className='text-lg font-semibold'>@{senderUsername} would like to finish your issue "{issueTitle}"</h3>
       <p className="font-normal">{formatDate(time?.toDate() as Date)}</p>
       </Link>
       <div className="grid grid-cols-2 gap-2">

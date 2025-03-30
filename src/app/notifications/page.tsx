@@ -6,9 +6,10 @@ import { DocumentData, arrayUnion, deleteField, doc, getDoc, updateDoc } from 'f
 import React, { useEffect, useState } from 'react'
 import { db } from '../firebase'
 import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider'
-import NotificationsClaimCard from '@/components/notifications-claim-card'
+import IssueClaimCard from '@/components/notifications-claim-card'
 import IssueClaimDecisionCard from '@/components/issue-claim-decision-card'
 import DisclaimIssueCard from '@/components/disclaim-issue-card'
+import IssueFinishCard from '@/components/notifications-finish-card'
 
 export default function NotificatonsPage() {
   const [ readNotif, setReadNotif ] = useState<string[]>([])
@@ -70,7 +71,7 @@ export default function NotificatonsPage() {
       { readNotifArr.length > 0 ?
           readNotifArr.map((notif) => (
             notif.type === "request_claim_issue" ? 
-              <NotificationsClaimCard
+              <IssueClaimCard
                 key={notif?.id}
                 currentNotifId={notif?.id}
                 senderUsername={notif?.senderUsername}
@@ -78,7 +79,6 @@ export default function NotificatonsPage() {
                 issueId={notif?.issueId}
                 issueTitle={notif?.issueTitle}
                 message={notif?.message}
-                issueDescription={notif?.issueDescription}
                 time={notif?.timestamp}
               /> : 
             notif.type === "disclaim_issue" ? 
@@ -103,6 +103,16 @@ export default function NotificatonsPage() {
                 key={notif?.id}
                 decision={notif.type}
                 senderUsername={notif?.senderUsername}
+                issueId={notif?.issueId}
+                issueTitle={notif?.issueTitle}
+                time={notif?.timestamp}
+              /> :
+            notif.type === "request_finish_issue" ? 
+              <IssueFinishCard
+                key={notif?.id}
+                currentNotifId={notif?.id}
+                senderUsername={notif?.senderUsername}
+                senderId={notif?.senderId}
                 issueId={notif?.issueId}
                 issueTitle={notif?.issueTitle}
                 time={notif?.timestamp}
