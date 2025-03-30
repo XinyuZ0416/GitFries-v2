@@ -267,26 +267,37 @@ export default function IssueDetailsPage() {
                 <img className="size-5" src={favedIssues.includes(issueId as string) ? "/logo.png" : "/empty-fries.png" } alt="favorite button" title={favedIssues.includes(issueId as string) ? "unfavorite issue" : "favorite issue" } />
               </button>
 
-              { issueId && uid ? 
-                // If user signed in, show real issue claimed status
-                ( claimedIssues.includes(issueId) ? 
-                  // If user has claimed, show disclaim button
-                  <button onClick={toggleClaimIssue}> 
-                    <img className="size-5" src="/disclaim.png" alt="disclaim issue" title="disclaim issue" />
-                  </button> :
-                  // waiting btn and claim btn
-                  <button onClick={toggleClaimIssue}> 
-                    <img className="size-5" 
-                      src={ isRequesting ? "/waiting.png" : "/claim.png" } 
-                      alt={ isRequesting ? "waiting to be accepted" : "claim issue" } 
-                      title={isRequesting ? "waiting to be accepted" : "claim issue" } 
-                    />
+              {
+                issueId && uid ? 
+                  // If user signed in, show real issue claimed status
+                  ( uid === issueDetails?.issueReporterUid ? 
+                      // If current user is issue owner, show nothing
+                      "" : 
+                      // If current user is not issue owner,       
+                      (issueDetails?.claimedBy === undefined || issueDetails?.claimedBy?.length === 0 ? 
+                        // If issue is not claimed, show claim/ waiting btn
+                        <button onClick={toggleClaimIssue}> 
+                          <img className="size-5" 
+                            src={ isRequesting ? "/waiting.png" : "/claim.png" } 
+                            alt={ isRequesting ? "waiting to be accepted" : "claim issue" } 
+                            title={isRequesting ? "waiting to be accepted" : "claim issue" } 
+                          />
+                        </button> : 
+                        // If issue is claimed
+                        (issueDetails?.claimedBy === uid ? 
+                          // If issue is claimed by current user, show disclaim btn
+                          <button onClick={toggleClaimIssue}> 
+                            <img className="size-5" src="/disclaim.png" alt="disclaim issue" title="disclaim issue" />
+                          </button> : 
+                          // If issue is not claimed by current user, show nothing
+                          ""
+                        )   
+                      )
+                  ) :
+                  // If user signed out, show claim issue btn
+                  <button onClick={toggleClaimIssue}>
+                    <img className="size-5" src="/claim.png" alt="claim issue button" title="claim issue" />
                   </button>
-                ) :
-                // If user signed out, always show issue as not claimed
-                <button onClick={toggleClaimIssue}>
-                  <img className="size-5" src="/claim.png" alt="claim issue button" title="claim issue" />
-                </button>
               }
               </>
             }
