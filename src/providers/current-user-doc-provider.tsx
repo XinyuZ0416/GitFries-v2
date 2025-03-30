@@ -1,6 +1,6 @@
 'use client'
 import { db } from "@/app/firebase";
-import { DocumentData, doc, getDoc } from "firebase/firestore";
+import { DocumentData, doc, getDoc, onSnapshot } from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useReducer, useState } from "react";
 import { useAuthProvider } from "./auth-provider";
 
@@ -53,24 +53,23 @@ export const CurrentUserDocProvider = ({children}:{children: React.ReactNode}) =
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    const getCurrentUserDoc = async() => {
-      if(uid){
-        try {
-          const ref = doc(db, "users", uid);
-          const docSnap = await getDoc(ref);
-          const data = docSnap.data();
+    if (!uid) return;
+
+    const ref = doc(db, "users", uid);
+
+    const unsubscribe = onSnapshot(ref, (docSnap) => {
+      if(docSnap.exists()){
+        const data = docSnap.data();
         
-          dispatch({ type: "SET_FAVED_ISSUES", payload: data?.favedIssues ?? []});
-          dispatch({ type: "SET_CLAIMED_ISSUES", payload: data?.claimedIssues ?? []});
-          dispatch({ type: "SET_DISCLAIMED_ISSUES_COUNT", payload: data?.disclaimedIssuesCount ?? 0});
-          dispatch({ type: "SET_REQUESTING_TO_CLAIM_ISSUES", payload: data?.requestingToClaimIssues ?? []});
-          dispatch({ type: "SET_UNREAD_NOTIF", payload: data?.unreadNotif ?? []});
-        } catch (error: any) {
-          console.error(error.code)
-        }
+        dispatch({ type: "SET_FAVED_ISSUES", payload: data?.favedIssues ?? []});
+        dispatch({ type: "SET_CLAIMED_ISSUES", payload: data?.claimedIssues ?? []});
+        dispatch({ type: "SET_DISCLAIMED_ISSUES_COUNT", payload: data?.disclaimedIssuesCount ?? 0});
+        dispatch({ type: "SET_REQUESTING_TO_CLAIM_ISSUES", payload: data?.requestingToClaimIssues ?? []});
+        dispatch({ type: "SET_UNREAD_NOTIF", payload: data?.unreadNotif ?? []});
       }
-    }
-    getCurrentUserDoc();
+    })
+    
+    return () => unsubscribe();
   }, [uid]);
 
   return(
