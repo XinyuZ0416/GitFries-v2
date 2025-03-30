@@ -60,7 +60,7 @@ export default function NotificationsClaimCard({currentNotifId, senderUsername, 
   }
 
   const addClaimedBy = async() => {
-    await updateDoc(doc(db, "issues", issueId), { claimedBy: uid });
+    await updateDoc(doc(db, "issues", issueId), { claimedBy: senderId });
   }
 
   const updateCurrentNotifDecision = async(decision: boolean) => {

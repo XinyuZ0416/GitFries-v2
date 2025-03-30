@@ -9,6 +9,7 @@ import { NotificationType } from '@/utils/notification-types'
 import MDEditor from '@uiw/react-md-editor'
 import { Timestamp, addDoc, arrayRemove, arrayUnion, collection, deleteDoc, deleteField, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
+import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
@@ -24,7 +25,8 @@ type IssueDetailsType = {
   issueReporterUid: string,
   issueReporterUsername: string,
   issueReporterPicUrl: string,
-  claimedBy?: string
+  claimedBy?: string,
+  issueClaimerUsername: string
 }
 
 export default function IssueDetailsPage() {
@@ -53,6 +55,12 @@ export default function IssueDetailsPage() {
 
       if(!issueData) return;
 
+      let issueClaimerUsername;
+      if(issueData.claimedBy){
+        const docSnap = await getDoc(doc(db, "users", issueData.claimedBy))
+        issueClaimerUsername = docSnap.data()!.username
+      }
+
       // get issue reporter info
       const userDocRef = doc(db, "users", issueData!.issueReporterUid);
       const userDocSnap = await getDoc(userDocRef);
@@ -72,6 +80,7 @@ export default function IssueDetailsPage() {
         issueReporterUsername: userDocSnap.exists() ? userDocSnap.data()!.username : "Unknown",
         issueReporterPicUrl: picUrl,
         claimedBy: issueData!.claimedBy,
+        issueClaimerUsername: issueClaimerUsername
       })
     } catch (error) {
       console.error(error)
@@ -229,7 +238,13 @@ export default function IssueDetailsPage() {
   return (
     <>
     <div className="flex flex-col p-3 m-3 bg-white border border-gray-200 rounded-lg shadow-sm">
-    { issueId && uid && issueDetails?.claimedBy && <h2 className="text-2xl font-bold text-red-600">CLAIMED</h2>}
+    { issueId && uid && issueDetails?.claimedBy&& 
+      <h2 className="text-2xl font-bold text-red-600">CLAIMED BY 
+        <Link href={`/profile/${issueDetails?.claimedBy}`}>
+        {issueDetails.issueClaimerUsername}
+        </Link>
+      </h2>
+    }
       <div className='flex flex-row'>
         <section id='user-info'>
           <img className="rounded-full size-14" src={issueDetails?.issueReporterPicUrl ? issueDetails.issueReporterPicUrl : '/potato.png'} alt="user profile" />
