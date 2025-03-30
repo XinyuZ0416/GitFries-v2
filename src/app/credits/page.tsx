@@ -20,6 +20,7 @@ export default function CreditsPage() {
       <a href="https://www.flaticon.com/free-icons/warning" title="warning icons">Warning icons created by Freepik - Flaticon</a>
       <a href="https://www.flaticon.com/free-icons/waiting" title="waiting icons">Waiting icons created by Eucalyp - Flaticon</a>
       <a href="https://www.flaticon.com/free-icons/abandon" title="abandon icons">Abandon icons created by Freepik - Flaticon</a>
+      <a href="https://www.flaticon.com/free-icons/correct" title="correct icons">Correct icons created by Aldo Cervantes - Flaticon</a>
     </div>
     </>
   )

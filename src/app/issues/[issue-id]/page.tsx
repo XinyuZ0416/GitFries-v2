@@ -92,10 +92,14 @@ export default function IssueDetailsPage() {
     if (!issueId) return;
 
     try {
-      const q = query(collection(db, "users"), where("requestingToClaimIssues", "array-contains", issueId));
-      const querySnapshot = await getDocs(q);
+      const claimQ = query(collection(db, "users"), where("requestingToClaimIssues", "array-contains", issueId));
+      const claimQuerySnapshot = await getDocs(claimQ);
 
-      setIsRequesting(!querySnapshot.empty);
+      const finishQ = query(collection(db, "users"), where("requestingToFinishIssues", "array-contains", issueId));
+      const finishQuerySnapshot = await getDocs(finishQ);
+
+      // If issue is being requested to claim, or is being requested to finish, set as true
+      setIsRequesting(!claimQuerySnapshot.empty || !finishQuerySnapshot.empty);
     } catch (error) {
       console.error(error);
     }
@@ -157,7 +161,7 @@ export default function IssueDetailsPage() {
     try {
       if (!claimedIssues.includes(issueId as string)) { // Request to claim an issue if it hasn't be claimed
         if (isRequesting) {
-          alert('You have already requested to claim this issue.');
+          alert('You have already sent request.');
           return;
         }
         
@@ -231,8 +235,35 @@ export default function IssueDetailsPage() {
     }
   }
 
-  const handleReportIssue = async() => {
+  const handleFinishIssue = async() => {
+    if (isRequesting) {
+      alert('You have already sent request.');
+      return;
+    }
 
+    // Update issue requester requestingToFinishIssues
+    await updateDoc(doc(db, "users", uid), { requestingToFinishIssues: arrayUnion(issueId) });
+
+    // Create notification (expire in 1 month)
+    const now = new Date();
+    const expiryDate = new Date();
+    expiryDate.setMonth(now.getMonth() + 1);
+    const notifDocRef = await addDoc(collection(db, "notifications"), {
+      recipientId: issueDetails?.issueReporterUid,
+      senderId: uid,
+      senderUsername: username,
+      issueId: issueId,
+      issueTitle: issueDetails?.title,
+      type: NotificationType.REQ_F_I,
+      message: '',
+      timestamp: Timestamp.fromDate(now),
+      expiry: Timestamp.fromDate(expiryDate),
+    });
+    
+    // Add to issue owner coll unreadNotif
+    await updateDoc(doc(db, "users", issueDetails!.issueReporterUid), { unreadNotif: arrayUnion(notifDocRef.id) });
+    setIsRequesting(true);
+    alert("The request to finish this issue has been sent. The issue owner will soon accept/ decline this request. If no response, this request will be automatically accepted after 2 weeks.");
   }
 
   return (
@@ -285,10 +316,19 @@ export default function IssueDetailsPage() {
                         </button> : 
                         // If issue is claimed
                         (issueDetails?.claimedBy === uid ? 
-                          // If issue is claimed by current user, show disclaim btn
+                          // If issue is claimed by current user, show disclaim btn and finish btn
+                          <>
                           <button onClick={toggleClaimIssue}> 
                             <img className="size-5" src="/disclaim.png" alt="disclaim issue" title="disclaim issue" />
-                          </button> : 
+                          </button>
+                          <button onClick={handleFinishIssue}> 
+                            <img className="size-5" 
+                              src={ isRequesting ? "/waiting.png" : "/finish.png" } 
+                              alt={ isRequesting ? "waiting to be accepted" : "finish issue" } 
+                              title={ isRequesting ? "waiting to be accepted" : "finish issue" } 
+                            />
+                          </button>
+                          </> : 
                           // If issue is not claimed by current user, show nothing
                           ""
                         )   
@@ -305,12 +345,7 @@ export default function IssueDetailsPage() {
             {uid === issueDetails?.issueReporterUid && 
               <button onClick={handleDeleteIssue}>
                 <img className="size-5" src="/delete.png" alt="delete button" title="delete issue" />
-              </button>}       
-
-            {uid !== issueDetails?.issueReporterUid && 
-              <button onClick={handleReportIssue}>
-                <img className="size-5" src="/report.png" alt="report button" title="report issue" />
-              </button>}  
+              </button>}
           </div>
         </section>
       </div>
