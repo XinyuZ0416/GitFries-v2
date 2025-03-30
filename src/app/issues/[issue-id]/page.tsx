@@ -4,6 +4,7 @@ import AddCommentBox from '@/components/add-comment-box'
 import IssueCommentCard from '@/components/issue-comment-card'
 import { useAuthProvider } from '@/providers/auth-provider'
 import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider'
+import createNotif from '@/utils/create-notif'
 import formatDate from '@/utils/format-date'
 import { NotificationType } from '@/utils/notification-types'
 import MDEditor from '@uiw/react-md-editor'
@@ -174,25 +175,16 @@ export default function IssueDetailsPage() {
           // Add to current user coll requestingToClaimIssues
           await updateDoc(doc(db, "users", uid), { requestingToClaimIssues: arrayUnion(issueId) });
           dispatch({ type: "SET_REQUESTING_TO_CLAIM_ISSUES", payload: [...requestingToClaimIssues, issueId as string] });
-
-          // Create notification (expire in 1 month)
-          const now = new Date();
-          const expiryDate = new Date();
-          expiryDate.setMonth(now.getMonth() + 1);
-          const notifDocRef = await addDoc(collection(db, "notifications"), {
-            recipientId: issueDetails?.issueReporterUid,
-            senderId: uid,
-            senderUsername: username,
-            issueId: issueId,
-            issueTitle: issueDetails?.title,
-            type: NotificationType.REQ_C_I,
-            message: requestMessage,
-            timestamp: Timestamp.fromDate(now),
-            expiry: Timestamp.fromDate(expiryDate),
-          });
           
-          // Add to issue owner coll unreadNotif
-          await updateDoc(doc(db, "users", issueDetails!.issueReporterUid), { unreadNotif: arrayUnion(notifDocRef.id) });
+          createNotif(
+            issueDetails?.issueReporterUid!, 
+            uid, 
+            username, 
+            issueId!, 
+            issueDetails?.title!, 
+            NotificationType.REQ_C_I, 
+            requestMessage
+          );
           
           setIsRequesting(true);
         }
@@ -203,25 +195,16 @@ export default function IssueDetailsPage() {
             disclaimedIssuesCount: disclaimedIssuesCount + 1,
           });
 
-          // Create notification (expire in 1 month)
-          const now = new Date();
-          const expiryDate = new Date();
-          expiryDate.setMonth(now.getMonth() + 1);
-          const notifDocRef = await addDoc(collection(db, "notifications"), {
-            recipientId: issueDetails?.issueReporterUid,
-            senderId: uid,
-            senderUsername: username,
-            issueId: issueId,
-            issueTitle: issueDetails?.title,
-            type: NotificationType.DIS_I,
-            message: '',
-            timestamp: Timestamp.fromDate(now),
-            expiry: Timestamp.fromDate(expiryDate),
-          });
+          createNotif(
+            issueDetails?.issueReporterUid!, 
+            uid, 
+            username, 
+            issueId!, 
+            issueDetails?.title!, 
+            NotificationType.DIS_I, 
+            ""
+          );
           
-          // Add to issue owner coll unreadNotif
-          await updateDoc(doc(db, "users", issueDetails!.issueReporterUid), { unreadNotif: arrayUnion(notifDocRef.id) });
-
           // Remomve issue claimedBy content
           await updateDoc(doc(db, "issues", issueId!), { claimedBy: deleteField() });
 
@@ -243,25 +226,17 @@ export default function IssueDetailsPage() {
 
     // Update issue requester requestingToFinishIssues
     await updateDoc(doc(db, "users", uid), { requestingToFinishIssues: arrayUnion(issueId) });
-
-    // Create notification (expire in 1 month)
-    const now = new Date();
-    const expiryDate = new Date();
-    expiryDate.setMonth(now.getMonth() + 1);
-    const notifDocRef = await addDoc(collection(db, "notifications"), {
-      recipientId: issueDetails?.issueReporterUid,
-      senderId: uid,
-      senderUsername: username,
-      issueId: issueId,
-      issueTitle: issueDetails?.title,
-      type: NotificationType.REQ_F_I,
-      message: '',
-      timestamp: Timestamp.fromDate(now),
-      expiry: Timestamp.fromDate(expiryDate),
-    });
     
-    // Add to issue owner coll unreadNotif
-    await updateDoc(doc(db, "users", issueDetails!.issueReporterUid), { unreadNotif: arrayUnion(notifDocRef.id) });
+    createNotif(
+      issueDetails?.issueReporterUid!, 
+      uid, 
+      username, 
+      issueId!, 
+      issueDetails?.title!, 
+      NotificationType.REQ_F_I, 
+      ""
+    );
+    
     setIsRequesting(true);
     alert("The request to finish this issue has been sent. The issue owner will soon accept/ decline this request. If no response, this request will be automatically accepted after 2 weeks.");
   }
@@ -311,7 +286,7 @@ export default function IssueDetailsPage() {
                           <img className="size-5" 
                             src={ isRequesting ? "/waiting.png" : "/claim.png" } 
                             alt={ isRequesting ? "waiting to be accepted" : "claim issue" } 
-                            title={isRequesting ? "waiting to be accepted" : "claim issue" } 
+                            title={ isRequesting ? "waiting to be accepted" : "claim issue" } 
                           />
                         </button> : 
                         // If issue is claimed

@@ -1,6 +1,7 @@
 'use client'
 import { db } from '@/app/firebase';
 import { useAuthProvider } from '@/providers/auth-provider';
+import createNotif from '@/utils/create-notif';
 import formatDate from '@/utils/format-date'
 import { NotificationType } from '@/utils/notification-types';
 import { Timestamp, addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, updateDoc } from 'firebase/firestore'
@@ -66,31 +67,18 @@ export default function NotificationsClaimCard({currentNotifId, senderUsername, 
   const updateCurrentNotifDecision = async(decision: boolean) => {
     await updateDoc(doc(db, "notifications", currentNotifId), { accepted: decision });
   }
-  
-  const createNewUnreadNotif = async(notifType: NotificationType) => {
-    // Create notification (expire in 1 month)
-    const now = new Date();
-    const expiryDate = new Date();
-    expiryDate.setMonth(now.getMonth() + 1);
-    const notifDocRef = await addDoc(collection(db, "notifications"), {
-      recipientId: senderId,
-      senderId: uid,
-      senderUsername: username,
-      issueId: issueId,
-      issueTitle: issueTitle,
-      type: notifType,
-      message: '',
-      timestamp: Timestamp.fromDate(now),
-      expiry: Timestamp.fromDate(expiryDate),
-    });
-
-    // Add to claim-request sender's unreadNotif
-    await updateDoc(doc(db, "users", senderId), { unreadNotif: arrayUnion(notifDocRef.id) });
-  }
 
   const handleAccept = () =>{
     removeFromRequestingToClaimIssues();
-    createNewUnreadNotif(NotificationType.REQ_C_I_A);
+    createNotif(
+      senderId, 
+      uid, 
+      username, 
+      issueId!, 
+      issueTitle, 
+      NotificationType.REQ_C_I_A, 
+      ""
+    );
     addToClaimedIssues();
     addClaimedBy();
     updateCurrentNotifDecision(true);
@@ -99,7 +87,15 @@ export default function NotificationsClaimCard({currentNotifId, senderUsername, 
 
   const handleDecline = () =>{
     removeFromRequestingToClaimIssues();
-    createNewUnreadNotif(NotificationType.REQ_C_I_D);
+    createNotif(
+      senderId, 
+      uid, 
+      username, 
+      issueId!, 
+      issueTitle, 
+      NotificationType.REQ_C_I_D, 
+      ""
+    );
     updateCurrentNotifDecision(false);
     setIsAccepted(false);
   }
