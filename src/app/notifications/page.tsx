@@ -45,7 +45,7 @@ export default function NotificatonsPage() {
   // Move unread notifications to read 
   useEffect(() => {
     if (!uid) return;
-    
+
     const moveNotif = async() => {
       if (unreadNotif.length > 0) {
         // Add to read
@@ -67,48 +67,49 @@ export default function NotificatonsPage() {
     <>
     <div className='flex flex-col gap-2'>
       Your notifications will be automatically deleted after 1 month
-      {
-        readNotifArr.map((notif) => (
-          notif.type === "request_claim_issue" ? 
-            <NotificationsClaimCard
-              key={notif?.id}
-              currentNotifId={notif?.id}
-              senderUsername={notif?.senderUsername}
-              senderId={notif?.senderId}
-              issueId={notif?.issueId}
-              issueTitle={notif?.issueTitle}
-              message={notif?.message}
-              issueDescription={notif?.issueDescription}
-              time={notif?.timestamp}
-            /> : 
-          notif.type === "disclaim_issue" ? 
-            <DisclaimIssueCard
-              key={notif?.id}
-              senderUsername={notif?.senderUsername}
-              issueId={notif?.issueId}
-              issueTitle={notif?.issueTitle}
-              time={notif?.timestamp}
-            /> :
-          notif.type === "request_claim_issue_accept" ? 
-            <IssueClaimDecisionCard
-              key={notif?.id}
-              decision={notif.type}
-              senderUsername={notif?.senderUsername}
-              issueId={notif?.issueId}
-              issueTitle={notif?.issueTitle}
-              time={notif?.timestamp}
-            /> :
-          notif.type === "request_claim_issue_decline" ? 
-            <IssueClaimDecisionCard
-              key={notif?.id}
-              decision={notif.type}
-              senderUsername={notif?.senderUsername}
-              issueId={notif?.issueId}
-              issueTitle={notif?.issueTitle}
-              time={notif?.timestamp}
-            /> :
-          ''
-        ))
+      { readNotifArr.length > 0 ?
+          readNotifArr.map((notif) => (
+            notif.type === "request_claim_issue" ? 
+              <NotificationsClaimCard
+                key={notif?.id}
+                currentNotifId={notif?.id}
+                senderUsername={notif?.senderUsername}
+                senderId={notif?.senderId}
+                issueId={notif?.issueId}
+                issueTitle={notif?.issueTitle}
+                message={notif?.message}
+                issueDescription={notif?.issueDescription}
+                time={notif?.timestamp}
+              /> : 
+            notif.type === "disclaim_issue" ? 
+              <DisclaimIssueCard
+                key={notif?.id}
+                senderUsername={notif?.senderUsername}
+                issueId={notif?.issueId}
+                issueTitle={notif?.issueTitle}
+                time={notif?.timestamp}
+              /> :
+            notif.type === "request_claim_issue_accept" ? 
+              <IssueClaimDecisionCard
+                key={notif?.id}
+                decision={notif.type}
+                senderUsername={notif?.senderUsername}
+                issueId={notif?.issueId}
+                issueTitle={notif?.issueTitle}
+                time={notif?.timestamp}
+              /> :
+            notif.type === "request_claim_issue_decline" ? 
+              <IssueClaimDecisionCard
+                key={notif?.id}
+                decision={notif.type}
+                senderUsername={notif?.senderUsername}
+                issueId={notif?.issueId}
+                issueTitle={notif?.issueTitle}
+                time={notif?.timestamp}
+              /> :
+            ''
+          )) : 
+        "No notifications yet"
       }
       
       {/* <NotificationsCommentCard />
