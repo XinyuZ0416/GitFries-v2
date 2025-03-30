@@ -16,53 +16,51 @@ export default function NotificatonsPage() {
   const { uid } = useAuthProvider();
   const{ unreadNotif, dispatch } = useCurrentUserDocProvider();
 
+  const fetchReadNotif = async() => {
+    const docSnap = await getDoc(doc(db, "users", uid));
   
+    if (docSnap.exists()) {
+      const readNotifArr = docSnap.data().readNotif || [];
+      const arr: { id: string; timestamp?: { seconds: number }}[] = [];
+  
+      for (let notif of readNotifArr) {
+        const notifSnap = await getDoc(doc(db, "notifications", notif));
+        if (notifSnap.exists()) {
+          const data = notifSnap.data() as { timestamp?: { seconds: number } };
+          arr.push({
+            id: notifSnap.id,
+            ...data,
+          });
+        }
+      }
+  
+      // Sort only if timestamp exists
+      arr.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+      setReadNotifArr(arr);
+    } else {
+      console.error("User document not found");
+    }
+  };
+
+  // Move unread notifications to read 
   useEffect(() => {
     if (!uid) return;
-
-    if (unreadNotif.length > 0) { // Move unread notifications to read
-      const moveNotif = async() => {
+    
+    const moveNotif = async() => {
+      if (unreadNotif.length > 0) {
         // Add to read
         for (let notif of unreadNotif) {
           await updateDoc(doc(db, "users", uid), {readNotif:arrayUnion(notif)});
-          setReadNotif(prev => [...prev, notif]);
         }
 
         // Delete unread
         await updateDoc(doc(db, "users", uid), {unreadNotif:deleteField()});
         dispatch({ type: "SET_UNREAD_NOTIF", payload: [] });
       }
-      moveNotif();
+      await fetchReadNotif();
     }
 
-    // Render read notifications
-    const fetchReadNotif = async() => {
-      const docSnap = await getDoc(doc(db, "users", uid));
-    
-      if (docSnap.exists()) {
-        const readNotifArr = docSnap.data().readNotif || [];
-        const arr: { id: string; timestamp?: { seconds: number }}[] = [];
-    
-        for (let notif of readNotifArr) {
-          const notifSnap = await getDoc(doc(db, "notifications", notif));
-          if (notifSnap.exists()) {
-            const data = notifSnap.data() as { timestamp?: { seconds: number } };
-            arr.push({
-              id: notifSnap.id,
-              ...data,
-            });
-          }
-        }
-    
-        // Sort only if timestamp exists
-        arr.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
-        setReadNotifArr(arr);
-      } else {
-        console.error("User document not found");
-      }
-    };
-    
-    fetchReadNotif();
+    moveNotif();
   }, [uid]);
   
   return (
