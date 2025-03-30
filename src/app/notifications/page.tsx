@@ -2,7 +2,7 @@
 import NotificationsCommentCard from '@/components/notifications-comment-card'
 import NotificationsReplyCard from '@/components/notifications-reply-card'
 import { useAuthProvider } from '@/providers/auth-provider'
-import { DocumentData, arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore'
+import { DocumentData, arrayUnion, deleteField, doc, getDoc, updateDoc } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { db } from '../firebase'
 import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider'
@@ -28,8 +28,8 @@ export default function NotificatonsPage() {
           setReadNotif(prev => [...prev, notif]);
         }
 
-        // Remove from unread
-        await updateDoc(doc(db, "users", uid), {unreadNotif:[]});
+        // Delete unread
+        await updateDoc(doc(db, "users", uid), {unreadNotif:deleteField()});
         dispatch({ type: "SET_UNREAD_NOTIF", payload: [] });
       }
       moveNotif();
