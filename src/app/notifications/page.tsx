@@ -10,6 +10,7 @@ import IssueClaimCard from '@/components/notifications-claim-card'
 import IssueClaimDecisionCard from '@/components/issue-claim-decision-card'
 import DisclaimIssueCard from '@/components/disclaim-issue-card'
 import IssueFinishCard from '@/components/notifications-finish-card'
+import IssueFinishDecisionCard from '@/components/issue-finish-decision-card'
 
 export default function NotificatonsPage() {
   const [ readNotif, setReadNotif ] = useState<string[]>([])
@@ -113,6 +114,24 @@ export default function NotificatonsPage() {
                 currentNotifId={notif?.id}
                 senderUsername={notif?.senderUsername}
                 senderId={notif?.senderId}
+                issueId={notif?.issueId}
+                issueTitle={notif?.issueTitle}
+                time={notif?.timestamp}
+              /> :
+            notif.type === "request_finish_issue_accept" ? 
+              <IssueFinishDecisionCard
+                key={notif?.id}
+                decision={notif.type}
+                senderUsername={notif?.senderUsername}
+                issueId={notif?.issueId}
+                issueTitle={notif?.issueTitle}
+                time={notif?.timestamp}
+              /> :
+            notif.type === "request_finish_issue_decline" ? 
+              <IssueFinishDecisionCard
+                key={notif?.id}
+                decision={notif.type}
+                senderUsername={notif?.senderUsername}
                 issueId={notif?.issueId}
                 issueTitle={notif?.issueTitle}
                 time={notif?.timestamp}
