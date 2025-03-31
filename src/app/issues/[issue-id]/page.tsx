@@ -362,7 +362,7 @@ export default function IssueDetailsPage() {
 
       <AddCommentBox />
 
-      <IssueCommentCard />
+      {/* <IssueCommentCard /> */}
     </div>
     </>
   )
