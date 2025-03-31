@@ -99,8 +99,8 @@ export default function IssueDetailsPage() {
     
   }
 
-  const checkIfHasRequestedToClaim = async() => {
-    if (!issueId || !uid) return; // Ensure we check only for logged-in users
+  const checkIfHasRequestedToClaimOrFinish = async() => {
+    if (!issueId || !uid) return;
   
     try {
       const userDocRef = doc(db, "users", uid);
@@ -108,7 +108,7 @@ export default function IssueDetailsPage() {
   
       if (userDocSnap.exists()) {
         const userData = userDocSnap.data();
-        setIsRequesting(userData.requestingToClaimIssues?.includes(issueId) || false);
+        setIsRequesting(userData.requestingToClaimIssues?.includes(issueId) || userData.requestingToFinishIssues?.includes(issueId) || false);
       }
     } catch (error) {
       console.error(error);
@@ -119,7 +119,7 @@ export default function IssueDetailsPage() {
     if(!issueId) return;
 
     getIssueDoc(); 
-    checkIfHasRequestedToClaim();
+    checkIfHasRequestedToClaimOrFinish();
   }, [uid, issueId]);
 
   const handleDeleteIssue = async() => {
