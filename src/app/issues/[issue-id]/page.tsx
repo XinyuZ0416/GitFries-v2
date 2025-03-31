@@ -28,6 +28,8 @@ type IssueDetailsType = {
   issueReporterPicUrl: string,
   claimedBy?: string,
   issueClaimerUsername: string
+  finishedBy?: string,
+  issueFinisherUsername: string
 }
 
 export default function IssueDetailsPage() {
@@ -62,6 +64,12 @@ export default function IssueDetailsPage() {
         issueClaimerUsername = docSnap.data()!.username
       }
 
+      let issueFinisherUsername;
+      if(issueData.finishedBy){
+        const docSnap = await getDoc(doc(db, "users", issueData.finishedBy))
+        issueFinisherUsername = docSnap.data()!.username
+      }
+
       // get issue reporter info
       const userDocRef = doc(db, "users", issueData!.issueReporterUid);
       const userDocSnap = await getDoc(userDocRef);
@@ -81,7 +89,9 @@ export default function IssueDetailsPage() {
         issueReporterUsername: userDocSnap.exists() ? userDocSnap.data()!.username : "Unknown",
         issueReporterPicUrl: picUrl,
         claimedBy: issueData!.claimedBy,
-        issueClaimerUsername: issueClaimerUsername
+        issueClaimerUsername: issueClaimerUsername,
+        finishedBy: issueData!.finishedBy,
+        issueFinisherUsername: issueFinisherUsername,
       })
     } catch (error) {
       console.error(error)
@@ -248,6 +258,13 @@ export default function IssueDetailsPage() {
       <h2 className="text-2xl font-bold text-red-600">CLAIMED BY 
         <Link href={`/profile/${issueDetails?.claimedBy}`}>
         {issueDetails.issueClaimerUsername}
+        </Link>
+      </h2>
+    }
+    { issueId && uid && issueDetails?.finishedBy&& 
+      <h2 className="text-2xl font-bold text-green-500">Finished BY 
+        <Link href={`/profile/${issueDetails?.finishedBy}`}>
+        {issueDetails.issueFinisherUsername}
         </Link>
       </h2>
     }

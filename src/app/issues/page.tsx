@@ -58,6 +58,7 @@ export default function IssuesPage() {
             time: issueData.time,
             title: issueData.title,
             claimedBy: issueData.claimedBy,
+            finishedBy: issueData.finishedBy,
           };
         })
       );
