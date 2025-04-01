@@ -38,7 +38,7 @@ export default function IssueDetailsPage() {
   const [ issueDetails, setIssueDetails ] = useState<IssueDetailsType | null>(null);
   const [ isRequesting, setIsRequesting ] = useState<boolean>(false);
   const [ requestMessage, setRequestMessage ] = useState<string>();
-  const { uid, username } = useAuthProvider();
+  const { uid, username, userPicUrl } = useAuthProvider();
   const { 
     favedIssues, 
     claimedIssues, 
@@ -360,7 +360,15 @@ export default function IssueDetailsPage() {
         <MDEditor.Markdown source={issueDetails?.description} />
       </section>
 
-      <AddCommentBox />
+      {issueDetails && issueId && issueDetails.issueReporterUid && <AddCommentBox 
+        issueId={issueId}
+        issueReporterUid={issueDetails!.issueReporterUid}
+        issueTitle={issueDetails!.title}
+        commenterUid={uid}
+        commenterUsername={username}
+        commenterPicUrl={userPicUrl}
+      />}
+      
 
       {/* <IssueCommentCard /> */}
     </div>

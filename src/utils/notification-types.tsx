@@ -6,4 +6,5 @@ export enum NotificationType {
   REQ_F_I_A = "request_finish_issue_accept",
   REQ_F_I_D = "request_finish_issue_decline",
   DIS_I = "disclaim_issue",
+  COM_I = "comment_on_issue"
 }
