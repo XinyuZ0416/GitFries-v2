@@ -40,7 +40,7 @@ export default function AddCommentBox({
 
     try {
       // Create doc in comments coll
-      const docRef = await addDoc(collection(db, "comments"), {
+      const commentDocRef = await addDoc(collection(db, "comments"), {
         issueReporterUid: issueReporterUid,
         issueTitle: issueTitle,
         commenterUid: commenterUid,
@@ -57,7 +57,7 @@ export default function AddCommentBox({
         issueId,
         issueTitle,
         NotificationType.COM_I, 
-        comment
+        commentDocRef.id
       );
     } catch (error) {
       console.error(error);
