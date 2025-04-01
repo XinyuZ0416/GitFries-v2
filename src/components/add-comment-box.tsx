@@ -57,6 +57,7 @@ export default function AddCommentBox({
         issueId,
         issueTitle,
         NotificationType.COM_I, 
+        comment,
         commentDocRef.id
       );
     } catch (error) {

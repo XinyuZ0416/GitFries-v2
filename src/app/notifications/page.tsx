@@ -1,16 +1,15 @@
 'use client'
-import NotificationsCommentCard from '@/components/notifications-comment-card'
-import NotificationsReplyCard from '@/components/notifications-reply-card'
 import { useAuthProvider } from '@/providers/auth-provider'
 import { DocumentData, arrayUnion, deleteField, doc, getDoc, updateDoc } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { db } from '../firebase'
 import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider'
-import IssueClaimCard from '@/components/notifications-claim-card'
+import IssueClaimCard from '@/components/notif-claim-card'
 import IssueClaimDecisionCard from '@/components/issue-claim-decision-card'
 import DisclaimIssueCard from '@/components/disclaim-issue-card'
-import IssueFinishCard from '@/components/notifications-finish-card'
+import IssueFinishCard from '@/components/notif-finish-card'
 import IssueFinishDecisionCard from '@/components/issue-finish-decision-card'
+import CommentOnIssueCard from '@/components/notif-comment-on-issue-card'
 
 export default function NotificatonsPage() {
   const [ readNotif, setReadNotif ] = useState<string[]>([])
@@ -134,6 +133,15 @@ export default function NotificatonsPage() {
                 senderUsername={notif?.senderUsername}
                 issueId={notif?.issueId}
                 issueTitle={notif?.issueTitle}
+                time={notif?.timestamp}
+              /> :
+            notif.type === "comment_on_issue" ? 
+              <CommentOnIssueCard
+                key={notif?.id}
+                senderUsername={notif?.senderUsername}
+                issueId={notif?.issueId}
+                issueTitle={notif?.issueTitle}
+                comment={notif?.message}
                 time={notif?.timestamp}
               /> :
             ''
