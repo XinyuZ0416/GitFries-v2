@@ -8,7 +8,7 @@ import { Timestamp, addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, up
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 
-interface NotificationsClaimCardProps {
+interface ClaimIssueRequestCardProps {
   currentNotifId: string
   senderUsername: string,
   senderId: string,
@@ -18,7 +18,7 @@ interface NotificationsClaimCardProps {
   time: Timestamp,
 }
 
-export default function IssueClaimCard({currentNotifId, senderUsername, senderId, issueId, issueTitle, message, time}: NotificationsClaimCardProps) {
+export default function ClaimIssueRequestCard({currentNotifId, senderUsername, senderId, issueId, issueTitle, message, time}: ClaimIssueRequestCardProps) {
   const { uid, username } = useAuthProvider();
   const [ isAccepted, setIsAccepted ] = useState<boolean | null>(null);
 

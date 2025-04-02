@@ -8,7 +8,7 @@ import { Timestamp, arrayRemove, arrayUnion, deleteField, doc, getDoc, updateDoc
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 
-interface NotificationsFinishCardProps {
+interface FinishIssueCardProps {
   currentNotifId: string
   senderUsername: string,
   senderId: string,
@@ -17,7 +17,7 @@ interface NotificationsFinishCardProps {
   time: Timestamp,
 }
 
-export default function IssueFinishCard({currentNotifId, senderUsername, senderId, issueId, issueTitle, time}: NotificationsFinishCardProps) {
+export default function FinishIssueCard({currentNotifId, senderUsername, senderId, issueId, issueTitle, time}: FinishIssueCardProps) {
   const { uid, username } = useAuthProvider();
   const [ isAccepted, setIsAccepted ] = useState<boolean | null>(null);
 

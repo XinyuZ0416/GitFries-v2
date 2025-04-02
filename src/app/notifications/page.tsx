@@ -4,12 +4,12 @@ import { DocumentData, arrayUnion, deleteField, doc, getDoc, updateDoc } from 'f
 import React, { useEffect, useState } from 'react'
 import { db } from '../firebase'
 import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider'
-import IssueClaimCard from '@/components/notif-claim-card'
-import IssueClaimDecisionCard from '@/components/issue-claim-decision-card'
-import DisclaimIssueCard from '@/components/disclaim-issue-card'
-import IssueFinishCard from '@/components/notif-finish-card'
-import IssueFinishDecisionCard from '@/components/issue-finish-decision-card'
-import CommentOnIssueCard from '@/components/notif-comment-on-issue-card'
+import ClaimIssueRequestCard from '@/components/notification/claim-issue-request'
+import ClaimIssueDecisionCard from '@/components/notification/claim-issue-decision'
+import DisclaimIssueCard from '@/components/notification/disclaim-issue'
+import FinishIssueCard from '@/components/notification/finish-issue'
+import FinishIssueDecisionCard from '@/components/notification/finish-issue-decision'
+import CommentOnIssueCard from '@/components/notification/comment-on-issue'
 
 export default function NotificatonsPage() {
   const [ readNotifArr, setReadNotifArr ] = useState<DocumentData[]>([])
@@ -70,7 +70,7 @@ export default function NotificatonsPage() {
       { readNotifArr.length > 0 ?
           readNotifArr.map((notif) => (
             notif.type === "request_claim_issue" ? 
-              <IssueClaimCard
+              <ClaimIssueRequestCard
                 key={notif?.id}
                 currentNotifId={notif?.id}
                 senderUsername={notif?.senderUsername}
@@ -89,7 +89,7 @@ export default function NotificatonsPage() {
                 time={notif?.timestamp}
               /> :
             notif.type === "request_claim_issue_accept" ? 
-              <IssueClaimDecisionCard
+              <ClaimIssueDecisionCard
                 key={notif?.id}
                 decision={notif.type}
                 senderUsername={notif?.senderUsername}
@@ -98,7 +98,7 @@ export default function NotificatonsPage() {
                 time={notif?.timestamp}
               /> :
             notif.type === "request_claim_issue_decline" ? 
-              <IssueClaimDecisionCard
+              <ClaimIssueDecisionCard
                 key={notif?.id}
                 decision={notif.type}
                 senderUsername={notif?.senderUsername}
@@ -107,7 +107,7 @@ export default function NotificatonsPage() {
                 time={notif?.timestamp}
               /> :
             notif.type === "request_finish_issue" ? 
-              <IssueFinishCard
+              <FinishIssueCard
                 key={notif?.id}
                 currentNotifId={notif?.id}
                 senderUsername={notif?.senderUsername}
@@ -117,7 +117,7 @@ export default function NotificatonsPage() {
                 time={notif?.timestamp}
               /> :
             notif.type === "request_finish_issue_accept" ? 
-              <IssueFinishDecisionCard
+              <FinishIssueDecisionCard
                 key={notif?.id}
                 decision={notif.type}
                 senderUsername={notif?.senderUsername}
@@ -126,7 +126,7 @@ export default function NotificatonsPage() {
                 time={notif?.timestamp}
               /> :
             notif.type === "request_finish_issue_decline" ? 
-              <IssueFinishDecisionCard
+              <FinishIssueDecisionCard
                 key={notif?.id}
                 decision={notif.type}
                 senderUsername={notif?.senderUsername}
