@@ -40,6 +40,7 @@ export default function AddCommentBox({
 
     try {
       // Create doc in comments coll
+
       const commentDocRef = await addDoc(collection(db, "comments"), {
         issueReporterUid: issueReporterUid,
         issueTitle: issueTitle,
@@ -53,16 +54,19 @@ export default function AddCommentBox({
       await updateDoc(doc(db, "issues", issueId), { comments: arrayUnion(commentDocRef.id) });
 
       // Create notification and add to issue reporter's unreadNotif
-      createNotif(
-        issueReporterUid, 
-        commenterUid,
-        commenterUsername,
-        issueId,
-        issueTitle,
-        NotificationType.COM_I, 
-        comment,
-        commentDocRef.id
-      );
+      if (issueReporterUid != commenterUid) {
+        createNotif(
+          issueReporterUid, 
+          commenterUid,
+          commenterUsername,
+          issueId,
+          issueTitle,
+          NotificationType.COM_I, 
+          comment,
+          commentDocRef.id
+        );
+      }
+      
     } catch (error) {
       console.error(error);
     }
