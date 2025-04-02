@@ -1,7 +1,7 @@
 import React from 'react'
-import ActivitiesCommentCard from './activities-comment-card'
-import ActivitiesReplyCard from './activities-reply-card'
-import ActivitiesIssueCard from './activities-issue-card'
+import ActivitiesReplyCard from './reply'
+import ActivitiesIssueCard from './issue'
+import ActivitiesCommentCard from './comment'
 
 export default function ProfileActivitiesCard() {
   return (

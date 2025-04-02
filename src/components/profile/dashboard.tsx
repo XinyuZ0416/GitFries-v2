@@ -1,5 +1,5 @@
 import React from 'react'
-import GitFriesLineChart from './charts/line'
+import GitFriesLineChart from '../charts/line'
 
 export default function ProfileDashboardCard() {
   return (

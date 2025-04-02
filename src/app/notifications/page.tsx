@@ -4,12 +4,12 @@ import { DocumentData, arrayUnion, deleteField, doc, getDoc, updateDoc } from 'f
 import React, { useEffect, useState } from 'react'
 import { db } from '../firebase'
 import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider'
-import ClaimIssueRequestCard from '@/components/notification/claim-issue-request'
-import ClaimIssueDecisionCard from '@/components/notification/claim-issue-decision'
-import DisclaimIssueCard from '@/components/notification/disclaim-issue'
-import FinishIssueCard from '@/components/notification/finish-issue'
-import FinishIssueDecisionCard from '@/components/notification/finish-issue-decision'
-import CommentOnIssueCard from '@/components/notification/comment-on-issue'
+import ClaimIssueRequestCard from '@/components/notifications/claim-issue-request'
+import ClaimIssueDecisionCard from '@/components/notifications/claim-issue-decision'
+import DisclaimIssueCard from '@/components/notifications/disclaim-issue'
+import FinishIssueCard from '@/components/notifications/finish-issue'
+import FinishIssueDecisionCard from '@/components/notifications/finish-issue-decision'
+import CommentOnIssueCard from '@/components/notifications/comment-on-issue'
 
 export default function NotificatonsPage() {
   const [ readNotifArr, setReadNotifArr ] = useState<DocumentData[]>([])

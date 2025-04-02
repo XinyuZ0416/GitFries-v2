@@ -1,7 +1,7 @@
-import ProfileAchievementsCard from '@/components/profile-achievements-card'
-import ProfileActivitiesCard from '@/components/profile-activities-card'
-import ProfileDashboardCard from '@/components/profile-dashboard-card'
-import ProfilePicCard from '@/components/profile-pic-card'
+import ProfileAchievementsCard from '@/components/profile/achievements'
+import ProfileActivitiesCard from '@/components/profile/activities/activities'
+import ProfileDashboardCard from '@/components/profile/dashboard'
+import ProfilePicCard from '@/components/profile/bio'
 import React from 'react'
 
 export default function ProfilePage() {
