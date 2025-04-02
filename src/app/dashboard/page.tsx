@@ -1,8 +1,8 @@
 'use client'
-import GitFriesLineChart from '@/components/line-chart'
-import GitFriesBarChart from '@/components/bar-chart'
+import GitFriesLineChart from '@/components/charts/line'
+import GitFriesBarChart from '@/components/charts/bar'
 import React from 'react'
-import GitFriesPieChart from '@/components/pie-chart'
+import GitFriesPieChart from '@/components/charts/pie'
 import RequireSignInSignUp from '@/components/require-signin-signup'
 import { useAuthProvider } from '@/providers/auth-provider'
 
