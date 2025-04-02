@@ -1,6 +1,6 @@
-import PricingFreeCard from '@/components/pricing-free-card'
-import PricingSvipCard from '@/components/pricing-svip-card'
-import PricingVipCard from '@/components/pricing-vip-card'
+import PricingFreeCard from '@/components/pricing/free'
+import PricingSvipCard from '@/components/pricing/svip'
+import PricingVipCard from '@/components/pricing/vip'
 import React from 'react'
 
 export default function MembershipPage() {
