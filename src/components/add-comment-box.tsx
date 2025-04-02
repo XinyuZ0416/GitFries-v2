@@ -48,6 +48,9 @@ export default function AddCommentBox({
         comment: comment,
         time: Timestamp.fromDate(new Date()),
       });
+      
+      // Add comment to issue comments field
+      await updateDoc(doc(db, "issues", issueId), { comments: arrayUnion(commentDocRef.id) });
 
       // Create notification and add to issue reporter's unreadNotif
       createNotif(
