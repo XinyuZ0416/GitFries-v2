@@ -8,7 +8,7 @@ import createNotif from '@/utils/create-notif'
 import formatDate from '@/utils/format-date'
 import { NotificationType } from '@/utils/notification-types'
 import MDEditor from '@uiw/react-md-editor'
-import { Timestamp, arrayRemove, arrayUnion, collection, deleteDoc, deleteField, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore'
+import { Timestamp, arrayRemove, arrayUnion, collection, deleteDoc, deleteField, doc, getDoc, getDocs, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
@@ -32,12 +32,22 @@ type IssueDetailsType = {
   issueFinisherUsername: string
 }
 
+type CommentType = {
+  commentId: string,
+  commenterUid: string,
+  commenterUsername: string,
+  commenterPicUrl: string
+  comment: string,
+  time: Timestamp
+}
+
 export default function IssueDetailsPage() {
   const { "issue-id": issueIdParam } = useParams();
   const issueId = Array.isArray(issueIdParam) ? issueIdParam[0] : issueIdParam; // Ensure only string 
   const [ issueDetails, setIssueDetails ] = useState<IssueDetailsType | null>(null);
   const [ isRequesting, setIsRequesting ] = useState<boolean>(false);
   const [ requestMessage, setRequestMessage ] = useState<string>();
+  const [ commentsArr, setCommentsArr ] = useState<CommentType[]>();
   const { uid, username, userPicUrl } = useAuthProvider();
   const { 
     favedIssues, 
@@ -121,6 +131,48 @@ export default function IssueDetailsPage() {
     getIssueDoc(); 
     checkIfHasRequestedToClaimOrFinish();
   }, [uid, issueId]);
+
+  // Listen to real-time comment update
+  useEffect(() => {
+    if (!issueId) return;
+  
+    const docRef = doc(db, "issues", issueId);
+  
+    const unsubscribe = onSnapshot(docRef, async (docSnap) => {
+      if (docSnap.exists()) {
+        const commentIdArr = docSnap.data().comments || [];
+        const arr: CommentType[] = [];
+  
+        const commentPromises = commentIdArr.map(async (commentId: string) => {
+          const commentSnap = await getDoc(doc(db, "comments", commentId));
+          if (commentSnap.exists()) {
+            const data = commentSnap.data();
+  
+            // Fetch user profile picture
+            const picUrl = await getDownloadURL(ref(storage, `user-img/${data.commenterUid}`))
+              .catch(() => '/potato.png');
+  
+            return {
+              commentId: commentSnap.id,
+              commenterUid: data.commenterUid,
+              commenterUsername: data.commenterUsername,
+              comment: data.comment,
+              commenterPicUrl: picUrl,
+              time: data.time,
+            };
+          }
+        });
+
+        const comments = await Promise.all(commentPromises);
+  
+        // Filter out any null values and update the state
+        setCommentsArr(comments);
+      }
+    });
+  
+    return () => unsubscribe();
+  }, [issueId]); 
+  
 
   const handleDeleteIssue = async() => {
     if (issueDetails?.claimedBy) {
@@ -369,8 +421,20 @@ export default function IssueDetailsPage() {
         commenterPicUrl={userPicUrl}
       />}
       
-
-      <IssueCommentCard />
+      { commentsArr && commentsArr.length > 0 ? 
+          commentsArr?.map((comment) => (
+            <IssueCommentCard
+              key={comment.commentId}
+              commenterUid={comment.commenterUid}
+              commenterUsername={comment.commenterUsername}
+              commenterPicUrl={comment.commenterPicUrl}
+              comment={comment.comment}
+              time={comment.time}
+            />
+          )) :
+          ""
+      }
+      
     </div>
     </>
   )

@@ -12,7 +12,6 @@ import IssueFinishDecisionCard from '@/components/issue-finish-decision-card'
 import CommentOnIssueCard from '@/components/notif-comment-on-issue-card'
 
 export default function NotificatonsPage() {
-  const [ readNotif, setReadNotif ] = useState<string[]>([])
   const [ readNotifArr, setReadNotifArr ] = useState<DocumentData[]>([])
   const { uid } = useAuthProvider();
   const{ unreadNotif, dispatch } = useCurrentUserDocProvider();
