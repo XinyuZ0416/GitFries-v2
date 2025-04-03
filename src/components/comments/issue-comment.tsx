@@ -30,12 +30,6 @@ export default function IssueCommentCard({
       </div>
 
       <p className="font-normal text-gray-700">{comment}</p>
-
-      <div className="flex ml-auto px-3 py-2">
-        <button type="submit" className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
-          Reply
-        </button>
-      </div>
     </div>
     </>
   )
