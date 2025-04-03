@@ -62,94 +62,95 @@ export default function NotificatonsPage() {
 
     moveNotif();
   }, [uid]);
+
+  const renderNotifCard = () => {
+    return readNotifArr.length > 0 ? (
+      readNotifArr.map((notif) => {
+        switch (notif.type) {
+          case "request_claim_issue":
+            return (
+              <ClaimIssueRequestCard
+                key={notif.id}
+                currentNotifId={notif.id}
+                senderUsername={notif.senderUsername}
+                senderId={notif.senderId}
+                issueId={notif.issueId}
+                issueTitle={notif.issueTitle}
+                message={notif.message}
+                time={notif.timestamp}
+              />
+            );
+          case "disclaim_issue":
+            return (
+              <DisclaimIssueCard
+                key={notif.id}
+                senderUsername={notif.senderUsername}
+                issueId={notif.issueId}
+                issueTitle={notif.issueTitle}
+                time={notif.timestamp}
+              />
+            );
+          case "request_claim_issue_accept":
+          case "request_claim_issue_decline":
+            return (
+              <ClaimIssueDecisionCard
+                key={notif.id}
+                decision={notif.type}
+                senderUsername={notif.senderUsername}
+                issueId={notif.issueId}
+                issueTitle={notif.issueTitle}
+                time={notif.timestamp}
+              />
+            );
+          case "request_finish_issue":
+            return (
+              <FinishIssueCard
+                key={notif.id}
+                currentNotifId={notif.id}
+                senderUsername={notif.senderUsername}
+                senderId={notif.senderId}
+                issueId={notif.issueId}
+                issueTitle={notif.issueTitle}
+                time={notif.timestamp}
+              />
+            );
+          case "request_finish_issue_accept":
+          case "request_finish_issue_decline":
+            return (
+              <FinishIssueDecisionCard
+                key={notif.id}
+                decision={notif.type}
+                senderUsername={notif.senderUsername}
+                issueId={notif.issueId}
+                issueTitle={notif.issueTitle}
+                time={notif.timestamp}
+              />
+            );
+          case "comment":
+            return (
+              <CommentOnIssueCard
+                key={notif.id}
+                senderUsername={notif.senderUsername}
+                issueId={notif.issueId}
+                issueTitle={notif.issueTitle}
+                comment={notif.message}
+                time={notif.timestamp}
+              />
+            );
+          default:
+            return null;
+        }
+      })
+    ) : (
+      <p>No notifications yet</p>
+    );
+  };
   
   return (
     <>
     <div className='flex flex-col gap-2'>
-      Your notifications will be automatically deleted after 1 month
-      { readNotifArr.length > 0 ?
-          readNotifArr.map((notif) => (
-            notif.type === "request_claim_issue" ? 
-              <ClaimIssueRequestCard
-                key={notif?.id}
-                currentNotifId={notif?.id}
-                senderUsername={notif?.senderUsername}
-                senderId={notif?.senderId}
-                issueId={notif?.issueId}
-                issueTitle={notif?.issueTitle}
-                message={notif?.message}
-                time={notif?.timestamp}
-              /> : 
-            notif.type === "disclaim_issue" ? 
-              <DisclaimIssueCard
-                key={notif?.id}
-                senderUsername={notif?.senderUsername}
-                issueId={notif?.issueId}
-                issueTitle={notif?.issueTitle}
-                time={notif?.timestamp}
-              /> :
-            notif.type === "request_claim_issue_accept" ? 
-              <ClaimIssueDecisionCard
-                key={notif?.id}
-                decision={notif.type}
-                senderUsername={notif?.senderUsername}
-                issueId={notif?.issueId}
-                issueTitle={notif?.issueTitle}
-                time={notif?.timestamp}
-              /> :
-            notif.type === "request_claim_issue_decline" ? 
-              <ClaimIssueDecisionCard
-                key={notif?.id}
-                decision={notif.type}
-                senderUsername={notif?.senderUsername}
-                issueId={notif?.issueId}
-                issueTitle={notif?.issueTitle}
-                time={notif?.timestamp}
-              /> :
-            notif.type === "request_finish_issue" ? 
-              <FinishIssueCard
-                key={notif?.id}
-                currentNotifId={notif?.id}
-                senderUsername={notif?.senderUsername}
-                senderId={notif?.senderId}
-                issueId={notif?.issueId}
-                issueTitle={notif?.issueTitle}
-                time={notif?.timestamp}
-              /> :
-            notif.type === "request_finish_issue_accept" ? 
-              <FinishIssueDecisionCard
-                key={notif?.id}
-                decision={notif.type}
-                senderUsername={notif?.senderUsername}
-                issueId={notif?.issueId}
-                issueTitle={notif?.issueTitle}
-                time={notif?.timestamp}
-              /> :
-            notif.type === "request_finish_issue_decline" ? 
-              <FinishIssueDecisionCard
-                key={notif?.id}
-                decision={notif.type}
-                senderUsername={notif?.senderUsername}
-                issueId={notif?.issueId}
-                issueTitle={notif?.issueTitle}
-                time={notif?.timestamp}
-              /> :
-            notif.type === "comment" ? 
-              <CommentOnIssueCard
-                key={notif?.id}
-                senderUsername={notif?.senderUsername}
-                issueId={notif?.issueId}
-                issueTitle={notif?.issueTitle}
-                comment={notif?.message}
-                time={notif?.timestamp}
-              /> :
-            ''
-          )) : 
-        "No notifications yet"
-      }
-      
-      {/* <NotificationsCommentCard />
-      <NotificationsReplyCard /> */}
+    Your notifications will be automatically deleted after 1 month
+      {renderNotifCard()}
     </div>
     </>
   )
