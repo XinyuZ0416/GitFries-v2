@@ -61,7 +61,7 @@ export default function AddCommentBox({
           commenterUsername,
           issueId,
           issueTitle,
-          NotificationType.COM_I, 
+          NotificationType.COM, 
           comment,
           commentDocRef.id
         );

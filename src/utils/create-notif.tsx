@@ -44,7 +44,7 @@ const createNotif = async(
   };
 
   // Add commentId field if the notification is from a comment
-  if (type === NotificationType.COM_I && commentId) {
+  if (type === NotificationType.COM && commentId) {
     notificationData.commentId = commentId;
   }
   

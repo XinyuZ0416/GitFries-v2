@@ -134,7 +134,7 @@ export default function NotificatonsPage() {
                 issueTitle={notif?.issueTitle}
                 time={notif?.timestamp}
               /> :
-            notif.type === "comment_on_issue" ? 
+            notif.type === "comment" ? 
               <CommentOnIssueCard
                 key={notif?.id}
                 senderUsername={notif?.senderUsername}
