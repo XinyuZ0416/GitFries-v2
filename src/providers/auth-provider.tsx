@@ -1,7 +1,7 @@
 'use client'
 import { auth, db, storage } from "@/app/firebase";
 import { onAuthStateChanged, updateProfile } from "firebase/auth";
-import { DocumentData, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
