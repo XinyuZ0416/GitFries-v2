@@ -52,8 +52,11 @@ export default function AddCommentBox({
       // Add comment to issue comments field
       await updateDoc(doc(db, "issues", issueId), { comments: arrayUnion(commentDocRef.id) });
 
-      // Add comment to user comments field
-      await updateDoc(doc(db, "users", commenterUid), { comments: arrayUnion(commentDocRef.id) });
+      // Add comment to user activities field
+      await updateDoc(doc(db, "users", commenterUid), { activities: arrayUnion({
+        content: commentDocRef.id,
+        activity: NotificationType.COM,
+      })});
 
       // Create notification and add to issue reporter's unreadNotif
       if (issueReporterUid != commenterUid) {

@@ -44,7 +44,13 @@ export default function FinishIssueCard({currentNotifId, senderUsername, senderI
   }
 
   const addToFinishedIssues = async() => {
-    await updateDoc(doc(db, "users", senderId), { finishedIssues: arrayUnion(issueId) });
+    await updateDoc(doc(db, "users", senderId), { 
+      finishedIssues: arrayUnion(issueId),
+      activities: arrayUnion({
+        content: issueId,
+        activity: NotificationType.REQ_F_I_A,
+      })
+    });
   }
 
   const addFinishedBy = async() => {

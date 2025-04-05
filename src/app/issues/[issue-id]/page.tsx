@@ -233,8 +233,14 @@ export default function IssueDetailsPage() {
         if (requestMessage !== null && requestMessage !== "") { // Must send a request message
           setRequestMessage(requestMessage);
 
-          // Add to current user coll requestingToClaimIssues
-          await updateDoc(doc(db, "users", uid), { requestingToClaimIssues: arrayUnion(issueId) });
+          // Add to current user coll requestingToClaimIssues and activities
+          await updateDoc(doc(db, "users", uid), { 
+            requestingToClaimIssues: arrayUnion(issueId),
+            activities: arrayUnion({
+              content: issueId,
+              activity: NotificationType.REQ_C_I,
+            })
+          });
           dispatch({ type: "SET_REQUESTING_TO_CLAIM_ISSUES", payload: [...requestingToClaimIssues, issueId as string] });
           
           createNotif(
@@ -254,6 +260,10 @@ export default function IssueDetailsPage() {
           await updateDoc(doc(db, "users", uid), { 
             claimedIssues: arrayRemove(issueId),
             disclaimedIssuesCount: disclaimedIssuesCount + 1,
+            activities: arrayUnion({
+              content: issueId,
+              activity: NotificationType.DIS_I,
+            })
           });
 
           createNotif(
@@ -287,8 +297,14 @@ export default function IssueDetailsPage() {
 
     if(!confirm("Are you sure you have finished this issue? This action cannot be undone.")) return;
 
-    // Update issue requester requestingToFinishIssues
-    await updateDoc(doc(db, "users", uid), { requestingToFinishIssues: arrayUnion(issueId) });
+    // Update issue requester requestingToFinishIssues and activity
+    await updateDoc(doc(db, "users", uid), { 
+      requestingToFinishIssues: arrayUnion(issueId),
+      activities: arrayUnion({
+        content: issueId,
+        activity: NotificationType.REQ_F_I,
+      })
+    });
     
     createNotif(
       issueDetails?.issueReporterUid!, 
