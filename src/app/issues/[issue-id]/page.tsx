@@ -239,6 +239,7 @@ export default function IssueDetailsPage() {
             activities: arrayUnion({
               content: issueId,
               type: NotificationType.REQ_C_I,
+              timestamp: Timestamp.fromDate(new Date()),
             })
           });
           dispatch({ type: "SET_REQUESTING_TO_CLAIM_ISSUES", payload: [...requestingToClaimIssues, issueId as string] });
@@ -263,6 +264,7 @@ export default function IssueDetailsPage() {
             activities: arrayUnion({
               content: issueId,
               type: NotificationType.DIS_I,
+              timestamp: Timestamp.fromDate(new Date()),
             })
           });
 
@@ -303,6 +305,7 @@ export default function IssueDetailsPage() {
       activities: arrayUnion({
         content: issueId,
         type: NotificationType.REQ_F_I,
+        timestamp: Timestamp.fromDate(new Date()),
       })
     });
     

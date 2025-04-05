@@ -49,6 +49,7 @@ export default function FinishIssueCard({currentNotifId, senderUsername, senderI
       activities: arrayUnion({
         content: issueId,
         type: NotificationType.REQ_F_I_A,
+        timestamp: Timestamp.fromDate(new Date()),
       })
     });
   }

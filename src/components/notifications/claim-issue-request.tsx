@@ -50,6 +50,7 @@ export default function ClaimIssueRequestCard({currentNotifId, senderUsername, s
       activities: arrayUnion({
         content: issueId,
         type: NotificationType.REQ_C_I_A,
+        timestamp: Timestamp.fromDate(new Date()),
       })
     });
   }
