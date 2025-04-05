@@ -1,8 +1,14 @@
 'use client'
 import { db } from "@/app/firebase";
-import { DocumentData, doc, getDoc, onSnapshot } from "firebase/firestore";
+import { DocumentData, Timestamp, doc, getDoc, onSnapshot } from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useReducer, useState } from "react";
 import { useAuthProvider } from "./auth-provider";
+
+interface ActivityType {
+  content: string;
+  type: string;
+  timestamp: Timestamp;
+}
 
 // current user context
 interface CurrentUserDocContextProps {
@@ -12,6 +18,7 @@ interface CurrentUserDocContextProps {
   disclaimedIssuesCount: number,
   requestingToClaimIssues: string[],
   unreadNotif: string[],
+  activities: ActivityType[],
 }
 
 type Action = { type: "SET_FAVED_ISSUES"; payload: string[] } |
@@ -24,6 +31,7 @@ const CurrentUserDocContext = createContext<CurrentUserDocContextProps | null>(n
 
 export const CurrentUserDocProvider = ({children}:{children: React.ReactNode}) => {
   const { uid } = useAuthProvider();
+  const [ activities, setActivities ] = useState<ActivityType[]>([]);
 
   const initialState = {
     favedIssues: [] as string[],
@@ -66,6 +74,8 @@ export const CurrentUserDocProvider = ({children}:{children: React.ReactNode}) =
         dispatch({ type: "SET_DISCLAIMED_ISSUES_COUNT", payload: data?.disclaimedIssuesCount ?? 0});
         dispatch({ type: "SET_REQUESTING_TO_CLAIM_ISSUES", payload: data?.requestingToClaimIssues ?? []});
         dispatch({ type: "SET_UNREAD_NOTIF", payload: data?.unreadNotif ?? []});
+
+        setActivities(data?.activities ?? []);
       }
     })
     
@@ -81,6 +91,7 @@ export const CurrentUserDocProvider = ({children}:{children: React.ReactNode}) =
         disclaimedIssuesCount: state.disclaimedIssuesCount, 
         requestingToClaimIssues: state.requestingToClaimIssues,
         unreadNotif: state.unreadNotif,
+        activities: activities
       }}>
       {children}
     </CurrentUserDocContext.Provider>

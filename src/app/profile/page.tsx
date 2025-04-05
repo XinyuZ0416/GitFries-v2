@@ -1,5 +1,5 @@
 import ProfileAchievementsCard from '@/components/profile/achievements'
-import ProfileActivitiesCard from '@/components/profile/activities/activities'
+import ProfileActivities from '@/components/profile/activities/activities'
 import ProfileDashboardCard from '@/components/profile/dashboard'
 import ProfilePicCard from '@/components/profile/bio'
 import React from 'react'
@@ -16,7 +16,7 @@ export default function ProfilePage() {
         </div>
         <ProfileDashboardCard />
       </div>
-      <ProfileActivitiesCard />
+      <ProfileActivities />
     </div>
     </>
   )
