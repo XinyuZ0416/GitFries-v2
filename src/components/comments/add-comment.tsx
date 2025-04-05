@@ -40,7 +40,6 @@ export default function AddCommentBox({
 
     try {
       // Create doc in comments coll
-
       const commentDocRef = await addDoc(collection(db, "comments"), {
         issueReporterUid: issueReporterUid,
         issueTitle: issueTitle,
@@ -52,6 +51,9 @@ export default function AddCommentBox({
       
       // Add comment to issue comments field
       await updateDoc(doc(db, "issues", issueId), { comments: arrayUnion(commentDocRef.id) });
+
+      // Add comment to user comments field
+      await updateDoc(doc(db, "users", commenterUid), { comments: arrayUnion(commentDocRef.id) });
 
       // Create notification and add to issue reporter's unreadNotif
       if (issueReporterUid != commenterUid) {
