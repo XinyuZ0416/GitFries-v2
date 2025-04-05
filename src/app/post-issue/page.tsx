@@ -7,6 +7,7 @@ import { db } from '../firebase';
 import MDEditor from '@uiw/react-md-editor';
 import rehypeSanitize from "rehype-sanitize";
 import { useRouter } from 'next/navigation';
+import { NotificationType } from '@/utils/notification-types';
 
 type FormDataType = {
   issueReporterUid: string,
@@ -65,7 +66,14 @@ export default function PostIssuePage() {
       
       // Add field to user collection
       const issueId = docRef.id;
-      await updateDoc(doc(db, "users", uid), { postedIssues: arrayUnion(issueId) });
+      await updateDoc(doc(db, "users", uid), { 
+        postedIssues: arrayUnion(issueId),
+        activities: arrayUnion({
+          content: issueId,
+          type: NotificationType.POST_I,
+          timestamp: Timestamp.fromDate(new Date()),
+        })
+      });
 
       router.push(`/issues/${issueId}`);
     } else {

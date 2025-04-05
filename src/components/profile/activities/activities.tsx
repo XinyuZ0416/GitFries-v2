@@ -1,6 +1,5 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import ActivitiesIssueCard from './issue'
 import ActivitiesCommentCard from './comment'
 import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider'
 import { doc, getDoc } from 'firebase/firestore'
@@ -10,6 +9,7 @@ import ClaimCard from './claim'
 import RequestFinishCard from './request-finish'
 import FinishCard from './finish'
 import DisclaimCard from './disclaim'
+import PostCard from './post'
 
 export default function ProfileActivities() {
   const { activities } = useCurrentUserDocProvider();
@@ -19,6 +19,7 @@ export default function ProfileActivities() {
   const [ requestFinishIssueDataMap, setRequestFinishIssueDataMap ] = useState<Record<string, { issueTitle: string }>>({});
   const [ finishIssueDataMap, setFinishIssueDataMap ] = useState<Record<string, { issueTitle: string }>>({});
   const [ disclaimIssueDataMap, setDisclaimIssueDataMap ] = useState<Record<string, { issueTitle: string }>>({});
+  const [ postIssueDataMap, setPostIssueDataMap ] = useState<Record<string, { issueTitle: string }>>({});
 
   async function batchFetchDocs<T>(
     ids: string[], 
@@ -56,8 +57,9 @@ export default function ProfileActivities() {
       const requestFinishIssueActivities = activities.filter(a => a.type === 'request_finish_issue');
       const finishIssueActivities = activities.filter(a => a.type === 'request_finish_issue_accept');
       const disclaimIssueActivities = activities.filter(a => a.type === 'disclaim_issue');
+      const postIssueActivities = activities.filter(a => a.type === 'post_issue');
 
-      const [commentData, requestClaimData, claimData, requestFinishData, finishData, disclaimData] = await Promise.all([
+      const [commentData, requestClaimData, claimData, requestFinishData, finishData, disclaimData, postData] = await Promise.all([
         batchFetchDocs(commentActivities.map(a => a.content), "comments", data => ({ // “data” here is from "snap.data()" above in batchFetchDocs()
           comment: data.comment,
           issueId: data.issueId,
@@ -83,6 +85,10 @@ export default function ProfileActivities() {
         batchFetchDocs(disclaimIssueActivities.map(a => a.content), "issues", data => ({
           issueTitle: data.title
         })),
+
+        batchFetchDocs(postIssueActivities.map(a => a.content), "issues", data => ({
+          issueTitle: data.title
+        })),
       ]);
 
       setCommentDataMap(commentData);
@@ -91,6 +97,7 @@ export default function ProfileActivities() {
       setRequestFinishIssueDataMap(requestFinishData);
       setFinishIssueDataMap(finishData);
       setDisclaimIssueDataMap(disclaimData);
+      setPostIssueDataMap(postData);
     };
 
     if (activities.length > 0) {
@@ -173,6 +180,17 @@ export default function ProfileActivities() {
                 time={activity.timestamp}
               />
             );
+          case "post_issue":
+            const postIssueData = postIssueDataMap[activity.content];
+            if (!postIssueData) return null;
+            return (
+              <PostCard
+                key={`${activity.type}-${activity.content}-${activity.timestamp}`}
+                issueId={activity.content}
+                title={postIssueData.issueTitle}
+                time={activity.timestamp}
+              />
+            );
           default:
             return null;
         }
@@ -186,9 +204,6 @@ export default function ProfileActivities() {
         <h2 className='text-2xl font-bold'>Activities</h2>
       </div>
       {renderActivitiesCard()}
-      {/* <ActivitiesCommentCard />
-      <ActivitiesReplyCard />
-      <ActivitiesIssueCard /> */}
     </div>
     </>
   )
