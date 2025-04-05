@@ -17,6 +17,8 @@ export default function NotificatonsPage() {
   const{ unreadNotif, dispatch } = useCurrentUserDocProvider();
 
   const fetchReadNotif = async() => {
+    if (!uid) return;
+
     const docSnap = await getDoc(doc(db, "users", uid));
   
     if (docSnap.exists()) {
@@ -61,7 +63,7 @@ export default function NotificatonsPage() {
     }
 
     moveNotif();
-  }, [uid]);
+  }, [uid, unreadNotif]);
 
   const renderNotifCard = () => {
     return readNotifArr.length > 0 ? (
