@@ -41,6 +41,7 @@ export default function AddCommentBox({
     try {
       // Create doc in comments coll
       const commentDocRef = await addDoc(collection(db, "comments"), {
+        issueId: issueId,
         issueReporterUid: issueReporterUid,
         issueTitle: issueTitle,
         commenterUid: commenterUid,

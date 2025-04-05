@@ -12,7 +12,7 @@ import FinishCard from './finish'
 
 export default function ProfileActivities() {
   const { activities } = useCurrentUserDocProvider();
-  const [ commentDataMap, setCommentDataMap ] = useState<Record<string, { comment: string; issueTitle: string }>>({});
+  const [ commentDataMap, setCommentDataMap ] = useState<Record<string, { comment: string; issueTitle: string; issueId: string }>>({});
   const [ requestClaimIssueDataMap, setRequestClaimIssueDataMap ] = useState<Record<string, { issueTitle: string }>>({});
   const [ claimIssueDataMap, setClaimIssueDataMap ] = useState<Record<string, { issueTitle: string }>>({});
   const [ requestFinishIssueDataMap, setRequestFinishIssueDataMap ] = useState<Record<string, { issueTitle: string }>>({});
@@ -57,6 +57,7 @@ export default function ProfileActivities() {
       const [commentData, requestClaimData, claimData, requestFinishData, finishData] = await Promise.all([
         batchFetchDocs(commentActivities.map(a => a.content), "comments", data => ({ // “data” here is from "snap.data()" above in batchFetchDocs()
           comment: data.comment,
+          issueId: data.issueId,
           issueTitle: data.issueTitle
         })),
 
@@ -103,6 +104,7 @@ export default function ProfileActivities() {
             return (
               <ActivitiesCommentCard
                 key={`${activity.type}-${activity.content}-${activity.timestamp}`}
+                issueId={commentData.issueId}
                 title={commentData.issueTitle}
                 content={commentData.comment}
                 time={activity.timestamp}
@@ -114,6 +116,7 @@ export default function ProfileActivities() {
             return (
               <RequestClaimCard
                 key={`${activity.type}-${activity.content}-${activity.timestamp}`}
+                issueId={activity.content}
                 title={requestClaimIssueData.issueTitle}
                 time={activity.timestamp}
               />
@@ -124,6 +127,7 @@ export default function ProfileActivities() {
             return (
               <ClaimCard
                 key={`${activity.type}-${activity.content}-${activity.timestamp}`}
+                issueId={activity.content}
                 title={claimIssueData.issueTitle}
                 time={activity.timestamp}
               />
@@ -134,6 +138,7 @@ export default function ProfileActivities() {
             return (
               <RequestFinishCard
                 key={`${activity.type}-${activity.content}-${activity.timestamp}`}
+                issueId={activity.content}
                 title={requestFinishIssueData.issueTitle}
                 time={activity.timestamp}
               />
@@ -144,6 +149,7 @@ export default function ProfileActivities() {
             return (
               <FinishCard
                 key={`${activity.type}-${activity.content}-${activity.timestamp}`}
+                issueId={activity.content}
                 title={finishIssueData.issueTitle}
                 time={activity.timestamp}
               />
