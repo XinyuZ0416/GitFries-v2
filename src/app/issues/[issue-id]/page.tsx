@@ -238,7 +238,7 @@ export default function IssueDetailsPage() {
             requestingToClaimIssues: arrayUnion(issueId),
             activities: arrayUnion({
               content: issueId,
-              activity: NotificationType.REQ_C_I,
+              type: NotificationType.REQ_C_I,
             })
           });
           dispatch({ type: "SET_REQUESTING_TO_CLAIM_ISSUES", payload: [...requestingToClaimIssues, issueId as string] });
@@ -262,7 +262,7 @@ export default function IssueDetailsPage() {
             disclaimedIssuesCount: disclaimedIssuesCount + 1,
             activities: arrayUnion({
               content: issueId,
-              activity: NotificationType.DIS_I,
+              type: NotificationType.DIS_I,
             })
           });
 
@@ -302,7 +302,7 @@ export default function IssueDetailsPage() {
       requestingToFinishIssues: arrayUnion(issueId),
       activities: arrayUnion({
         content: issueId,
-        activity: NotificationType.REQ_F_I,
+        type: NotificationType.REQ_F_I,
       })
     });
     

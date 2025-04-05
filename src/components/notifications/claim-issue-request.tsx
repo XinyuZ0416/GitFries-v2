@@ -49,7 +49,7 @@ export default function ClaimIssueRequestCard({currentNotifId, senderUsername, s
       claimedIssues: arrayUnion(issueId), 
       activities: arrayUnion({
         content: issueId,
-        activity: NotificationType.REQ_C_I_A,
+        type: NotificationType.REQ_C_I_A,
       })
     });
   }

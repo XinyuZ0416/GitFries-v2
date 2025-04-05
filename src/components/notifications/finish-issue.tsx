@@ -48,7 +48,7 @@ export default function FinishIssueCard({currentNotifId, senderUsername, senderI
       finishedIssues: arrayUnion(issueId),
       activities: arrayUnion({
         content: issueId,
-        activity: NotificationType.REQ_F_I_A,
+        type: NotificationType.REQ_F_I_A,
       })
     });
   }
