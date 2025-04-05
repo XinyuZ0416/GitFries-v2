@@ -9,6 +9,7 @@ import RequestClaimCard from './request-claim'
 import ClaimCard from './claim'
 import RequestFinishCard from './request-finish'
 import FinishCard from './finish'
+import DisclaimCard from './disclaim'
 
 export default function ProfileActivities() {
   const { activities } = useCurrentUserDocProvider();
@@ -17,6 +18,7 @@ export default function ProfileActivities() {
   const [ claimIssueDataMap, setClaimIssueDataMap ] = useState<Record<string, { issueTitle: string }>>({});
   const [ requestFinishIssueDataMap, setRequestFinishIssueDataMap ] = useState<Record<string, { issueTitle: string }>>({});
   const [ finishIssueDataMap, setFinishIssueDataMap ] = useState<Record<string, { issueTitle: string }>>({});
+  const [ disclaimIssueDataMap, setDisclaimIssueDataMap ] = useState<Record<string, { issueTitle: string }>>({});
 
   async function batchFetchDocs<T>(
     ids: string[], 
@@ -53,8 +55,9 @@ export default function ProfileActivities() {
       const claimIssueActivities = activities.filter(a => a.type === 'request_claim_issue_accept');
       const requestFinishIssueActivities = activities.filter(a => a.type === 'request_finish_issue');
       const finishIssueActivities = activities.filter(a => a.type === 'request_finish_issue_accept');
+      const disclaimIssueActivities = activities.filter(a => a.type === 'disclaim_issue');
 
-      const [commentData, requestClaimData, claimData, requestFinishData, finishData] = await Promise.all([
+      const [commentData, requestClaimData, claimData, requestFinishData, finishData, disclaimData] = await Promise.all([
         batchFetchDocs(commentActivities.map(a => a.content), "comments", data => ({ // “data” here is from "snap.data()" above in batchFetchDocs()
           comment: data.comment,
           issueId: data.issueId,
@@ -76,6 +79,10 @@ export default function ProfileActivities() {
         batchFetchDocs(finishIssueActivities.map(a => a.content), "issues", data => ({
           issueTitle: data.title
         })),
+
+        batchFetchDocs(disclaimIssueActivities.map(a => a.content), "issues", data => ({
+          issueTitle: data.title
+        })),
       ]);
 
       setCommentDataMap(commentData);
@@ -83,6 +90,7 @@ export default function ProfileActivities() {
       setClaimIssueDataMap(claimData);
       setRequestFinishIssueDataMap(requestFinishData);
       setFinishIssueDataMap(finishData);
+      setDisclaimIssueDataMap(disclaimData);
     };
 
     if (activities.length > 0) {
@@ -151,6 +159,17 @@ export default function ProfileActivities() {
                 key={`${activity.type}-${activity.content}-${activity.timestamp}`}
                 issueId={activity.content}
                 title={finishIssueData.issueTitle}
+                time={activity.timestamp}
+              />
+            );
+          case "disclaim_issue":
+            const dislaimIssueData = disclaimIssueDataMap[activity.content];
+            if (!dislaimIssueData) return null;
+            return (
+              <DisclaimCard
+                key={`${activity.type}-${activity.content}-${activity.timestamp}`}
+                issueId={activity.content}
+                title={dislaimIssueData.issueTitle}
                 time={activity.timestamp}
               />
             );
