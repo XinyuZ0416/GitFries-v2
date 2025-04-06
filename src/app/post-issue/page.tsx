@@ -67,7 +67,10 @@ export default function PostIssuePage() {
       // Add field to user collection
       const issueId = docRef.id;
       await updateDoc(doc(db, "users", uid), { 
-        postedIssues: arrayUnion(issueId),
+        postedIssues: arrayUnion({
+          content: issueId,
+          timestamp: Timestamp.fromDate(new Date()),
+        }),
         activities: arrayUnion({
           content: issueId,
           type: NotificationType.POST_I,
