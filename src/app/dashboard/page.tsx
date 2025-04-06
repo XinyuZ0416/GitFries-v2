@@ -58,14 +58,19 @@ export default function DashboardPage() {
         resolveUserDataField(postedIssues, "issues", updatedArr, "postedIssues");
       }
       if (claimedIssues.length > 0){
-        resolveUserDataField(claimedIssues, "issues", updatedArr, "claimedIssues");
+        for (let issue of claimedIssues) {
+          const month = issue.timestamp.toDate().getMonth(); // 0 - 11
+          updatedArr[month].claimedIssues += 1;
+        }
       }
       if (finishedIssues.length > 0){
-        resolveUserDataField(finishedIssues, "issues", updatedArr, "finishedIssues");
+        for (let issue of finishedIssues) {
+          const month = issue.timestamp.toDate().getMonth(); // 0 - 11
+          updatedArr[month].finishedIssues += 1;
+        }
       }
       setMonthlyIssueContributionArr(monthlyIssueContributionArr);
     }
-
   }
   
   useEffect(() => {   
