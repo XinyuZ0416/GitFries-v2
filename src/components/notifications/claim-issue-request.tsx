@@ -46,7 +46,10 @@ export default function ClaimIssueRequestCard({currentNotifId, senderUsername, s
 
   const addToClaimedIssues = async() => {
     await updateDoc(doc(db, "users", senderId), { 
-      claimedIssues: arrayUnion(issueId), 
+      claimedIssues: arrayUnion({
+        content: issueId,
+        timestamp: Timestamp.fromDate(new Date()),
+      }), 
       activities: arrayUnion({
         content: issueId,
         type: NotificationType.REQ_C_I_A,
