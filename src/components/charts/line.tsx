@@ -12,7 +12,7 @@ interface GitFriesLineChartProps {
 }
 
 interface ChartDataItem {
-  name: string;
+  month: string;
   postedIssues: number;
   claimedIssues: number;
   finishedIssues: number;
@@ -54,8 +54,8 @@ export default function GitFriesLineChart({
         });
 
         // Prepare data in chart-required format
-        const transformedData = monthNames.map((name, index) => ({
-          name,
+        const transformedData = monthNames.map((month, index) => ({
+          month,
           postedIssues: postedIssuesCounts[index],
           claimedIssues: claimedIssuesCounts[index],
           finishedIssues: finishedIssuesCounts[index]
