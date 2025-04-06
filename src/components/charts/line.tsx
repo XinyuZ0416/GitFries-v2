@@ -4,66 +4,15 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 
 interface GitFriesLineChartProps {
   title: string,
+  data: {
+    month: string;
+    postedIssues: number;
+    claimedIssues: number;
+    finishedIssues: number;
+  }[]
 }
 
-type LineChartData = {
-  month: string,
-  issues: number,
-  contributions: number
-}
-
-export default function GitFriesLineChart({title}: GitFriesLineChartProps) {
-  const data: LineChartData[] = [
-    {
-      month: "Jan",
-      issues: 3,
-      contributions: 10
-    },{
-      month: "Feb",
-      issues: 4,
-      contributions: 14
-    },{
-      month: "Mar",
-      issues: 1,
-      contributions: 10
-    },{
-      month: "Apr",
-      issues: 7,
-      contributions: 3
-    },{
-      month: "May",
-      issues: 9,
-      contributions: 10
-    },{
-      month: "Jun",
-      issues: 5,
-      contributions: 12
-    },{
-      month: "Jul",
-      issues: 3,
-      contributions: 5
-    },{
-      month: "Aug",
-      issues: 1,
-      contributions: 10
-    },{
-      month: "Sep",
-      issues: 2,
-      contributions: 8
-    },{
-      month: "Oct",
-      issues: 3,
-      contributions: 10
-    },{
-      month: "Nov",
-      issues: 3,
-      contributions: 1
-    },{
-      month: "Dec",
-      issues: 3,
-      contributions: 10
-    },
-  ];
+export default function GitFriesLineChart({title, data}: GitFriesLineChartProps) {
 
   return (
     <>
@@ -80,8 +29,9 @@ export default function GitFriesLineChart({title}: GitFriesLineChartProps) {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="issues" stroke="#FD6216" />
-          <Line type="monotone" dataKey="contributions" stroke="#32A8FC" />
+          <Line type="monotone" dataKey="postedIssues" stroke="#FD6216" />
+          <Line type="monotone" dataKey="claimedIssues" stroke="#32A8FC" />
+          <Line type="monotone" dataKey="finishedIssues" stroke="#32A822" />
         </LineChart>
     </ResponsiveContainer>
     </div>

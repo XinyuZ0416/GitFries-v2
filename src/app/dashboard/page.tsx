@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import GitFriesPieChart from '@/components/charts/pie'
 import RequireSignInSignUp from '@/components/require-signin-signup'
 import { useAuthProvider } from '@/providers/auth-provider'
-import { Timestamp, collection, doc, getCountFromServer, getDoc, query, where } from 'firebase/firestore'
+import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../firebase'
 
 type MonthlyIssueContributionType = {
@@ -57,19 +57,19 @@ export default function DashboardPage() {
       if (postedIssues.length > 0){
         resolveUserDataField(postedIssues, "issues", updatedArr, "postedIssues");
       }
-      if (claimedIssues.length > 0){
+      if (claimedIssues && claimedIssues.length > 0){
         for (let issue of claimedIssues) {
           const month = issue.timestamp.toDate().getMonth(); // 0 - 11
           updatedArr[month].claimedIssues += 1;
         }
       }
-      if (finishedIssues.length > 0){
+      if (finishedIssues && finishedIssues.length > 0){
         for (let issue of finishedIssues) {
           const month = issue.timestamp.toDate().getMonth(); // 0 - 11
           updatedArr[month].finishedIssues += 1;
         }
       }
-      setMonthlyIssueContributionArr(monthlyIssueContributionArr);
+      setMonthlyIssueContributionArr(updatedArr);
     }
   }
   
@@ -87,7 +87,7 @@ export default function DashboardPage() {
     <div className='flex flex-col gap-2'>
     {isVerified ? 
       <>
-      <GitFriesLineChart title='Issues and Contributions This Year' />
+      <GitFriesLineChart title='Issues and Contributions This Year' data={monthlyIssueContributionArr} />
       <div className='flex w-full justify-around'>
         <GitFriesBarChart title="Issues This Week" color="#FD6216" />
         <GitFriesPieChart title="Issues by Language" />
