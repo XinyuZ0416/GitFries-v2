@@ -1,6 +1,5 @@
 'use client'
-import { db } from '@/app/firebase';
-import { Timestamp, doc, getDoc } from 'firebase/firestore';
+import { Timestamp } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 

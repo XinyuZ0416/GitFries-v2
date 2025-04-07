@@ -52,12 +52,6 @@ export default function DashboardPage() {
     fetchUserData();
   }, [uid]);
 
-  // useEffect(() => {
-  //   console.log(`postedIssuesArr: ${postedIssuesArr}`);
-  //   console.log(`claimedIssuesArr: ${claimedIssuesArr}`);
-  //   console.log(`finishedIssuesArr: ${finishedIssuesArr}`);
-  // }, [postedIssuesArr, claimedIssuesArr, finishedIssuesArr]);
-
   return (
     <>
     <div className='flex flex-col gap-2'>
