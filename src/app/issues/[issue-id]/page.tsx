@@ -8,7 +8,7 @@ import createNotif from '@/utils/create-notif'
 import formatDate from '@/utils/format-date'
 import { NotificationType } from '@/utils/notification-types'
 import MDEditor from '@uiw/react-md-editor'
-import { Timestamp, arrayRemove, arrayUnion, collection, deleteDoc, deleteField, doc, getDoc, getDocs, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
+import { Timestamp, arrayRemove, arrayUnion, deleteDoc, deleteField, doc, getDoc, getDocs, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
@@ -399,8 +399,10 @@ export default function IssueDetailsPage() {
     }
       <div className='flex flex-row'>
         <section id='user-info'>
+          <Link href={`/profile/${issueDetails?.issueReporterUid}`}>
           <img className="rounded-full size-14" src={issueDetails?.issueReporterPicUrl ? issueDetails.issueReporterPicUrl : '/potato.png'} alt="user profile" />
           <h6 className='text-lg font-bold'>{issueDetails?.issueReporterUsername}</h6>
+          </Link>
         </section>
 
         <section id='issue-basic-info' className="flex flex-col justify-between px-4 py-2">

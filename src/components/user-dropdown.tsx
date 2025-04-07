@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 export default function UserDropdown() {
   const router = useRouter();
-  const { setUid, setIsVerified, userPicUrl } = useAuthProvider();
+  const { uid, setUid, setIsVerified, userPicUrl } = useAuthProvider();
 
   const handleSignOut = async() => {
     try {
@@ -35,7 +35,7 @@ export default function UserDropdown() {
         className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-fit"
       >
         <MenuItem>
-          <Link href='/profile' type='button' className="group flex w-full items-center justify-center rounded-lg py-1.5 px-3">Profile</Link>
+          <Link href={`/profile/${uid}`} type='button' className="group flex w-full items-center justify-center rounded-lg py-1.5 px-3">Profile</Link>
         </MenuItem>
         <MenuItem>
           <Link href='/settings' type='button' className="group flex w-full items-center justify-center rounded-lg py-1.5 px-3">Settings</Link>

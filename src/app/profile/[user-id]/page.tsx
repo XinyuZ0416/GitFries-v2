@@ -1,3 +1,4 @@
+'use client'
 import ProfileAchievementsCard from '@/components/profile/achievements'
 import ProfileActivities from '@/components/profile/activities/activities'
 import ProfileDashboardCard from '@/components/profile/dashboard'
@@ -5,6 +6,7 @@ import ProfilePicCard from '@/components/profile/bio'
 import React from 'react'
 
 export default function ProfilePage() {
+  
   // TODO: if no user/ user not verified, dont show content
   return (
     <>
