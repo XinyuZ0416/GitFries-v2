@@ -25,49 +25,35 @@ export default function GitFriesLineChart({
   finishedIssuesTimeArr
 }: GitFriesLineChartProps) {
   const [combinedData, setCombinedData] = useState<ChartDataItem[]>([]);
+  const monthNames = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ]
+  const countEventsByMonth = (timestamps: Timestamp[]) => {
+    const counts = Array(12).fill(0);
+    timestamps?.forEach(time => {
+      if (time?.toDate) {
+        const monthIndex = time.toDate().getMonth();
+        counts[monthIndex]++;
+      }
+    });
+    return counts;
+  }
 
   useEffect(() => {
-    const monthNames = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-    ]
+    const postedIssuesCounts = countEventsByMonth(postedIssuesTimeArr);
+    const claimedIssuesCounts = countEventsByMonth(claimedIssuesTimeArr);
+    const finishedIssuesCounts = countEventsByMonth(finishedIssuesTimeArr);
 
-    if (postedIssuesTimeArr.length > 0 || claimedIssuesTimeArr.length > 0 || finishedIssuesTimeArr.length > 0 ) {
-      const populateChart = () => {
-        const postedIssuesCounts = Array(12).fill(0);
-        const claimedIssuesCounts = Array(12).fill(0);
-        const finishedIssuesCounts = Array(12).fill(0);
+    // Prepare data in chart-required format
+    const transformedData = monthNames.map((month, index) => ({
+      month,
+      postedIssues: postedIssuesCounts[index],
+      claimedIssues: claimedIssuesCounts[index],
+      finishedIssues: finishedIssuesCounts[index]
+    }));
 
-        postedIssuesTimeArr.forEach(time => {
-          const monthIndex = time.toDate().getMonth();
-          postedIssuesCounts[monthIndex]++;
-        });
-
-        claimedIssuesTimeArr.forEach(time => {
-          const monthIndex = time.toDate().getMonth();
-          claimedIssuesCounts[monthIndex]++;
-        });
-
-        finishedIssuesTimeArr.forEach(time => {
-          const monthIndex = time.toDate().getMonth();
-          finishedIssuesCounts[monthIndex]++;
-        });
-
-        // Prepare data in chart-required format
-        const transformedData = monthNames.map((month, index) => ({
-          month,
-          postedIssues: postedIssuesCounts[index],
-          claimedIssues: claimedIssuesCounts[index],
-          finishedIssues: finishedIssuesCounts[index]
-        }));
-
-        setCombinedData(transformedData);
-      };
-
-      populateChart();
-    } else {
-      setCombinedData([]);
-    }
+    setCombinedData(transformedData);
   }, [postedIssuesTimeArr, claimedIssuesTimeArr, finishedIssuesTimeArr]); 
 
   return (
