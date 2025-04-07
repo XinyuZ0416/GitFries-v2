@@ -58,7 +58,6 @@ export default function ProfileDashboardCard() {
         claimedIssuesTimeArr={claimedIssuesTimeArr}
         finishedIssuesTimeArr={finishedIssuesTimeArr}
       />
-      <p className='font-normal underline ml-auto'>More</p>
     </div>
     </>
   )

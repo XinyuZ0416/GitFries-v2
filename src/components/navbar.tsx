@@ -25,9 +25,6 @@ export default function Navbar() {
               <Link href="/issues" className="block py-2 px-3 brounded-sm md:bg-transparent md:p-0" aria-current="page">Issues</Link>
             </li>
             <li>
-              <Link href="/dashboard" className="block py-2 px-3 rounded-sm md:hover:bg-transparent md:p-0 md:dark:hover:bg-transparent">Dashboard</Link>
-            </li>
-            <li>
               <Link href="/achievements" className="block py-2 px-3 rounded-sm md:hover:bg-transparent md:p-0 md:dark:hover:bg-transparent">Achievements</Link>
             </li>
             {isVerified && // if user is logged in & verified
