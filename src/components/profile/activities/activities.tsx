@@ -1,8 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import ActivitiesCommentCard from './comment'
-import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider'
-import { doc, getDoc } from 'firebase/firestore'
+import { Timestamp, doc, getDoc } from 'firebase/firestore'
 import { db } from '@/app/firebase'
 import RequestClaimCard from './request-claim'
 import ClaimCard from './claim'
@@ -11,8 +10,17 @@ import FinishCard from './finish'
 import DisclaimCard from './disclaim'
 import PostCard from './post'
 
-export default function ProfileActivities() {
-  const { activities } = useCurrentUserDocProvider();
+interface ActivityType {
+  content: string;
+  type: string;
+  timestamp: Timestamp;
+}
+
+interface ProfileActivitiesProps {
+  displayActivities: ActivityType[];
+}
+
+export default function ProfileActivities({displayActivities}: ProfileActivitiesProps) {
   const [ commentDataMap, setCommentDataMap ] = useState<Record<string, { comment: string; issueTitle: string; issueId: string }>>({});
   const [ requestClaimIssueDataMap, setRequestClaimIssueDataMap ] = useState<Record<string, { issueTitle: string }>>({});
   const [ claimIssueDataMap, setClaimIssueDataMap ] = useState<Record<string, { issueTitle: string }>>({});
@@ -49,66 +57,66 @@ export default function ProfileActivities() {
     return results;
   }
 
+  const fetchAllActivities = async () => {
+    const commentActivities = displayActivities.filter(a => a.type === 'comment');
+    const requestClaimIssueActivities = displayActivities.filter(a => a.type === 'request_claim_issue');
+    const claimIssueActivities = displayActivities.filter(a => a.type === 'request_claim_issue_accept');
+    const requestFinishIssueActivities = displayActivities.filter(a => a.type === 'request_finish_issue');
+    const finishIssueActivities = displayActivities.filter(a => a.type === 'request_finish_issue_accept');
+    const disclaimIssueActivities = displayActivities.filter(a => a.type === 'disclaim_issue');
+    const postIssueActivities = displayActivities.filter(a => a.type === 'post_issue');
+
+    const [commentData, requestClaimData, claimData, requestFinishData, finishData, disclaimData, postData] = await Promise.all([
+      batchFetchDocs(commentActivities.map(a => a.content), "comments", data => ({ // “data” here is from "snap.data()" above in batchFetchDocs()
+        comment: data.comment,
+        issueId: data.issueId,
+        issueTitle: data.issueTitle
+      })),
+
+      batchFetchDocs(requestClaimIssueActivities.map(a => a.content), "issues", data => ({
+        issueTitle: data.title
+      })),
+
+      batchFetchDocs(claimIssueActivities.map(a => a.content), "issues", data => ({
+        issueTitle: data.title
+      })),
+
+      batchFetchDocs(requestFinishIssueActivities.map(a => a.content), "issues", data => ({
+        issueTitle: data.title
+      })),
+
+      batchFetchDocs(finishIssueActivities.map(a => a.content), "issues", data => ({
+        issueTitle: data.title
+      })),
+
+      batchFetchDocs(disclaimIssueActivities.map(a => a.content), "issues", data => ({
+        issueTitle: data.title
+      })),
+
+      batchFetchDocs(postIssueActivities.map(a => a.content), "issues", data => ({
+        issueTitle: data.title
+      })),
+    ]);
+
+    setCommentDataMap(commentData);
+    setRequestClaimIssueDataMap(requestClaimData);
+    setClaimIssueDataMap(claimData);
+    setRequestFinishIssueDataMap(requestFinishData);
+    setFinishIssueDataMap(finishData);
+    setDisclaimIssueDataMap(disclaimData);
+    setPostIssueDataMap(postData);
+  };
+
   useEffect(() => {
-    const fetchAllActivities = async () => {
-      const commentActivities = activities.filter(a => a.type === 'comment');
-      const requestClaimIssueActivities = activities.filter(a => a.type === 'request_claim_issue');
-      const claimIssueActivities = activities.filter(a => a.type === 'request_claim_issue_accept');
-      const requestFinishIssueActivities = activities.filter(a => a.type === 'request_finish_issue');
-      const finishIssueActivities = activities.filter(a => a.type === 'request_finish_issue_accept');
-      const disclaimIssueActivities = activities.filter(a => a.type === 'disclaim_issue');
-      const postIssueActivities = activities.filter(a => a.type === 'post_issue');
-
-      const [commentData, requestClaimData, claimData, requestFinishData, finishData, disclaimData, postData] = await Promise.all([
-        batchFetchDocs(commentActivities.map(a => a.content), "comments", data => ({ // “data” here is from "snap.data()" above in batchFetchDocs()
-          comment: data.comment,
-          issueId: data.issueId,
-          issueTitle: data.issueTitle
-        })),
-
-        batchFetchDocs(requestClaimIssueActivities.map(a => a.content), "issues", data => ({
-          issueTitle: data.title
-        })),
-
-        batchFetchDocs(claimIssueActivities.map(a => a.content), "issues", data => ({
-          issueTitle: data.title
-        })),
-
-        batchFetchDocs(requestFinishIssueActivities.map(a => a.content), "issues", data => ({
-          issueTitle: data.title
-        })),
-
-        batchFetchDocs(finishIssueActivities.map(a => a.content), "issues", data => ({
-          issueTitle: data.title
-        })),
-
-        batchFetchDocs(disclaimIssueActivities.map(a => a.content), "issues", data => ({
-          issueTitle: data.title
-        })),
-
-        batchFetchDocs(postIssueActivities.map(a => a.content), "issues", data => ({
-          issueTitle: data.title
-        })),
-      ]);
-
-      setCommentDataMap(commentData);
-      setRequestClaimIssueDataMap(requestClaimData);
-      setClaimIssueDataMap(claimData);
-      setRequestFinishIssueDataMap(requestFinishData);
-      setFinishIssueDataMap(finishData);
-      setDisclaimIssueDataMap(disclaimData);
-      setPostIssueDataMap(postData);
-    };
-
-    if (activities.length > 0) {
+    if (displayActivities.length > 0) {
       fetchAllActivities();
     }
-  }, [activities]);
+  }, [displayActivities]);
 
   const renderActivitiesCard = () => {
-    if (activities.length === 0) return <p>No activities yet</p>;
+    if (displayActivities.length === 0) return <p>No activities yet</p>;
 
-    return activities
+    return displayActivities
       .slice()
       .sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0))
       .map((activity) => {

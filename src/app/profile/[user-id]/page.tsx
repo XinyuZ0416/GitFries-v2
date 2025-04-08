@@ -9,6 +9,7 @@ import { useAuthProvider } from '@/providers/auth-provider'
 import { Timestamp, doc, getDoc } from 'firebase/firestore'
 import { db, storage } from '@/app/firebase'
 import { getDownloadURL, ref } from 'firebase/storage'
+import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider'
 
 interface ChartDataItem {
   month: string;
@@ -17,18 +18,29 @@ interface ChartDataItem {
   finishedIssues: number;
 }
 
+interface ActivityType {
+  content: string;
+  type: string;
+  timestamp: Timestamp;
+}
+
 export default function ProfilePage() {
+  // For ProfilePicCard
   const { "user-id": userIdParam } = useParams();
   const userId = Array.isArray(userIdParam) ? userIdParam[0] : userIdParam; // Ensure only string 
   const { username, bio, uid, userPicUrl } = useAuthProvider();
   const [ displayUsername, setDisplayUsername ] = useState<string>("");
   const [ displayBio, setDisplayBio ] = useState<string>("");
   const [ displayUserPicUrl, setDisplayUserPicUrl ] = useState<string>("/potato.png");
+  // For ProfileDashboardCard
   const [ postedIssuesTimeArr, setPostedIssuesTimeArr ] = useState<Timestamp[]>([]);
   const [ claimedIssuesTimeArr, setClaimedIssuesTimeArr ] = useState<Timestamp[]>([]);
   const [ finishedIssuesTimeArr, setFinishedIssuesTimeArr ] = useState<Timestamp[]>([]);
   const [combinedData, setCombinedData] = useState<ChartDataItem[]>([]);
   const monthNames = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ];
+  // For ProfileActivities
+  const { activities } = useCurrentUserDocProvider();
+  const [ displayActivities, setDisplayActivities ] = useState<ActivityType[]>([]);
   
   const countEventsByMonth = (timestamps: Timestamp[]) => {
     const counts = Array(12).fill(0);
@@ -46,6 +58,7 @@ export default function ProfilePage() {
       setDisplayUsername(username);
       setDisplayBio(bio);
       setDisplayUserPicUrl(userPicUrl);
+      setDisplayActivities(activities);
     } else {
       const userDocSnap = await getDoc(doc(db, "users", userId!));
       const userData = userDocSnap.data();
@@ -59,6 +72,9 @@ export default function ProfilePage() {
         } catch {
           setDisplayUserPicUrl("/potato.png");
         }
+
+        // For ProfileActivities
+        setDisplayActivities(userData.activities ?? []);
 
         // For ProfileDashboardCard
         const postedIssues = userData.postedIssues;
@@ -126,7 +142,7 @@ export default function ProfilePage() {
         </div>
         <ProfileDashboardCard combinedData={combinedData} />
       </div>
-      <ProfileActivities />
+      <ProfileActivities displayActivities={displayActivities} />
     </div>
     </>
   )
