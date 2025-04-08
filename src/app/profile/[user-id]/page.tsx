@@ -16,7 +16,7 @@ export default function ProfilePage() {
   const { username, bio, uid, userPicUrl } = useAuthProvider();
   const [ displayUsername, setDisplayUsername ] = useState<string>("");
   const [ displayBio, setDisplayBio ] = useState<string>("");
-  const [ displayUserPicUrl, setDisplayUserPicUrl ] = useState<string>("");
+  const [ displayUserPicUrl, setDisplayUserPicUrl ] = useState<string>("/potato.png");
 
   const getUserInfo = async() => {
     if (userId === uid) {
