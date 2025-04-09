@@ -10,10 +10,11 @@ interface ChartDataItem {
 }
 
 interface ProfileDashboardCardProps {
-  combinedData: ChartDataItem[];
+  combinedData: ChartDataItem[]
 }
 
 export default function ProfileDashboardCard({ combinedData }: ProfileDashboardCardProps) {
+ 
   return (
     <>
       <div className='rounded-lg shadow-sm bg-white p-4 w-full'>
