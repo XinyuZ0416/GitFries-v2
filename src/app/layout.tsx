@@ -6,6 +6,7 @@ import Footer from "@/components/footer";
 import { AuthProvider } from "@/providers/auth-provider";
 import { CurrentUserDocProvider } from "@/providers/current-user-doc-provider";
 import { AchievementsProvider } from "@/providers/achievements-provider";
+import AchievementPopover from "@/components/achievements/popover";
 
 const ubuntuMono = Ubuntu_Mono({
   variable: "--font-ubuntu-mono",
@@ -36,6 +37,7 @@ export default function RootLayout({
                 {children}
               </div>
               <img className="fixed right-3 bottom-3 size-20 z-9" src="/chatbot.png" />
+              <AchievementPopover />
               <Footer />
               <script src="https://unpkg.com/flowbite@3.1.2/dist/flowbite.js"></script>
             </body>

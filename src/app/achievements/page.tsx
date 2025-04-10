@@ -1,5 +1,5 @@
 'use client'
-import Badge from '@/components/badge'
+import Badge from '@/components/achievements/badge'
 import { useAuthProvider } from '@/providers/auth-provider'
 import RequireSignInSignUp from '@/components/require-signin-signup'
 import React from 'react'
@@ -10,7 +10,7 @@ export default function AchievementsPage() {
     <>
     <h2 className="text-2xl font-bold">All Achievements</h2>
     <div className="grid grid-flow-col grid-rows-3 gap-4">
-    <Badge src='/first-detonation.png' alt='first detonation' title='first detonation' 
+      <Badge src='/first-detonation.png' alt='first detonation' title='first detonation' 
         description='Found the bug. Pulled the pin. Walked away in slow motion.' explanation='Posts their first issue' />
       <Badge src='/issue-hoarder.png' alt='issue hoarder' title='issue hoarder' 
         description='If I hoarded it, I solved it!' explanation='Favorites 50 issues' />
