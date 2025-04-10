@@ -75,7 +75,8 @@ export default function PostIssuePage() {
           content: issueId,
           type: NotificationType.POST_I,
           timestamp: Timestamp.fromDate(new Date()),
-        })
+        }),
+        hasPostedIssues: true,
       });
 
       router.push(`/issues/${issueId}`);

@@ -59,7 +59,8 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
           uid: uid,
           email: email,
           username: uid,
-          bio: 'Each bite of fries gets me one byte closer to fixing this bug... or creating a new one?'
+          bio: 'Each bite of fries gets me one byte closer to fixing this bug... or creating a new one?',
+          hasPostedIssues: false,
         });
         console.log("Created user in db!");
       }

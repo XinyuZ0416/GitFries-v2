@@ -17,7 +17,7 @@ export default function SignInPage() {
 
   useEffect(() => {
     if (isVerified) {
-      router.push('/profile');
+      router.push('/issues');
     }
   }, [isVerified]);
 
