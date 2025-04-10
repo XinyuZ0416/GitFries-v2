@@ -10,6 +10,8 @@ export default function AchievementsPage() {
     <>
     <h2 className="text-2xl font-bold">All Achievements</h2>
     <div className="grid grid-flow-col grid-rows-3 gap-4">
+    <Badge src='/first-detonation.png' alt='first detonation' title='first detonation' 
+        description='Found the bug. Pulled the pin. Walked away in slow motion.' explanation='Posts their first issue' />
       <Badge src='/issue-hoarder.png' alt='issue hoarder' title='issue hoarder' 
         description='If I hoarded it, I solved it!' explanation='Favorites 50 issues' />
       <Badge src='/bug-destroyer.png' alt='bug destroyer' title='bug destroyer' 
@@ -18,8 +20,6 @@ export default function AchievementsPage() {
         description='I speak in fluent bugs.' explanation='Leaves a issue unfinished > 30 days' />
       <Badge src='/comment-goblin.png' alt='comment goblin' title='comment goblin' 
         description='Lives in the comment section. Probably.' explanation='Leaves 50 comments across different issues' />
-      <Badge src='/juice-it-up.png' alt='juice it up' title='juice it up' 
-        description='Fully squeezed.' explanation='First time editing profile with a new username, bio and pic' />
       <Badge src='/issue-fisher.png' alt='issue fisher' title='issue fisher' 
         description='Baited the hook, and the coders came biting.' explanation='Posts 10 issues and all get calimed' />
       <Badge src='/merge-monarch.png' alt='merge monarch' title='merge monarch' 

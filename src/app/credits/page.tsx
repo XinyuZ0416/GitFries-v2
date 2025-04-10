@@ -24,7 +24,6 @@ export default function CreditsPage() {
       <a href="https://www.flaticon.com/free-icons/spray-can" title="spray-can icons">Spray-can icons created by Eideticmemo - Flaticon</a>
       <a href="https://www.flaticon.com/free-icons/whisper" title="whisper icons">Whisper icons created by Freepik - Flaticon</a>
       <a href="https://www.flaticon.com/free-icons/goblin" title="goblin icons">Goblin icons created by Freepik - Flaticon</a>
-      <a href="https://www.flaticon.com/free-icons/juice" title="juice icons">Juice icons created by Freepik - Flaticon</a>
       <a href="https://www.flaticon.com/free-icons/fishing" title="fishing icons">Fishing icons created by max.icons - Flaticon</a>
       <a href="https://www.flaticon.com/free-icons/crown" title="crown icons">Crown icons created by Freepik - Flaticon</a>
       <a href="https://www.flaticon.com/free-icons/thunder" title="thunder icons">Thunder icons created by Smashicons - Flaticon</a>
@@ -32,6 +31,7 @@ export default function CreditsPage() {
       <a href="https://www.flaticon.com/free-icons/sprout" title="sprout icons">Sprout icons created by Freepik - Flaticon</a>
       <a href="https://www.flaticon.com/free-icons/fist" title="fist icons">Fist icons created by Freepik - Flaticon</a>
       <a href="https://www.flaticon.com/free-icons/time-travel" title="time travel icons">Time travel icons created by Freepik - Flaticon</a>
+      <a href="https://www.flaticon.com/free-icons/detonator" title="detonator icons">Detonator icons created by cah nggunung - Flaticon</a>
     </div>
     </>
   )
