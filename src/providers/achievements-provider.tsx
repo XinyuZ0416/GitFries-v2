@@ -1,19 +1,21 @@
 'use client'
-import { auth, db } from "@/app/firebase";
-import { onAuthStateChanged } from "firebase/auth";
+import { db } from "@/app/firebase";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuthProvider } from "./auth-provider";
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 
 // achievements context
 interface AchievementsContextProps {
+  hasPostedIssues: boolean,
+  hasSeenFirstDetonationBadge: boolean | null,
 }
 
 const AchievementsContext = createContext<AchievementsContextProps | null>(null);
 
 export const AchievementsProvider = ({children}:{children: React.ReactNode}) => {
   const { uid } = useAuthProvider();
-  const [ hasFirstDetonation, setHasFirstDetonation ] = useState<boolean>(false);
+  const [ hasPostedIssues, setHasPostedIssues ] = useState<boolean>(false);
+  const [ hasSeenFirstDetonationBadge, setHasSeenFirstDetonationBadge ] = useState<boolean | null>(false);
 
   useEffect(() => {
     if (!uid) return;
@@ -23,9 +25,8 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
     const unsubscribe = onSnapshot(userDocRef, (docSnap) => {
       const userData = docSnap.data();
       if (userData) {
-        console.log('achievements:')
-        console.log(userData.hasPostedIssues)
-        setHasFirstDetonation(userData.hasPostedIssues);
+        setHasPostedIssues(userData.hasPostedIssues);
+        setHasSeenFirstDetonationBadge(userData.hasSeenFirstDetonationBadge);
       }
     });
 
@@ -35,8 +36,8 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
   return(
     <AchievementsContext.Provider 
       value={{
-        
-        }}>
+        hasPostedIssues, hasSeenFirstDetonationBadge
+      }}>
       {children}
     </AchievementsContext.Provider>
   );
