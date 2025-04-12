@@ -29,7 +29,7 @@ export default function AchievementsPage() {
       <Badge src='/speedy-gonzales.png' alt='speedy gonzales' title='speedy gonzales' 
         description='No fix too quick.' explanation='Finishes an issue in under an hour' />
       <Badge src='/ghost-claimer.png' alt='ghost claimer' title='ghost claimer' 
-        description='I ghost, therefore I am.' explanation='Claims 10 issues but never finishes any' />
+        description='I ghost, therefore I am.' explanation='Has 10 issues unfinished' />
       <Badge src='/rejected-never.png' alt='rejected never' title='rejected never' 
         description='Never take no for an answer. Well, not without trying again.' explanation='Request to claim an issue is rejected' />
       <Badge src='/time-travelr.png' alt='time travelr' title='time travelr' 
