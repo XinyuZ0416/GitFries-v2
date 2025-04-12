@@ -8,6 +8,8 @@ import { doc, onSnapshot } from "firebase/firestore";
 interface AchievementsContextProps {
   hasPostedIssues: boolean,
   hasSeenFirstDetonationBadge: boolean | null,
+  hasFaved20Issues: boolean,
+  hasSeenIssueHoarderBadge: boolean | null,
 }
 
 const AchievementsContext = createContext<AchievementsContextProps | null>(null);
@@ -16,6 +18,8 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
   const { uid } = useAuthProvider();
   const [ hasPostedIssues, setHasPostedIssues ] = useState<boolean>(false);
   const [ hasSeenFirstDetonationBadge, setHasSeenFirstDetonationBadge ] = useState<boolean | null>(false);
+  const [ hasFaved20Issues, setHasFaved20Issues ] = useState<boolean>(false);
+  const [ hasSeenIssueHoarderBadge, setHasSeenIssueHoarderBadge ] = useState<boolean | null>(false);
 
   useEffect(() => {
     if (!uid) return;
@@ -25,8 +29,15 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
     const unsubscribe = onSnapshot(userDocRef, (docSnap) => {
       const userData = docSnap.data();
       if (userData) {
+        // First Detonation Badge
         setHasPostedIssues(userData.hasPostedIssues);
         setHasSeenFirstDetonationBadge(userData.hasSeenFirstDetonationBadge);
+        
+        // Issue Hoarder Badge
+        if (userData.favedIssues && userData.favedIssues.length == 20){
+          setHasFaved20Issues(true);
+          setHasSeenIssueHoarderBadge(userData.hasSeenIssueHoarderBadge);
+        }
       }
     });
 
@@ -36,7 +47,8 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
   return(
     <AchievementsContext.Provider 
       value={{
-        hasPostedIssues, hasSeenFirstDetonationBadge
+        hasPostedIssues, hasSeenFirstDetonationBadge,
+        hasFaved20Issues, hasSeenIssueHoarderBadge
       }}>
       {children}
     </AchievementsContext.Provider>

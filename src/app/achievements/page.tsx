@@ -13,7 +13,7 @@ export default function AchievementsPage() {
       <Badge src='/first-detonation.png' alt='first detonation' title='first detonation' 
         description='Found the bug. Pulled the pin. Walked away in slow motion.' explanation='Posts their first issue' />
       <Badge src='/issue-hoarder.png' alt='issue hoarder' title='issue hoarder' 
-        description='If I hoarded it, I solved it!' explanation='Favorites 50 issues' />
+        description='If I hoarded it, I solved it!' explanation='Favorites 20 issues' />
       <Badge src='/bug-destroyer.png' alt='bug destroyer' title='bug destroyer' 
         description='What bugs?' explanation='Finishes 10 issues' />
       <Badge src='/bug-whisperer.png' alt='bug whisperer' title='bug whisperer' 
