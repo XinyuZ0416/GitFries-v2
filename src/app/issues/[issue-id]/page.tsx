@@ -214,7 +214,7 @@ export default function IssueDetailsPage() {
     }
   };
 
-  const toggleClaimIssue = async() => {
+  const toggleClaimIssue = async(issueReporterUid: string) => {
     if (!uid) {
       alert('Please sign in to claim an issue');
       router.push('/sign-in');
@@ -244,6 +244,11 @@ export default function IssueDetailsPage() {
           });
           dispatch({ type: "SET_REQUESTING_TO_CLAIM_ISSUES", payload: [...requestingToClaimIssues, issueId as string] });
           
+          // Update issue reporter achievementsHelpers
+          await updateDoc(doc(db, "users", issueReporterUid), { 
+            "achievementsHelpers.receivedClaimIssueRequestsCounts": increment(1),
+          });   
+
           createNotif(
             issueDetails?.issueReporterUid!, 
             uid, 
@@ -309,6 +314,7 @@ export default function IssueDetailsPage() {
       })
     });
 
+    // Update issue reporter achievementsHelpers
     await updateDoc(doc(db, "users", issueReporterUid), { 
       "achievementsHelpers.receivedFinishIssueRequestsCounts": increment(1),
     });    
@@ -327,13 +333,13 @@ export default function IssueDetailsPage() {
     alert("The request to finish this issue has been sent. The issue owner will soon accept/ decline this request.");
   }
 
-  const renderClaimBtns = () => {
+  const renderClaimBtns = (issueReporterUid: string) => {
     if(!issueId) return;
 
     // If user signed out, show claim issue btn
     if (!uid) {
       return(
-        <button onClick={toggleClaimIssue}>
+        <button onClick={() => toggleClaimIssue(issueReporterUid)}>
           <img className="size-5" src="/claim.png" alt="claim issue button" title="claim issue" />
         </button>
       )
@@ -352,7 +358,7 @@ export default function IssueDetailsPage() {
     if (!issueDetails?.claimedBy) {
       // If issue is not claimed, show claim/ waiting btn
       return(
-        <button onClick={toggleClaimIssue}> 
+        <button onClick={() => toggleClaimIssue(issueReporterUid)}> 
           <img className="size-5" 
             src={ isRequesting ? "/waiting.png" : "/claim.png" } 
             alt={ isRequesting ? "waiting to be accepted" : "claim issue" } 
@@ -365,7 +371,7 @@ export default function IssueDetailsPage() {
         // If issue is claimed by current user, show disclaim btn and finish btn
         return(
           <>
-          <button onClick={toggleClaimIssue}> 
+          <button onClick={() => toggleClaimIssue(issueReporterUid)}> 
             <img className="size-5" src="/disclaim.png" alt="disclaim issue" title="disclaim issue" />
           </button>
           <button onClick={() => handleFinishIssue(issueDetails?.issueReporterUid)}> 
@@ -424,7 +430,7 @@ export default function IssueDetailsPage() {
                 <img className="size-5" src={favedIssues.includes(issueId as string) ? "/logo.png" : "/empty-fries.png" } alt="favorite button" title={favedIssues.includes(issueId as string) ? "unfavorite issue" : "favorite issue" } />
               </button>
             }
-            {renderClaimBtns()}
+            {issueDetails?.issueReporterUid && renderClaimBtns(issueDetails?.issueReporterUid)}
             {uid === issueDetails?.issueReporterUid && 
               <button onClick={handleDeleteIssue}>
                 <img className="size-5" src="/delete.png" alt="delete button" title="delete issue" />

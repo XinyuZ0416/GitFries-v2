@@ -12,6 +12,7 @@ interface AchievementsContextProps {
   hasFinished10Issues: boolean, hasSeenBugDestroyerBadge: boolean | null,
   has50Comments: boolean, hasSeenCommentGoblinBadge: boolean | null,
   received10RequestsToFinishIssue: boolean, hasSeenMergeMonarchBadge: boolean | null,
+  received10RequestsToClaimIssue: boolean, hasSeenIssueFisherBadge: boolean | null,
 }
 
 const AchievementsContext = createContext<AchievementsContextProps | null>(null);
@@ -36,6 +37,9 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
   // Merge Monarch
   const [ received10RequestsToFinishIssue, setReceived10RequestsToFinishIssue ] = useState<boolean>(false);
   const [ hasSeenMergeMonarchBadge, setHasSeenMergeMonarchBadge ] = useState<boolean | null>(false);
+  // Issue Fisher
+  const [ received10RequestsToClaimIssue, setReceived10RequestsToClaimIssue ] = useState<boolean>(false);
+  const [ hasSeenIssueFisherBadge, setHasSeenIssueFisherBadge ] = useState<boolean | null>(false);
 
   useEffect(() => {
     if (!uid) return;
@@ -78,6 +82,12 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
           setReceived10RequestsToFinishIssue(true);
           setHasSeenMergeMonarchBadge(userData.achievements?.mergeMonarch);
         }
+
+        // Issue Fisher
+        if (userData.achievementsHelpers?.receivedClaimIssueRequestsCounts && userData.achievementsHelpers?.receivedClaimIssueRequestsCounts == 10){
+          setReceived10RequestsToClaimIssue(true);
+          setHasSeenIssueFisherBadge(userData.achievements?.issueFisher);
+        }
       }
     });
 
@@ -93,6 +103,7 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
         hasFinished10Issues, hasSeenBugDestroyerBadge,
         has50Comments, hasSeenCommentGoblinBadge,
         received10RequestsToFinishIssue, hasSeenMergeMonarchBadge,
+        received10RequestsToClaimIssue, hasSeenIssueFisherBadge,
       }}>
       {children}
     </AchievementsContext.Provider>

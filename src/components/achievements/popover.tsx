@@ -25,6 +25,7 @@ export default function AchievementPopover() {
     hasFinished10Issues, hasSeenBugDestroyerBadge,
     has50Comments, hasSeenCommentGoblinBadge,
     received10RequestsToFinishIssue, hasSeenMergeMonarchBadge,
+    received10RequestsToClaimIssue, hasSeenIssueFisherBadge,
   } = useAchievementsProvider();
   const [ badgeObj, setBadgeObj ] =  useState<BadgeObjType | null>(null);
 
@@ -88,6 +89,14 @@ export default function AchievementPopover() {
       title: "merge monarch",
       description: "All commits bow to your will!",
       explanation: "Gets 10 requests to approve finished issues"
+    }, {
+      condition: received10RequestsToClaimIssue && !hasSeenIssueFisherBadge,
+      field: "issueFisher",
+      src: "/issue-fisher.png",
+      alt: "issue fisher",
+      title: "issue fisher",
+      description: "Baited the hook, and the coders came biting.",
+      explanation: "Receives 10 requests to approve claimed issues"
     }
   ];
 
