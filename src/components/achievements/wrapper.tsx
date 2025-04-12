@@ -11,6 +11,7 @@ export default function AchievementsWrapper() {
     has50Comments,
     received10RequestsToFinishIssue,
     received10RequestsToClaimIssue,
+    finishedIssueWithinOneHour,
   } = useAchievementsProvider();
   return (
     <>
@@ -21,6 +22,7 @@ export default function AchievementsWrapper() {
     { has50Comments && <AchievementPopover /> }
     { received10RequestsToFinishIssue && <AchievementPopover /> }
     { received10RequestsToClaimIssue && <AchievementPopover /> }
+    { finishedIssueWithinOneHour && <AchievementPopover /> }
     </>
   )
 }

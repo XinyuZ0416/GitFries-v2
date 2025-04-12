@@ -24,10 +24,10 @@ export default function AchievementsPage() {
         description='All commits bow to your will!' explanation='Receives 10 requests to approve finished issues' />
       <Badge src='/issue-fisher.png' alt='issue fisher' title='issue fisher' 
         description='Baited the hook, and the coders came biting.' explanation='Receives 10 requests to approve claimed issues' />
-      <Badge src='/bug-whisperer.png' alt='bug whisperer' title='bug whisperer' 
-        description='I speak in fluent bugs.' explanation='Leaves a issue unfinished > 30 days' />
       <Badge src='/speedy-gonzales.png' alt='speedy gonzales' title='speedy gonzales' 
         description='No fix too quick.' explanation='Finishes an issue in under an hour' />
+      <Badge src='/bug-whisperer.png' alt='bug whisperer' title='bug whisperer' 
+        description='I speak in fluent bugs.' explanation='Leaves a issue unfinished > 30 days' />
       <Badge src='/ghost-claimer.png' alt='ghost claimer' title='ghost claimer' 
         description='I ghost, therefore I am.' explanation='Has 10 issues unfinished' />
       <Badge src='/rejected-never.png' alt='rejected never' title='rejected never' 

@@ -305,14 +305,27 @@ export default function IssueDetailsPage() {
     if(!confirm("Are you sure you have finished this issue? This action cannot be undone.")) return;
 
     // Update issue requester requestingToFinishIssues and activity
+    const now = new Date();
     await updateDoc(doc(db, "users", uid), { 
       requestingToFinishIssues: arrayUnion(issueId),
       activities: arrayUnion({
         content: issueId,
         type: NotificationType.REQ_F_I,
-        timestamp: Timestamp.fromDate(new Date()),
+        timestamp: Timestamp.fromDate(now),
       })
     });
+    const nowMs = Timestamp.fromDate(now).toMillis();
+    const issueCreatedTimeMs = issueDetails?.time.toMillis();
+    const oneHourMs = 60 * 60 * 1000;
+    if (issueCreatedTimeMs) {
+      const timeDiff = nowMs - issueCreatedTimeMs;
+      if (timeDiff >= 0 && timeDiff <= oneHourMs) {
+        // Update issue reporter achievementsHelpers
+        await updateDoc(doc(db, "users", uid), { 
+          "achievementsHelpers.finishedIssueWithinOneHour": true,
+        });    
+      }
+    }
 
     // Update issue reporter achievementsHelpers
     await updateDoc(doc(db, "users", issueReporterUid), { 

@@ -13,6 +13,7 @@ interface AchievementsContextProps {
   has50Comments: boolean, hasSeenCommentGoblinBadge: boolean | null,
   received10RequestsToFinishIssue: boolean, hasSeenMergeMonarchBadge: boolean | null,
   received10RequestsToClaimIssue: boolean, hasSeenIssueFisherBadge: boolean | null,
+  finishedIssueWithinOneHour: boolean, hasSeenSpeedyGonzalesBadge: boolean | null,
 }
 
 const AchievementsContext = createContext<AchievementsContextProps | null>(null);
@@ -40,6 +41,9 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
   // Issue Fisher
   const [ received10RequestsToClaimIssue, setReceived10RequestsToClaimIssue ] = useState<boolean>(false);
   const [ hasSeenIssueFisherBadge, setHasSeenIssueFisherBadge ] = useState<boolean | null>(false);
+  // Speedy Gonzales
+  const [ finishedIssueWithinOneHour, setFinishedIssueWithinOneHour ] = useState<boolean>(false);
+  const [ hasSeenSpeedyGonzalesBadge, setHasSeenSpeedyGonzalesBadge ] = useState<boolean | null>(false);
 
   useEffect(() => {
     if (!uid) return;
@@ -88,6 +92,10 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
           setReceived10RequestsToClaimIssue(true);
           setHasSeenIssueFisherBadge(userData.achievements?.issueFisher);
         }
+
+        // Speedy Gonzales
+        setFinishedIssueWithinOneHour(userData.achievementsHelpers?.finishedIssueWithinOneHour);
+        setHasSeenSpeedyGonzalesBadge(userData.achievements?.speedyGonzales);
       }
     });
 
@@ -104,6 +112,7 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
         has50Comments, hasSeenCommentGoblinBadge,
         received10RequestsToFinishIssue, hasSeenMergeMonarchBadge,
         received10RequestsToClaimIssue, hasSeenIssueFisherBadge,
+        finishedIssueWithinOneHour, hasSeenSpeedyGonzalesBadge,
       }}>
       {children}
     </AchievementsContext.Provider>

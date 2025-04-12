@@ -26,6 +26,7 @@ export default function AchievementPopover() {
     has50Comments, hasSeenCommentGoblinBadge,
     received10RequestsToFinishIssue, hasSeenMergeMonarchBadge,
     received10RequestsToClaimIssue, hasSeenIssueFisherBadge,
+    finishedIssueWithinOneHour, hasSeenSpeedyGonzalesBadge,
   } = useAchievementsProvider();
   const [ badgeObj, setBadgeObj ] =  useState<BadgeObjType | null>(null);
 
@@ -97,6 +98,14 @@ export default function AchievementPopover() {
       title: "issue fisher",
       description: "Baited the hook, and the coders came biting.",
       explanation: "Receives 10 requests to approve claimed issues"
+    }, {
+      condition: finishedIssueWithinOneHour && !hasSeenSpeedyGonzalesBadge,
+      field: "speedyGonzales",
+      src: "/speedy-gonzales.png",
+      alt: "speedy gonzales",
+      title: "speedy gonzales",
+      description: "No fix too quick.",
+      explanation: "Finishes an issue in under an hour"
     }
   ];
 
