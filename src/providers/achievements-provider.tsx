@@ -10,6 +10,8 @@ interface AchievementsContextProps {
   hasSeenFirstDetonationBadge: boolean | null,
   hasFaved20Issues: boolean,
   hasSeenIssueHoarderBadge: boolean | null,
+  hasFinished10Issues: boolean,
+  hasSeenBugDestroyerBadge: boolean | null,
 }
 
 const AchievementsContext = createContext<AchievementsContextProps | null>(null);
@@ -20,6 +22,8 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
   const [ hasSeenFirstDetonationBadge, setHasSeenFirstDetonationBadge ] = useState<boolean | null>(false);
   const [ hasFaved20Issues, setHasFaved20Issues ] = useState<boolean>(false);
   const [ hasSeenIssueHoarderBadge, setHasSeenIssueHoarderBadge ] = useState<boolean | null>(false);
+  const [ hasFinished10Issues, setHasFinished10Issues ] = useState<boolean>(false);
+  const [ hasSeenBugDestroyerBadge, setHasSeenBugDestroyerBadge ] = useState<boolean | null>(false);
 
   useEffect(() => {
     if (!uid) return;
@@ -29,14 +33,20 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
     const unsubscribe = onSnapshot(userDocRef, (docSnap) => {
       const userData = docSnap.data();
       if (userData) {
-        // First Detonation Badge
+        // First Detonation
         setHasPostedIssues(userData.hasPostedIssues);
         setHasSeenFirstDetonationBadge(userData.achievements?.firstDetonation);
         
-        // Issue Hoarder Badge
+        // Issue Hoarder
         if (userData.favedIssues && userData.favedIssues.length == 20){
           setHasFaved20Issues(true);
           setHasSeenIssueHoarderBadge(userData.achievements?.issueHoarder);
+        }
+
+        // Bug Destroyer
+        if (userData.finishedIssues && userData.finishedIssues.length == 10){
+          setHasFinished10Issues(true);
+          setHasSeenBugDestroyerBadge(userData.achievements?.bugDestroyer);
         }
       }
     });
@@ -48,7 +58,8 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
     <AchievementsContext.Provider 
       value={{
         hasPostedIssues, hasSeenFirstDetonationBadge,
-        hasFaved20Issues, hasSeenIssueHoarderBadge
+        hasFaved20Issues, hasSeenIssueHoarderBadge,
+        hasFinished10Issues, hasSeenBugDestroyerBadge
       }}>
       {children}
     </AchievementsContext.Provider>

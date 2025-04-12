@@ -18,10 +18,16 @@ interface BadgeObjType {
 
 export default function AchievementPopover() {
   const { uid } = useAuthProvider();
-  const { hasPostedIssues, hasSeenFirstDetonationBadge, hasFaved20Issues, hasSeenIssueHoarderBadge } = useAchievementsProvider();
+  const { 
+    hasPostedIssues, hasSeenFirstDetonationBadge, 
+    hasFaved20Issues, hasSeenIssueHoarderBadge,
+    hasFinished10Issues, hasSeenBugDestroyerBadge
+  } = useAchievementsProvider();
   const [ badgeObj, setBadgeObj ] =  useState<BadgeObjType | null>(null);
 
-  const handleCloseBadge = async(field: "firstDetonation" | "issueHoarder") => {
+  const handleCloseBadge = async(
+    field: "firstDetonation" | "issueHoarder" | "bugDestroyer"
+  ) => {
     await updateDoc(doc(db, "users", uid), { [`achievements.${field}`]: true });
     setBadgeObj((prev) => {
       if (!prev) return null; 
@@ -34,7 +40,7 @@ export default function AchievementPopover() {
 
   useEffect(() => {
     if (!hasPostedIssues) return;
-    if (!hasSeenFirstDetonationBadge || hasSeenFirstDetonationBadge == null) {
+    if (!hasSeenFirstDetonationBadge) {
       setBadgeObj({
         isShown: true,
         handleClick: () => handleCloseBadge("firstDetonation"),
@@ -49,7 +55,7 @@ export default function AchievementPopover() {
 
   useEffect(() => {
     if (!hasFaved20Issues) return;
-    if (!hasFaved20Issues || hasSeenIssueHoarderBadge == null) {
+    if (!hasSeenIssueHoarderBadge) {
       setBadgeObj({
         isShown: true,
         handleClick: () => handleCloseBadge("issueHoarder"),
@@ -61,6 +67,21 @@ export default function AchievementPopover() {
       });
     }
   }, [hasFaved20Issues, hasSeenIssueHoarderBadge]);
+
+  useEffect(() => {
+    if (!hasFinished10Issues) return;
+    if (!hasSeenBugDestroyerBadge) {
+      setBadgeObj({
+        isShown: true,
+        handleClick: () => handleCloseBadge("bugDestroyer"),
+        src: '/bug-destroyer.png',
+        alt: 'bug destroyer',
+        title: 'bug destroyer',
+        description: 'What bugs?',
+        explanation: 'Finishes 10 issues',
+      });
+    }
+  }, [hasFinished10Issues, hasSeenBugDestroyerBadge]);
 
   return (
     <>
