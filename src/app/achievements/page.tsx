@@ -20,12 +20,12 @@ export default function AchievementsPage() {
         description='What bugs?' explanation='Finishes 10 issues' />
       <Badge src='/comment-goblin.png' alt='comment goblin' title='comment goblin' 
         description='Lives in the comment section. Probably.' explanation='Leaves 50 comments' />
+      <Badge src='/merge-monarch.png' alt='merge monarch' title='merge monarch' 
+        description='All commits bow to your will!' explanation='Gets 10 requests to approve finished issues' />
       <Badge src='/bug-whisperer.png' alt='bug whisperer' title='bug whisperer' 
         description='I speak in fluent bugs.' explanation='Leaves a issue unfinished > 30 days' />
       <Badge src='/issue-fisher.png' alt='issue fisher' title='issue fisher' 
         description='Baited the hook, and the coders came biting.' explanation='Posts 10 issues and all get calimed' />
-      <Badge src='/merge-monarch.png' alt='merge monarch' title='merge monarch' 
-        description='All commits bow to your will!' explanation='Gets 10 requests to approve finished issues' />
       <Badge src='/speedy-gonzales.png' alt='speedy gonzales' title='speedy gonzales' 
         description='No fix too quick.' explanation='Finishes an issue in under an hour' />
       <Badge src='/ghost-claimer.png' alt='ghost claimer' title='ghost claimer' 

@@ -76,9 +76,7 @@ export default function PostIssuePage() {
           type: NotificationType.POST_I,
           timestamp: Timestamp.fromDate(new Date()),
         }),
-        achievementsHelpers: {
-          hasPostedIssues: true,
-        },
+        "achievementsHelpers.hasPostedIssues": true,
       });
 
       router.push(`/issues/${issueId}`);

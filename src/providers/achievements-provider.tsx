@@ -6,32 +6,36 @@ import { doc, onSnapshot } from "firebase/firestore";
 
 // achievements context
 interface AchievementsContextProps {
-  hasFinishedFirstIssue: boolean,
-  hasSeenFreshStarterBadge: boolean | null,
-  hasPostedIssues: boolean,
-  hasSeenFirstDetonationBadge: boolean | null,
-  hasFaved20Issues: boolean,
-  hasSeenIssueHoarderBadge: boolean | null,
-  hasFinished10Issues: boolean,
-  hasSeenBugDestroyerBadge: boolean | null,
-  has50Comments: boolean,
-  hasSeenCommentGoblinBadge: boolean | null,
+  hasFinishedFirstIssue: boolean, hasSeenFreshStarterBadge: boolean | null,
+  hasPostedIssues: boolean, hasSeenFirstDetonationBadge: boolean | null,
+  hasFaved20Issues: boolean, hasSeenIssueHoarderBadge: boolean | null,
+  hasFinished10Issues: boolean, hasSeenBugDestroyerBadge: boolean | null,
+  has50Comments: boolean, hasSeenCommentGoblinBadge: boolean | null,
+  received10RequestsToFinishIssue: boolean, hasSeenMergeMonarchBadge: boolean | null,
 }
 
 const AchievementsContext = createContext<AchievementsContextProps | null>(null);
 
 export const AchievementsProvider = ({children}:{children: React.ReactNode}) => {
   const { uid } = useAuthProvider();
+  // Fresh Starter
   const [ hasFinishedFirstIssue, setHasFinishedFirstIssue ] = useState<boolean>(false);
   const [ hasSeenFreshStarterBadge, setHasSeenFreshStarterBadge ] = useState<boolean | null>(false);
+  // First Detonation
   const [ hasPostedIssues, setHasPostedIssues ] = useState<boolean>(false);
   const [ hasSeenFirstDetonationBadge, setHasSeenFirstDetonationBadge ] = useState<boolean | null>(false);
+  // Issue Hoarder
   const [ hasFaved20Issues, setHasFaved20Issues ] = useState<boolean>(false);
   const [ hasSeenIssueHoarderBadge, setHasSeenIssueHoarderBadge ] = useState<boolean | null>(false);
+  // Bug Destroyer
   const [ hasFinished10Issues, setHasFinished10Issues ] = useState<boolean>(false);
   const [ hasSeenBugDestroyerBadge, setHasSeenBugDestroyerBadge ] = useState<boolean | null>(false);
+  // Comment Goblin
   const [ has50Comments, setHas50Comments ] = useState<boolean>(false);
   const [ hasSeenCommentGoblinBadge, setHasSeenCommentGoblinBadge ] = useState<boolean | null>(false);
+  // Merge Monarch
+  const [ received10RequestsToFinishIssue, setReceived10RequestsToFinishIssue ] = useState<boolean>(false);
+  const [ hasSeenMergeMonarchBadge, setHasSeenMergeMonarchBadge ] = useState<boolean | null>(false);
 
   useEffect(() => {
     if (!uid) return;
@@ -68,6 +72,12 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
           setHas50Comments(true);
           setHasSeenCommentGoblinBadge(userData.achievements?.commentGoblin);
         }
+
+        // Merge Monarch
+        if (userData.achievementsHelpers?.receivedFinishIssueRequestsCounts && userData.achievementsHelpers?.receivedFinishIssueRequestsCounts == 10){
+          setReceived10RequestsToFinishIssue(true);
+          setHasSeenMergeMonarchBadge(userData.achievements?.mergeMonarch);
+        }
       }
     });
 
@@ -82,6 +92,7 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
         hasFaved20Issues, hasSeenIssueHoarderBadge,
         hasFinished10Issues, hasSeenBugDestroyerBadge,
         has50Comments, hasSeenCommentGoblinBadge,
+        received10RequestsToFinishIssue, hasSeenMergeMonarchBadge,
       }}>
       {children}
     </AchievementsContext.Provider>

@@ -24,6 +24,7 @@ export default function AchievementPopover() {
     hasFaved20Issues, hasSeenIssueHoarderBadge,
     hasFinished10Issues, hasSeenBugDestroyerBadge,
     has50Comments, hasSeenCommentGoblinBadge,
+    received10RequestsToFinishIssue, hasSeenMergeMonarchBadge,
   } = useAchievementsProvider();
   const [ badgeObj, setBadgeObj ] =  useState<BadgeObjType | null>(null);
 
@@ -79,6 +80,14 @@ export default function AchievementPopover() {
       title: "comment goblin",
       description: "Lives in the comment section. Probably.",
       explanation: "Leaves 50 comments"
+    }, {
+      condition: received10RequestsToFinishIssue && !hasSeenMergeMonarchBadge,
+      field: "mergeMonarch",
+      src: "/merge-monarch.png",
+      alt: "merge monarch",
+      title: "merge monarch",
+      description: "All commits bow to your will!",
+      explanation: "Gets 10 requests to approve finished issues"
     }
   ];
 
@@ -99,10 +108,12 @@ export default function AchievementPopover() {
       }
     }
   }, [
+    hasFinishedFirstIssue, hasSeenFreshStarterBadge,
     hasPostedIssues, hasSeenFirstDetonationBadge, 
     hasFaved20Issues, hasSeenIssueHoarderBadge, 
     hasFinished10Issues, hasSeenBugDestroyerBadge,
     has50Comments, hasSeenCommentGoblinBadge,
+    received10RequestsToFinishIssue, hasSeenMergeMonarchBadge,
   ]);
 
   return (

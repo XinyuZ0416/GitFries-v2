@@ -8,7 +8,7 @@ import createNotif from '@/utils/create-notif'
 import formatDate from '@/utils/format-date'
 import { NotificationType } from '@/utils/notification-types'
 import MDEditor from '@uiw/react-md-editor'
-import { Timestamp, arrayRemove, arrayUnion, deleteDoc, deleteField, doc, getDoc, getDocs, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
+import { Timestamp, arrayRemove, arrayUnion, deleteDoc, deleteField, doc, getDoc, getDocs, increment, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
@@ -291,7 +291,7 @@ export default function IssueDetailsPage() {
     }
   }
 
-  const handleFinishIssue = async() => {
+  const handleFinishIssue = async(issueReporterUid: string) => {
     if (isRequesting) {
       alert('You have already sent request.');
       return;
@@ -308,6 +308,10 @@ export default function IssueDetailsPage() {
         timestamp: Timestamp.fromDate(new Date()),
       })
     });
+
+    await updateDoc(doc(db, "users", issueReporterUid), { 
+      "achievementsHelpers.receivedFinishIssueRequestsCounts": increment(1),
+    });    
     
     createNotif(
       issueDetails?.issueReporterUid!, 
@@ -364,7 +368,7 @@ export default function IssueDetailsPage() {
           <button onClick={toggleClaimIssue}> 
             <img className="size-5" src="/disclaim.png" alt="disclaim issue" title="disclaim issue" />
           </button>
-          <button onClick={handleFinishIssue}> 
+          <button onClick={() => handleFinishIssue(issueDetails?.issueReporterUid)}> 
             <img className="size-5" 
               src={ isRequesting ? "/waiting.png" : "/finish.png" } 
               alt={ isRequesting ? "waiting to be accepted" : "finish issue" } 
