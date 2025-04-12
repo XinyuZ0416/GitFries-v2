@@ -53,12 +53,16 @@ export default function AddCommentBox({
       // Add comment to issue comments field
       await updateDoc(doc(db, "issues", issueId), { comments: arrayUnion(commentDocRef.id) });
 
-      // Add comment to user activities field
-      await updateDoc(doc(db, "users", commenterUid), { activities: arrayUnion({
-        content: commentDocRef.id,
-        type: NotificationType.COM,
-        timestamp: Timestamp.fromDate(new Date()),
-      })});
+      // Add comment to user activities & comments field
+      await updateDoc(doc(db, "users", commenterUid), { 
+        activities: arrayUnion({
+          content: commentDocRef.id,
+          type: NotificationType.COM,
+          timestamp: Timestamp.fromDate(new Date()),
+        }),
+        comments: arrayUnion(commentDocRef.id),
+        }
+      );
 
       // Create notification and add to issue reporter's unreadNotif
       if (issueReporterUid != commenterUid) {

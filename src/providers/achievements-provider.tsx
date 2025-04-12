@@ -12,6 +12,8 @@ interface AchievementsContextProps {
   hasSeenIssueHoarderBadge: boolean | null,
   hasFinished10Issues: boolean,
   hasSeenBugDestroyerBadge: boolean | null,
+  has50Comments: boolean,
+  hasSeenCommentGoblinBadge: boolean | null,
 }
 
 const AchievementsContext = createContext<AchievementsContextProps | null>(null);
@@ -24,6 +26,8 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
   const [ hasSeenIssueHoarderBadge, setHasSeenIssueHoarderBadge ] = useState<boolean | null>(false);
   const [ hasFinished10Issues, setHasFinished10Issues ] = useState<boolean>(false);
   const [ hasSeenBugDestroyerBadge, setHasSeenBugDestroyerBadge ] = useState<boolean | null>(false);
+  const [ has50Comments, setHas50Comments ] = useState<boolean>(false);
+  const [ hasSeenCommentGoblinBadge, setHasSeenCommentGoblinBadge ] = useState<boolean | null>(false);
 
   useEffect(() => {
     if (!uid) return;
@@ -48,6 +52,12 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
           setHasFinished10Issues(true);
           setHasSeenBugDestroyerBadge(userData.achievements?.bugDestroyer);
         }
+
+        // Comment Goblin
+        if (userData.comments && userData.comments.length == 50){
+          setHas50Comments(true);
+          setHasSeenCommentGoblinBadge(userData.achievements?.commentGoblin);
+        }
       }
     });
 
@@ -59,7 +69,8 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
       value={{
         hasPostedIssues, hasSeenFirstDetonationBadge,
         hasFaved20Issues, hasSeenIssueHoarderBadge,
-        hasFinished10Issues, hasSeenBugDestroyerBadge
+        hasFinished10Issues, hasSeenBugDestroyerBadge,
+        has50Comments, hasSeenCommentGoblinBadge,
       }}>
       {children}
     </AchievementsContext.Provider>

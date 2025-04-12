@@ -21,7 +21,8 @@ export default function AchievementPopover() {
   const { 
     hasPostedIssues, hasSeenFirstDetonationBadge, 
     hasFaved20Issues, hasSeenIssueHoarderBadge,
-    hasFinished10Issues, hasSeenBugDestroyerBadge
+    hasFinished10Issues, hasSeenBugDestroyerBadge,
+    has50Comments, hasSeenCommentGoblinBadge,
   } = useAchievementsProvider();
   const [ badgeObj, setBadgeObj ] =  useState<BadgeObjType | null>(null);
 
@@ -61,6 +62,14 @@ export default function AchievementPopover() {
       title: "bug destroyer",
       description: "What bugs?",
       explanation: "Finishes 10 issues"
+    }, {
+      condition: has50Comments && !hasSeenCommentGoblinBadge,
+      field: "commentGoblin",
+      src: "/comment-goblin.png",
+      alt: "comment goblin",
+      title: "comment goblin",
+      description: "Lives in the comment section. Probably.",
+      explanation: "Leaves 50 comments"
     }
   ];
 
@@ -80,7 +89,12 @@ export default function AchievementPopover() {
         break; // Show one badget at a time
       }
     }
-  }, [hasPostedIssues, hasSeenFirstDetonationBadge, hasFaved20Issues, hasSeenIssueHoarderBadge, hasFinished10Issues, hasSeenBugDestroyerBadge]);
+  }, [
+    hasPostedIssues, hasSeenFirstDetonationBadge, 
+    hasFaved20Issues, hasSeenIssueHoarderBadge, 
+    hasFinished10Issues, hasSeenBugDestroyerBadge,
+    has50Comments, hasSeenCommentGoblinBadge,
+  ]);
 
   return (
     <>
