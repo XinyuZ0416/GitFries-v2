@@ -25,9 +25,7 @@ export default function AchievementPopover() {
   } = useAchievementsProvider();
   const [ badgeObj, setBadgeObj ] =  useState<BadgeObjType | null>(null);
 
-  const handleCloseBadge = async(
-    field: "firstDetonation" | "issueHoarder" | "bugDestroyer"
-  ) => {
+  const handleCloseBadge = async( field: string ) => {
     await updateDoc(doc(db, "users", uid), { [`achievements.${field}`]: true });
     setBadgeObj((prev) => {
       if (!prev) return null; 
@@ -38,50 +36,51 @@ export default function AchievementPopover() {
     });
   }
 
-  useEffect(() => {
-    if (!hasPostedIssues) return;
-    if (!hasSeenFirstDetonationBadge) {
-      setBadgeObj({
-        isShown: true,
-        handleClick: () => handleCloseBadge("firstDetonation"),
-        src: '/first-detonation.png',
-        alt: 'first detonation',
-        title: 'first detonation',
-        description: 'Found the bug. Pulled the pin. Walked away in slow motion.',
-        explanation: 'Posts their first issue',
-      });
+  const achievementConditions = [
+    {
+      condition: hasPostedIssues && !hasSeenFirstDetonationBadge,
+      field: "firstDetonation",
+      src: "/first-detonation.png",
+      alt: "first detonation",
+      title: "first detonation",
+      description: "Found the bug. Pulled the pin. Walked away in slow motion.",
+      explanation: "Posts their first issue"
+    }, {
+      condition: hasFaved20Issues && !hasSeenIssueHoarderBadge,
+      field: "issueHoarder",
+      src: "/issue-hoarder.png",
+      alt: "issue hoarder",
+      title: "issue hoarder",
+      description: "If I hoarded it, I solved it!",
+      explanation: "Favorites 20 issues"
+    }, {
+      condition: hasFinished10Issues && !hasSeenBugDestroyerBadge,
+      field: "bugDestroyer",
+      src: "/bug-destroyer.png",
+      alt: "bug destroyer",
+      title: "bug destroyer",
+      description: "What bugs?",
+      explanation: "Finishes 10 issues"
     }
-  }, [hasPostedIssues, hasSeenFirstDetonationBadge]);
+  ];
 
   useEffect(() => {
-    if (!hasFaved20Issues) return;
-    if (!hasSeenIssueHoarderBadge) {
-      setBadgeObj({
-        isShown: true,
-        handleClick: () => handleCloseBadge("issueHoarder"),
-        src: '/issue-hoarder.png',
-        alt: 'issue hoarder',
-        title: 'issue hoarder',
-        description: 'If I hoarded it, I solved it!',
-        explanation: 'Favorites 20 issues',
-      });
-    }
-  }, [hasFaved20Issues, hasSeenIssueHoarderBadge]);
+    for (const achievement of achievementConditions) {
+      if (achievement.condition) {
+        setBadgeObj({
+          isShown: true,
+          handleClick: () => handleCloseBadge(achievement.field),
+          src: achievement.src,
+          alt: achievement.alt,
+          title: achievement.title,
+          description: achievement.description,
+          explanation: achievement.explanation
+        });
 
-  useEffect(() => {
-    if (!hasFinished10Issues) return;
-    if (!hasSeenBugDestroyerBadge) {
-      setBadgeObj({
-        isShown: true,
-        handleClick: () => handleCloseBadge("bugDestroyer"),
-        src: '/bug-destroyer.png',
-        alt: 'bug destroyer',
-        title: 'bug destroyer',
-        description: 'What bugs?',
-        explanation: 'Finishes 10 issues',
-      });
+        break; // Show one badget at a time
+      }
     }
-  }, [hasFinished10Issues, hasSeenBugDestroyerBadge]);
+  }, [hasPostedIssues, hasSeenFirstDetonationBadge, hasFaved20Issues, hasSeenIssueHoarderBadge, hasFinished10Issues, hasSeenBugDestroyerBadge]);
 
   return (
     <>
