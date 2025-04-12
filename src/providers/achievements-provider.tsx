@@ -31,12 +31,12 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
       if (userData) {
         // First Detonation Badge
         setHasPostedIssues(userData.hasPostedIssues);
-        setHasSeenFirstDetonationBadge(userData.hasSeenFirstDetonationBadge);
+        setHasSeenFirstDetonationBadge(userData.achievements?.firstDetonation);
         
         // Issue Hoarder Badge
         if (userData.favedIssues && userData.favedIssues.length == 20){
           setHasFaved20Issues(true);
-          setHasSeenIssueHoarderBadge(userData.hasSeenIssueHoarderBadge);
+          setHasSeenIssueHoarderBadge(userData.achievements?.issueHoarder);
         }
       }
     });

@@ -21,8 +21,8 @@ export default function AchievementPopover() {
   const { hasPostedIssues, hasSeenFirstDetonationBadge, hasFaved20Issues, hasSeenIssueHoarderBadge } = useAchievementsProvider();
   const [ badgeObj, setBadgeObj ] =  useState<BadgeObjType | null>(null);
 
-  const handleCloseBadge = async(field: "hasSeenFirstDetonationBadge" | "hasSeenIssueHoarderBadge") => {
-    await updateDoc(doc(db, "users", uid), { [field]: true });
+  const handleCloseBadge = async(field: "firstDetonation" | "issueHoarder") => {
+    await updateDoc(doc(db, "users", uid), { [`achievements.${field}`]: true });
     setBadgeObj((prev) => {
       if (!prev) return null; 
       return {
@@ -37,7 +37,7 @@ export default function AchievementPopover() {
     if (!hasSeenFirstDetonationBadge || hasSeenFirstDetonationBadge == null) {
       setBadgeObj({
         isShown: true,
-        handleClick: () => handleCloseBadge("hasSeenFirstDetonationBadge"),
+        handleClick: () => handleCloseBadge("firstDetonation"),
         src: '/first-detonation.png',
         alt: 'first detonation',
         title: 'first detonation',
@@ -52,7 +52,7 @@ export default function AchievementPopover() {
     if (!hasFaved20Issues || hasSeenIssueHoarderBadge == null) {
       setBadgeObj({
         isShown: true,
-        handleClick: () => handleCloseBadge("hasSeenIssueHoarderBadge"),
+        handleClick: () => handleCloseBadge("issueHoarder"),
         src: '/issue-hoarder.png',
         alt: 'issue hoarder',
         title: 'issue hoarder',
