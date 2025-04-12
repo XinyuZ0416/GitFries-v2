@@ -10,6 +10,8 @@ export default function AchievementsPage() {
     <>
     <h2 className="text-2xl font-bold">All Achievements</h2>
     <div className="grid grid-flow-col grid-rows-3 gap-4">
+      <Badge src='/fresh-starter.png' alt='fresh starter' title='fresh starter' 
+        description='Planted the seed, now watch it grow.' explanation='Claims and finishes their first issue' />
       <Badge src='/first-detonation.png' alt='first detonation' title='first detonation' 
         description='Found the bug. Pulled the pin. Walked away in slow motion.' explanation='Posts their first issue' />
       <Badge src='/issue-hoarder.png' alt='issue hoarder' title='issue hoarder' 
@@ -28,8 +30,6 @@ export default function AchievementsPage() {
         description='No fix too quick.' explanation='Finishes an issue in under an hour' />
       <Badge src='/ghost-claimer.png' alt='ghost claimer' title='ghost claimer' 
         description='I ghost, therefore I am.' explanation='Claims 10 issues but never finishes any' />
-      <Badge src='/fresh-starter.png' alt='fresh starter' title='fresh starter' 
-        description='Planted the seed, now watch it grow.' explanation='Claims and finishes their first issue' />
       <Badge src='/rejected-never.png' alt='rejected never' title='rejected never' 
         description='Never take no for an answer. Well, not without trying again.' explanation='Request to claim an issue is rejected' />
       <Badge src='/time-travelr.png' alt='time travelr' title='time travelr' 

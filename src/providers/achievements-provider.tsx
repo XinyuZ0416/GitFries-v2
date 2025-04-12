@@ -6,6 +6,8 @@ import { doc, onSnapshot } from "firebase/firestore";
 
 // achievements context
 interface AchievementsContextProps {
+  hasFinishedFirstIssue: boolean,
+  hasSeenFreshStarterBadge: boolean | null,
   hasPostedIssues: boolean,
   hasSeenFirstDetonationBadge: boolean | null,
   hasFaved20Issues: boolean,
@@ -20,6 +22,8 @@ const AchievementsContext = createContext<AchievementsContextProps | null>(null)
 
 export const AchievementsProvider = ({children}:{children: React.ReactNode}) => {
   const { uid } = useAuthProvider();
+  const [ hasFinishedFirstIssue, setHasFinishedFirstIssue ] = useState<boolean>(false);
+  const [ hasSeenFreshStarterBadge, setHasSeenFreshStarterBadge ] = useState<boolean | null>(false);
   const [ hasPostedIssues, setHasPostedIssues ] = useState<boolean>(false);
   const [ hasSeenFirstDetonationBadge, setHasSeenFirstDetonationBadge ] = useState<boolean | null>(false);
   const [ hasFaved20Issues, setHasFaved20Issues ] = useState<boolean>(false);
@@ -37,6 +41,12 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
     const unsubscribe = onSnapshot(userDocRef, (docSnap) => {
       const userData = docSnap.data();
       if (userData) {
+        // Fresh Starter
+        if (userData.finishedIssues && userData.finishedIssues.length == 1){
+          setHasFinishedFirstIssue(true);
+          setHasSeenFreshStarterBadge(userData.achievements?.freshStarter);
+        }
+
         // First Detonation
         setHasPostedIssues(userData.achievementsHelpers?.hasPostedIssues);
         setHasSeenFirstDetonationBadge(userData.achievements?.firstDetonation);
@@ -67,6 +77,7 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
   return(
     <AchievementsContext.Provider 
       value={{
+        hasFinishedFirstIssue, hasSeenFreshStarterBadge,
         hasPostedIssues, hasSeenFirstDetonationBadge,
         hasFaved20Issues, hasSeenIssueHoarderBadge,
         hasFinished10Issues, hasSeenBugDestroyerBadge,

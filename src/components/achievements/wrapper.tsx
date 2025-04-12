@@ -4,9 +4,10 @@ import React from 'react'
 import AchievementPopover from './popover';
 
 export default function AchievementsWrapper() {
-  const { hasPostedIssues, hasFaved20Issues, hasFinished10Issues, has50Comments } = useAchievementsProvider();
+  const { hasFinishedFirstIssue, hasPostedIssues, hasFaved20Issues, hasFinished10Issues, has50Comments } = useAchievementsProvider();
   return (
     <>
+    { hasFinishedFirstIssue && <AchievementPopover /> }
     { hasPostedIssues && <AchievementPopover /> }
     { hasFaved20Issues && <AchievementPopover /> }
     { hasFinished10Issues && <AchievementPopover /> }

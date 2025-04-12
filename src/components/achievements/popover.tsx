@@ -19,6 +19,7 @@ interface BadgeObjType {
 export default function AchievementPopover() {
   const { uid } = useAuthProvider();
   const { 
+    hasFinishedFirstIssue, hasSeenFreshStarterBadge,
     hasPostedIssues, hasSeenFirstDetonationBadge, 
     hasFaved20Issues, hasSeenIssueHoarderBadge,
     hasFinished10Issues, hasSeenBugDestroyerBadge,
@@ -39,6 +40,14 @@ export default function AchievementPopover() {
 
   const achievementConditions = [
     {
+      condition: hasFinishedFirstIssue && !hasSeenFreshStarterBadge,
+      field: "freshStarter",
+      src: "/fresh-starter.png",
+      alt: "fresh starter",
+      title: "fresh starter",
+      description: "Planted the seed, now watch it grow.",
+      explanation: "Claims and finishes their first issue"
+    }, {
       condition: hasPostedIssues && !hasSeenFirstDetonationBadge,
       field: "firstDetonation",
       src: "/first-detonation.png",
