@@ -38,7 +38,7 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
       const userData = docSnap.data();
       if (userData) {
         // First Detonation
-        setHasPostedIssues(userData.hasPostedIssues);
+        setHasPostedIssues(userData.achievementsHelpers?.hasPostedIssues);
         setHasSeenFirstDetonationBadge(userData.achievements?.firstDetonation);
         
         // Issue Hoarder
