@@ -24,7 +24,7 @@ const AuthContext = createContext<AuthContextProps | null>(null);
 
 export const AuthProvider = ({children}:{children: React.ReactNode}) => {
   const [ uid, setUid ] = useState<string>('');
-  const [ userPicUrl, setUserPicUrl ] = useState<string>('');
+  const [ userPicUrl, setUserPicUrl ] = useState<string>('/potato.png');
   const [ email, setEmail ] = useState<string>('');
   const [ username, setUsername] = useState<string>('');
   const [ bio, setBio ] = useState<string>('');
@@ -92,9 +92,7 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
         setUserPicUrl(url);
         await updateProfile(auth.currentUser!, {photoURL: url});
       } catch {
-        const fallbackUrl = await getDownloadURL(ref(storage, `user-img/potato.png`));
-        setUserPicUrl(fallbackUrl);
-        await updateProfile(auth.currentUser!, {photoURL: fallbackUrl});
+        setUserPicUrl('/potato.png');
       }
     }
 
