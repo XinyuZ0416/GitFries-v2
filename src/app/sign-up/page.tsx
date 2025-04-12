@@ -32,7 +32,7 @@ export default function SignUpPage() {
 
   useEffect(() => {
     if (isVerified) {
-      router.push('/profile');
+      router.push('/settings');
     }
   }, [isVerified]);
 
