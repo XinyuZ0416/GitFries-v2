@@ -4,27 +4,28 @@ import React from 'react'
 import AchievementPopover from './popover';
 
 export default function AchievementsWrapper() {
-  const { hasFinishedFirstIssue, 
-    hasPostedIssues, 
-    hasFaved20Issues, 
-    hasFinished10Issues, 
-    has50Comments,
-    received10RequestsToFinishIssue,
-    received10RequestsToClaimIssue,
-    finishedIssueOneHourAfterPosted,
-    finishedIssueOneYearAfterPosted,
+  const { 
+    freshStarter,
+    firstDetonation,
+    issueHoarder,
+    bugDestroyer,
+    commentGoblin,
+    mergeMonarch,
+    issueFisher,
+    speedyGonzales,
+    timeTraveller 
   } = useAchievementsProvider();
   return (
     <>
-    { hasFinishedFirstIssue && <AchievementPopover /> }
-    { hasPostedIssues && <AchievementPopover /> }
-    { hasFaved20Issues && <AchievementPopover /> }
-    { hasFinished10Issues && <AchievementPopover /> }
-    { has50Comments && <AchievementPopover /> }
-    { received10RequestsToFinishIssue && <AchievementPopover /> }
-    { received10RequestsToClaimIssue && <AchievementPopover /> }
-    { finishedIssueOneHourAfterPosted && <AchievementPopover /> }
-    { finishedIssueOneYearAfterPosted && <AchievementPopover /> }
+    { freshStarter.achieved && <AchievementPopover /> }
+    { firstDetonation.achieved && <AchievementPopover /> }
+    { issueHoarder.achieved && <AchievementPopover /> }
+    { bugDestroyer.achieved && <AchievementPopover /> }
+    { commentGoblin.achieved && <AchievementPopover /> }
+    { mergeMonarch.achieved && <AchievementPopover /> }
+    { issueFisher.achieved && <AchievementPopover /> }
+    { speedyGonzales.achieved && <AchievementPopover /> }
+    { timeTraveller.achieved && <AchievementPopover /> }
     </>
   )
 }

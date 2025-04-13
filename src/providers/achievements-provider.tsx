@@ -4,50 +4,40 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuthProvider } from "./auth-provider";
 import { doc, onSnapshot } from "firebase/firestore";
 
-// achievements context
+// Define achievement types
+interface Achievement {
+  achieved: boolean;
+  seen: boolean | null;
+}
+
 interface AchievementsContextProps {
-  hasFinishedFirstIssue: boolean, hasSeenFreshStarterBadge: boolean | null,
-  hasPostedIssues: boolean, hasSeenFirstDetonationBadge: boolean | null,
-  hasFaved20Issues: boolean, hasSeenIssueHoarderBadge: boolean | null,
-  hasFinished10Issues: boolean, hasSeenBugDestroyerBadge: boolean | null,
-  has50Comments: boolean, hasSeenCommentGoblinBadge: boolean | null,
-  received10RequestsToFinishIssue: boolean, hasSeenMergeMonarchBadge: boolean | null,
-  received10RequestsToClaimIssue: boolean, hasSeenIssueFisherBadge: boolean | null,
-  finishedIssueOneHourAfterPosted: boolean, hasSeenSpeedyGonzalesBadge: boolean | null,
-  finishedIssueOneYearAfterPosted: boolean, hasSeenTimeTravellerBadge: boolean | null,
+  freshStarter: Achievement;
+  firstDetonation: Achievement;
+  issueHoarder: Achievement;
+  bugDestroyer: Achievement;
+  commentGoblin: Achievement;
+  mergeMonarch: Achievement;
+  issueFisher: Achievement;
+  speedyGonzales: Achievement;
+  timeTraveller: Achievement;
 }
 
 const AchievementsContext = createContext<AchievementsContextProps | null>(null);
 
 export const AchievementsProvider = ({children}:{children: React.ReactNode}) => {
   const { uid } = useAuthProvider();
-  // Fresh Starter
-  const [ hasFinishedFirstIssue, setHasFinishedFirstIssue ] = useState<boolean>(false);
-  const [ hasSeenFreshStarterBadge, setHasSeenFreshStarterBadge ] = useState<boolean | null>(false);
-  // First Detonation
-  const [ hasPostedIssues, setHasPostedIssues ] = useState<boolean>(false);
-  const [ hasSeenFirstDetonationBadge, setHasSeenFirstDetonationBadge ] = useState<boolean | null>(false);
-  // Issue Hoarder
-  const [ hasFaved20Issues, setHasFaved20Issues ] = useState<boolean>(false);
-  const [ hasSeenIssueHoarderBadge, setHasSeenIssueHoarderBadge ] = useState<boolean | null>(false);
-  // Bug Destroyer
-  const [ hasFinished10Issues, setHasFinished10Issues ] = useState<boolean>(false);
-  const [ hasSeenBugDestroyerBadge, setHasSeenBugDestroyerBadge ] = useState<boolean | null>(false);
-  // Comment Goblin
-  const [ has50Comments, setHas50Comments ] = useState<boolean>(false);
-  const [ hasSeenCommentGoblinBadge, setHasSeenCommentGoblinBadge ] = useState<boolean | null>(false);
-  // Merge Monarch
-  const [ received10RequestsToFinishIssue, setReceived10RequestsToFinishIssue ] = useState<boolean>(false);
-  const [ hasSeenMergeMonarchBadge, setHasSeenMergeMonarchBadge ] = useState<boolean | null>(false);
-  // Issue Fisher
-  const [ received10RequestsToClaimIssue, setReceived10RequestsToClaimIssue ] = useState<boolean>(false);
-  const [ hasSeenIssueFisherBadge, setHasSeenIssueFisherBadge ] = useState<boolean | null>(false);
-  // Speedy Gonzales
-  const [ finishedIssueOneHourAfterPosted, setFinishedIssueOneHourAfterPosted ] = useState<boolean>(false);
-  const [ hasSeenSpeedyGonzalesBadge, setHasSeenSpeedyGonzalesBadge ] = useState<boolean | null>(false);
-  // Time Traveller
-  const [ finishedIssueOneYearAfterPosted, setFinishedIssueOneYearAfterPosted ] = useState<boolean>(false);
-  const [ hasSeenTimeTravellerBadge, setHasSeenTimeTravellerBadge ] = useState<boolean | null>(false);
+  
+  const [achievements, setAchievements] = useState<AchievementsContextProps>({
+    freshStarter: { achieved: false, seen: false },
+    firstDetonation: { achieved: false, seen: false },
+    issueHoarder: { achieved: false, seen: false },
+    bugDestroyer: { achieved: false, seen: false },
+    commentGoblin: { achieved: false, seen: false },
+    mergeMonarch: { achieved: false, seen: false },
+    issueFisher: { achieved: false, seen: false },
+    speedyGonzales: { achieved: false, seen: false },
+    timeTraveller: { achieved: false, seen: false },
+  });
 
   useEffect(() => {
     if (!uid) return;
@@ -56,73 +46,53 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
     
     const unsubscribe = onSnapshot(userDocRef, (docSnap) => {
       const userData = docSnap.data();
-      if (userData) {
-        // Fresh Starter
-        if (userData.finishedIssues && userData.finishedIssues.length == 1){
-          setHasFinishedFirstIssue(true);
-          setHasSeenFreshStarterBadge(userData.achievements?.freshStarter);
-        }
+      if (!userData) return;
 
-        // First Detonation
-        setHasPostedIssues(userData.achievementsHelpers?.hasPostedIssues);
-        setHasSeenFirstDetonationBadge(userData.achievements?.firstDetonation);
-        
-        // Issue Hoarder
-        if (userData.favedIssues && userData.favedIssues.length == 20){
-          setHasFaved20Issues(true);
-          setHasSeenIssueHoarderBadge(userData.achievements?.issueHoarder);
-        }
+      const newAchievements = { ...achievements };
 
-        // Bug Destroyer
-        if (userData.finishedIssues && userData.finishedIssues.length == 10){
-          setHasFinished10Issues(true);
-          setHasSeenBugDestroyerBadge(userData.achievements?.bugDestroyer);
-        }
-
-        // Comment Goblin
-        if (userData.comments && userData.comments.length == 50){
-          setHas50Comments(true);
-          setHasSeenCommentGoblinBadge(userData.achievements?.commentGoblin);
-        }
-
-        // Time Traveller
-        if (userData.achievementsHelpers?.receivedFinishIssueRequestsCounts && userData.achievementsHelpers?.receivedFinishIssueRequestsCounts == 10){
-          setReceived10RequestsToFinishIssue(true);
-          setHasSeenMergeMonarchBadge(userData.achievements?.mergeMonarch);
-        }
-
-        // Issue Fisher
-        if (userData.achievementsHelpers?.receivedClaimIssueRequestsCounts && userData.achievementsHelpers?.receivedClaimIssueRequestsCounts == 10){
-          setReceived10RequestsToClaimIssue(true);
-          setHasSeenIssueFisherBadge(userData.achievements?.issueFisher);
-        }
-
-        // Speedy Gonzales
-        setFinishedIssueOneHourAfterPosted(userData.achievementsHelpers?.finishedIssueOneHourAfterPosted);
-        setHasSeenSpeedyGonzalesBadge(userData.achievements?.speedyGonzales);
-
-        // Speedy Gonzales
-        setFinishedIssueOneYearAfterPosted(userData.achievementsHelpers?.finishedIssueOneYearAfterPosted);
-        setHasSeenTimeTravellerBadge(userData.achievements?.timeTraveller);
+      if (userData.finishedIssues) {
+        newAchievements.freshStarter.achieved = userData.finishedIssues.length == 1;
+        newAchievements.bugDestroyer.achieved = userData.finishedIssues.length == 10;
       }
+
+      if (userData.achievementsHelpers) {
+        const helpers = userData.achievementsHelpers;
+        newAchievements.firstDetonation.achieved = helpers.hasPostedIssues ?? false;
+        newAchievements.mergeMonarch.achieved = helpers.receivedFinishIssueRequestsCounts == 10;
+        newAchievements.issueFisher.achieved = helpers.receivedClaimIssueRequestsCounts == 10;
+        newAchievements.speedyGonzales.achieved = helpers.finishedIssueOneHourAfterPosted ?? false;
+        newAchievements.timeTraveller.achieved = helpers.finishedIssueOneYearAfterPosted ?? false;
+      }
+
+      if (userData.achievements) {
+        const achievements = userData.achievements;
+        newAchievements.freshStarter.seen = achievements.freshStarter ?? false;
+        newAchievements.firstDetonation.seen = achievements.firstDetonation ?? false;
+        newAchievements.issueHoarder.seen = achievements.issueHoarder ?? false;
+        newAchievements.bugDestroyer.seen = achievements.bugDestroyer ?? false;
+        newAchievements.commentGoblin.seen = achievements.commentGoblin ?? false;
+        newAchievements.mergeMonarch.seen = achievements.mergeMonarch ?? false;
+        newAchievements.issueFisher.seen = achievements.issueFisher ?? false;
+        newAchievements.speedyGonzales.seen = achievements.speedyGonzales ?? false;
+        newAchievements.timeTraveller.seen = achievements.timeTraveller ?? false;
+      }
+
+      if (userData.favedIssues){
+        newAchievements.issueHoarder.achieved = userData.favedIssues.length == 20;
+      }
+
+      if (userData.comments){
+        newAchievements.commentGoblin.achieved = userData.comments.length == 50;
+      }
+
+      setAchievements(newAchievements);
     });
 
     return () => unsubscribe(); // Cleanup
   }, [uid]);
 
   return(
-    <AchievementsContext.Provider 
-      value={{
-        hasFinishedFirstIssue, hasSeenFreshStarterBadge,
-        hasPostedIssues, hasSeenFirstDetonationBadge,
-        hasFaved20Issues, hasSeenIssueHoarderBadge,
-        hasFinished10Issues, hasSeenBugDestroyerBadge,
-        has50Comments, hasSeenCommentGoblinBadge,
-        received10RequestsToFinishIssue, hasSeenMergeMonarchBadge,
-        received10RequestsToClaimIssue, hasSeenIssueFisherBadge,
-        finishedIssueOneHourAfterPosted, hasSeenSpeedyGonzalesBadge,
-        finishedIssueOneYearAfterPosted, hasSeenTimeTravellerBadge,
-      }}>
+    <AchievementsContext.Provider value={achievements}>
       {children}
     </AchievementsContext.Provider>
   );

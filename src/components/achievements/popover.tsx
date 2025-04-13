@@ -19,15 +19,15 @@ interface BadgeObjType {
 export default function AchievementPopover() {
   const { uid } = useAuthProvider();
   const { 
-    hasFinishedFirstIssue, hasSeenFreshStarterBadge,
-    hasPostedIssues, hasSeenFirstDetonationBadge, 
-    hasFaved20Issues, hasSeenIssueHoarderBadge,
-    hasFinished10Issues, hasSeenBugDestroyerBadge,
-    has50Comments, hasSeenCommentGoblinBadge,
-    received10RequestsToFinishIssue, hasSeenMergeMonarchBadge,
-    received10RequestsToClaimIssue, hasSeenIssueFisherBadge,
-    finishedIssueOneHourAfterPosted, hasSeenSpeedyGonzalesBadge,
-    finishedIssueOneYearAfterPosted, hasSeenTimeTravellerBadge,
+    freshStarter,
+    firstDetonation,
+    issueHoarder,
+    bugDestroyer,
+    commentGoblin,
+    mergeMonarch,
+    issueFisher,
+    speedyGonzales,
+    timeTraveller 
   } = useAchievementsProvider();
   const [ badgeObj, setBadgeObj ] =  useState<BadgeObjType | null>(null);
 
@@ -44,7 +44,7 @@ export default function AchievementPopover() {
 
   const achievementConditions = [
     {
-      condition: hasFinishedFirstIssue && !hasSeenFreshStarterBadge,
+      condition: freshStarter.achieved && !freshStarter.seen,
       field: "freshStarter",
       src: "/fresh-starter.png",
       alt: "fresh starter",
@@ -52,7 +52,7 @@ export default function AchievementPopover() {
       description: "Planted the seed, now watch it grow.",
       explanation: "Claims and finishes their first issue"
     }, {
-      condition: hasPostedIssues && !hasSeenFirstDetonationBadge,
+      condition: firstDetonation.achieved && !firstDetonation.seen,
       field: "firstDetonation",
       src: "/first-detonation.png",
       alt: "first detonation",
@@ -60,7 +60,7 @@ export default function AchievementPopover() {
       description: "Found the bug. Pulled the pin. Walked away in slow motion.",
       explanation: "Posts their first issue"
     }, {
-      condition: hasFaved20Issues && !hasSeenIssueHoarderBadge,
+      condition: issueHoarder.achieved && !issueHoarder.seen,
       field: "issueHoarder",
       src: "/issue-hoarder.png",
       alt: "issue hoarder",
@@ -68,7 +68,7 @@ export default function AchievementPopover() {
       description: "If I hoarded it, I solved it!",
       explanation: "Favorites 20 issues"
     }, {
-      condition: hasFinished10Issues && !hasSeenBugDestroyerBadge,
+      condition: bugDestroyer.achieved && !bugDestroyer.seen,
       field: "bugDestroyer",
       src: "/bug-destroyer.png",
       alt: "bug destroyer",
@@ -76,7 +76,7 @@ export default function AchievementPopover() {
       description: "What bugs?",
       explanation: "Finishes 10 issues"
     }, {
-      condition: has50Comments && !hasSeenCommentGoblinBadge,
+      condition: commentGoblin.achieved && !commentGoblin.seen,
       field: "commentGoblin",
       src: "/comment-goblin.png",
       alt: "comment goblin",
@@ -84,7 +84,7 @@ export default function AchievementPopover() {
       description: "Lives in the comment section. Probably.",
       explanation: "Leaves 50 comments"
     }, {
-      condition: received10RequestsToFinishIssue && !hasSeenMergeMonarchBadge,
+      condition: mergeMonarch.achieved && !mergeMonarch.seen,
       field: "mergeMonarch",
       src: "/merge-monarch.png",
       alt: "merge monarch",
@@ -92,7 +92,7 @@ export default function AchievementPopover() {
       description: "All commits bow to your will!",
       explanation: "Gets 10 requests to approve finished issues"
     }, {
-      condition: received10RequestsToClaimIssue && !hasSeenIssueFisherBadge,
+      condition: issueFisher.achieved && !issueFisher.seen,
       field: "issueFisher",
       src: "/issue-fisher.png",
       alt: "issue fisher",
@@ -100,7 +100,7 @@ export default function AchievementPopover() {
       description: "Baited the hook, and the coders came biting.",
       explanation: "Receives 10 requests to approve claimed issues"
     }, {
-      condition: finishedIssueOneHourAfterPosted && !hasSeenSpeedyGonzalesBadge,
+      condition: speedyGonzales.achieved && !speedyGonzales.seen,
       field: "speedyGonzales",
       src: "/speedy-gonzales.png",
       alt: "speedy gonzales",
@@ -108,13 +108,13 @@ export default function AchievementPopover() {
       description: "No fix too quick.",
       explanation: "Finishes an issue within an hour after it's posted"
     }, {
-      condition: finishedIssueOneYearAfterPosted && !hasSeenTimeTravellerBadge,
+      condition: timeTraveller.achieved && !timeTraveller.seen,
       field: "timeTraveller",
       src: "/time-traveller.png",
       alt: "time traveller",
       title: "time traveller",
       description: "They’re here to fix the past.",
-      explanation: "Solves an issue that’s been posted for over a year"
+      explanation: "Finishes an issue a year after it's posted"
     }
   ];
 
@@ -135,13 +135,15 @@ export default function AchievementPopover() {
       }
     }
   }, [
-    hasFinishedFirstIssue, hasSeenFreshStarterBadge,
-    hasPostedIssues, hasSeenFirstDetonationBadge, 
-    hasFaved20Issues, hasSeenIssueHoarderBadge, 
-    hasFinished10Issues, hasSeenBugDestroyerBadge,
-    has50Comments, hasSeenCommentGoblinBadge,
-    received10RequestsToFinishIssue, hasSeenMergeMonarchBadge,
-    finishedIssueOneYearAfterPosted, hasSeenTimeTravellerBadge,
+    freshStarter,
+    firstDetonation,
+    issueHoarder,
+    bugDestroyer,
+    commentGoblin,
+    mergeMonarch,
+    issueFisher,
+    speedyGonzales,
+    timeTraveller 
   ]);
 
   return (

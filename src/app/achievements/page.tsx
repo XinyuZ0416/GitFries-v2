@@ -27,7 +27,7 @@ export default function AchievementsPage() {
       <Badge src='/speedy-gonzales.png' alt='speedy gonzales' title='speedy gonzales' 
         description='No fix too quick.' explanation="Finishes an issue within an hour after it's posted" />
       <Badge src='/time-traveller.png' alt='time traveller' title='time traveller' 
-        description='They’re here to fix the past.' explanation='Solves an issue that’s been posted for over a year' />
+        description='They’re here to fix the past.' explanation="Finishes an issue a year after it's posted" />
     </div>
     {isVerified ? 
       <h2 className="text-2xl font-bold">My Achievements</h2> :
