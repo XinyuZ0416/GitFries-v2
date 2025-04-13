@@ -9,7 +9,6 @@ import { useAuthProvider } from '@/providers/auth-provider'
 import { Timestamp, doc, getDoc } from 'firebase/firestore'
 import { db, storage } from '@/app/firebase'
 import { getDownloadURL, ref } from 'firebase/storage'
-import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider'
 
 interface ChartDataItem {
   month: string;

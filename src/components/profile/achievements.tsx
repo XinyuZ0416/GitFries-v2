@@ -65,7 +65,6 @@ export default function ProfileAchievementsCard() {
       <div className='flex flex-row gap-2'>
         { renderActivitiesAchievementsCard() }
       </div>
-      <p className='font-normal underline ml-auto'>More</p>
     </div>
     </>
   )
