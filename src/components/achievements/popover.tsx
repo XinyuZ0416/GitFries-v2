@@ -46,7 +46,7 @@ export default function AchievementPopover() {
     {
       condition: freshStarter.achieved && !freshStarter.seen,
       field: "freshStarter",
-      src: "/fresh-starter.png",
+      src: "/achievements/colorful/fresh-starter.png",
       alt: "fresh starter",
       title: "fresh starter",
       description: "Planted the seed, now watch it grow.",
@@ -54,7 +54,7 @@ export default function AchievementPopover() {
     }, {
       condition: firstDetonation.achieved && !firstDetonation.seen,
       field: "firstDetonation",
-      src: "/first-detonation.png",
+      src: "/achievements/colorful/first-detonation.png",
       alt: "first detonation",
       title: "first detonation",
       description: "Found the bug. Pulled the pin. Walked away in slow motion.",
@@ -62,7 +62,7 @@ export default function AchievementPopover() {
     }, {
       condition: issueHoarder.achieved && !issueHoarder.seen,
       field: "issueHoarder",
-      src: "/issue-hoarder.png",
+      src: "/achievements/colorful/issue-hoarder.png",
       alt: "issue hoarder",
       title: "issue hoarder",
       description: "If I hoarded it, I solved it!",
@@ -70,7 +70,7 @@ export default function AchievementPopover() {
     }, {
       condition: bugDestroyer.achieved && !bugDestroyer.seen,
       field: "bugDestroyer",
-      src: "/bug-destroyer.png",
+      src: "/achievements/colorful/bug-destroyer.png",
       alt: "bug destroyer",
       title: "bug destroyer",
       description: "What bugs?",
@@ -78,7 +78,7 @@ export default function AchievementPopover() {
     }, {
       condition: commentGoblin.achieved && !commentGoblin.seen,
       field: "commentGoblin",
-      src: "/comment-goblin.png",
+      src: "/achievements/colorful/comment-goblin.png",
       alt: "comment goblin",
       title: "comment goblin",
       description: "Lives in the comment section. Probably.",
@@ -86,7 +86,7 @@ export default function AchievementPopover() {
     }, {
       condition: mergeMonarch.achieved && !mergeMonarch.seen,
       field: "mergeMonarch",
-      src: "/merge-monarch.png",
+      src: "/achievements/colorful/merge-monarch.png",
       alt: "merge monarch",
       title: "merge monarch",
       description: "All commits bow to your will!",
@@ -94,7 +94,7 @@ export default function AchievementPopover() {
     }, {
       condition: issueFisher.achieved && !issueFisher.seen,
       field: "issueFisher",
-      src: "/issue-fisher.png",
+      src: "/achievements/colorful/issue-fisher.png",
       alt: "issue fisher",
       title: "issue fisher",
       description: "Baited the hook, and the coders came biting.",
@@ -102,7 +102,7 @@ export default function AchievementPopover() {
     }, {
       condition: speedyGonzales.achieved && !speedyGonzales.seen,
       field: "speedyGonzales",
-      src: "/speedy-gonzales.png",
+      src: "/achievements/colorful/speedy-gonzales.png",
       alt: "speedy gonzales",
       title: "speedy gonzales",
       description: "No fix too quick.",
@@ -110,7 +110,7 @@ export default function AchievementPopover() {
     }, {
       condition: timeTraveller.achieved && !timeTraveller.seen,
       field: "timeTraveller",
-      src: "/time-traveller.png",
+      src: "/achievements/colorful/time-traveller.png",
       alt: "time traveller",
       title: "time traveller",
       description: "They’re here to fix the past.",
