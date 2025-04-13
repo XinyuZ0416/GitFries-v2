@@ -47,72 +47,72 @@ export default function AchievementPopover() {
       condition: freshStarter.achieved && !freshStarter.seen,
       field: "freshStarter",
       src: "/achievements/colorful/fresh-starter.png",
-      alt: "fresh starter",
-      title: "fresh starter",
+      alt: "Fresh Starter",
+      title: "Fresh Starter",
       description: "Planted the seed, now watch it grow.",
       explanation: "Claims and finishes their first issue"
     }, {
       condition: firstDetonation.achieved && !firstDetonation.seen,
       field: "firstDetonation",
       src: "/achievements/colorful/first-detonation.png",
-      alt: "first detonation",
-      title: "first detonation",
+      alt: "First Detonation",
+      title: "First Detonation",
       description: "Found the bug. Pulled the pin. Walked away in slow motion.",
       explanation: "Posts their first issue"
     }, {
       condition: issueHoarder.achieved && !issueHoarder.seen,
       field: "issueHoarder",
       src: "/achievements/colorful/issue-hoarder.png",
-      alt: "issue hoarder",
-      title: "issue hoarder",
+      alt: "Issue Hoarder",
+      title: "Issue Hoarder",
       description: "If I hoarded it, I solved it!",
       explanation: "Favorites 20 issues"
     }, {
       condition: bugDestroyer.achieved && !bugDestroyer.seen,
       field: "bugDestroyer",
       src: "/achievements/colorful/bug-destroyer.png",
-      alt: "bug destroyer",
-      title: "bug destroyer",
+      alt: "Bug Destroyer",
+      title: "Bug Destroyer",
       description: "What bugs?",
       explanation: "Finishes 10 issues"
     }, {
       condition: commentGoblin.achieved && !commentGoblin.seen,
       field: "commentGoblin",
       src: "/achievements/colorful/comment-goblin.png",
-      alt: "comment goblin",
-      title: "comment goblin",
+      alt: "Comment Goblin",
+      title: "Comment Goblin",
       description: "Lives in the comment section. Probably.",
       explanation: "Leaves 50 comments"
     }, {
       condition: mergeMonarch.achieved && !mergeMonarch.seen,
       field: "mergeMonarch",
       src: "/achievements/colorful/merge-monarch.png",
-      alt: "merge monarch",
-      title: "merge monarch",
+      alt: "Merge Monarch",
+      title: "Merge Monarch",
       description: "All commits bow to your will!",
       explanation: "Gets 10 requests to approve finished issues"
     }, {
       condition: issueFisher.achieved && !issueFisher.seen,
       field: "issueFisher",
       src: "/achievements/colorful/issue-fisher.png",
-      alt: "issue fisher",
-      title: "issue fisher",
+      alt: "Issue Fisher",
+      title: "Issue Fisher",
       description: "Baited the hook, and the coders came biting.",
       explanation: "Receives 10 requests to approve claimed issues"
     }, {
       condition: speedyGonzales.achieved && !speedyGonzales.seen,
       field: "speedyGonzales",
       src: "/achievements/colorful/speedy-gonzales.png",
-      alt: "speedy gonzales",
-      title: "speedy gonzales",
+      alt: "Speedy Gonzales",
+      title: "Speedy Gonzales",
       description: "No fix too quick.",
       explanation: "Finishes an issue within an hour after it's posted"
     }, {
       condition: timeTraveller.achieved && !timeTraveller.seen,
       field: "timeTraveller",
       src: "/achievements/colorful/time-traveller.png",
-      alt: "time traveller",
-      title: "time traveller",
+      alt: "Time Traveller",
+      title: "Time Traveller",
       description: "They’re here to fix the past.",
       explanation: "Finishes an issue a year after it's posted"
     }
