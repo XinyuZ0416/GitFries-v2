@@ -13,7 +13,7 @@ interface AchievementsContextProps {
   has50Comments: boolean, hasSeenCommentGoblinBadge: boolean | null,
   received10RequestsToFinishIssue: boolean, hasSeenMergeMonarchBadge: boolean | null,
   received10RequestsToClaimIssue: boolean, hasSeenIssueFisherBadge: boolean | null,
-  finishedIssueWithinOneHour: boolean, hasSeenSpeedyGonzalesBadge: boolean | null,
+  finishedIssueOneHourAfterPosted: boolean, hasSeenSpeedyGonzalesBadge: boolean | null,
   finishedIssueOneYearAfterPosted: boolean, hasSeenTimeTravellerBadge: boolean | null,
 }
 
@@ -43,7 +43,7 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
   const [ received10RequestsToClaimIssue, setReceived10RequestsToClaimIssue ] = useState<boolean>(false);
   const [ hasSeenIssueFisherBadge, setHasSeenIssueFisherBadge ] = useState<boolean | null>(false);
   // Speedy Gonzales
-  const [ finishedIssueWithinOneHour, setFinishedIssueWithinOneHour ] = useState<boolean>(false);
+  const [ finishedIssueOneHourAfterPosted, setFinishedIssueOneHourAfterPosted ] = useState<boolean>(false);
   const [ hasSeenSpeedyGonzalesBadge, setHasSeenSpeedyGonzalesBadge ] = useState<boolean | null>(false);
   // Time Traveller
   const [ finishedIssueOneYearAfterPosted, setFinishedIssueOneYearAfterPosted ] = useState<boolean>(false);
@@ -98,7 +98,7 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
         }
 
         // Speedy Gonzales
-        setFinishedIssueWithinOneHour(userData.achievementsHelpers?.finishedIssueWithinOneHour);
+        setFinishedIssueOneHourAfterPosted(userData.achievementsHelpers?.finishedIssueOneHourAfterPosted);
         setHasSeenSpeedyGonzalesBadge(userData.achievements?.speedyGonzales);
 
         // Speedy Gonzales
@@ -120,7 +120,7 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
         has50Comments, hasSeenCommentGoblinBadge,
         received10RequestsToFinishIssue, hasSeenMergeMonarchBadge,
         received10RequestsToClaimIssue, hasSeenIssueFisherBadge,
-        finishedIssueWithinOneHour, hasSeenSpeedyGonzalesBadge,
+        finishedIssueOneHourAfterPosted, hasSeenSpeedyGonzalesBadge,
         finishedIssueOneYearAfterPosted, hasSeenTimeTravellerBadge,
       }}>
       {children}

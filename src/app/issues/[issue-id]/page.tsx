@@ -323,7 +323,7 @@ export default function IssueDetailsPage() {
       if (timeDiff >= 0 && timeDiff <= oneHourMs) {
         // Update issue reporter achievementsHelpers
         await updateDoc(doc(db, "users", uid), { 
-          "achievementsHelpers.finishedIssueWithinOneHour": true,
+          "achievementsHelpers.finishedIssueOneHourAfterPosted": true,
         });    
       } else if (timeDiff >= oneYearMs) {
         // Update issue reporter achievementsHelpers
