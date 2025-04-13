@@ -25,15 +25,16 @@ export default function AchievementsPage() {
       <Badge src='/issue-fisher.png' alt='issue fisher' title='issue fisher' 
         description='Baited the hook, and the coders came biting.' explanation='Receives 10 requests to approve claimed issues' />
       <Badge src='/speedy-gonzales.png' alt='speedy gonzales' title='speedy gonzales' 
-        description='No fix too quick.' explanation='Finishes an issue in under an hour' />
+        description='No fix too quick.' explanation="Finishes an issue within an hour after it's posted" />
+      <Badge src='/time-traveller.png' alt='time traveller' title='time traveller' 
+        description='They’re here to fix the past.' explanation='Solves an issue that’s been posted for over a year' />
       <Badge src='/bug-whisperer.png' alt='bug whisperer' title='bug whisperer' 
         description='I speak in fluent bugs.' explanation='Leaves a issue unfinished > 30 days' />
       <Badge src='/ghost-claimer.png' alt='ghost claimer' title='ghost claimer' 
         description='I ghost, therefore I am.' explanation='Has 10 issues unfinished' />
       <Badge src='/rejected-never.png' alt='rejected never' title='rejected never' 
         description='Never take no for an answer. Well, not without trying again.' explanation='Request to claim an issue is rejected' />
-      <Badge src='/time-travelr.png' alt='time travelr' title='time travelr' 
-        description='They’re here to fix the past.' explanation='Solves an issue that’s been posted for over a year' />
+      
     </div>
     {isVerified ? 
       <h2 className="text-2xl font-bold">My Achievements</h2> :

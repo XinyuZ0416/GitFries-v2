@@ -14,6 +14,7 @@ interface AchievementsContextProps {
   received10RequestsToFinishIssue: boolean, hasSeenMergeMonarchBadge: boolean | null,
   received10RequestsToClaimIssue: boolean, hasSeenIssueFisherBadge: boolean | null,
   finishedIssueWithinOneHour: boolean, hasSeenSpeedyGonzalesBadge: boolean | null,
+  finishedIssueOneYearAfterPosted: boolean, hasSeenTimeTravellerBadge: boolean | null,
 }
 
 const AchievementsContext = createContext<AchievementsContextProps | null>(null);
@@ -44,6 +45,9 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
   // Speedy Gonzales
   const [ finishedIssueWithinOneHour, setFinishedIssueWithinOneHour ] = useState<boolean>(false);
   const [ hasSeenSpeedyGonzalesBadge, setHasSeenSpeedyGonzalesBadge ] = useState<boolean | null>(false);
+  // Time Traveller
+  const [ finishedIssueOneYearAfterPosted, setFinishedIssueOneYearAfterPosted ] = useState<boolean>(false);
+  const [ hasSeenTimeTravellerBadge, setHasSeenTimeTravellerBadge ] = useState<boolean | null>(false);
 
   useEffect(() => {
     if (!uid) return;
@@ -81,7 +85,7 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
           setHasSeenCommentGoblinBadge(userData.achievements?.commentGoblin);
         }
 
-        // Merge Monarch
+        // Time Traveller
         if (userData.achievementsHelpers?.receivedFinishIssueRequestsCounts && userData.achievementsHelpers?.receivedFinishIssueRequestsCounts == 10){
           setReceived10RequestsToFinishIssue(true);
           setHasSeenMergeMonarchBadge(userData.achievements?.mergeMonarch);
@@ -96,6 +100,10 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
         // Speedy Gonzales
         setFinishedIssueWithinOneHour(userData.achievementsHelpers?.finishedIssueWithinOneHour);
         setHasSeenSpeedyGonzalesBadge(userData.achievements?.speedyGonzales);
+
+        // Speedy Gonzales
+        setFinishedIssueOneYearAfterPosted(userData.achievementsHelpers?.finishedIssueOneYearAfterPosted);
+        setHasSeenTimeTravellerBadge(userData.achievements?.timeTraveller);
       }
     });
 
@@ -113,6 +121,7 @@ export const AchievementsProvider = ({children}:{children: React.ReactNode}) => 
         received10RequestsToFinishIssue, hasSeenMergeMonarchBadge,
         received10RequestsToClaimIssue, hasSeenIssueFisherBadge,
         finishedIssueWithinOneHour, hasSeenSpeedyGonzalesBadge,
+        finishedIssueOneYearAfterPosted, hasSeenTimeTravellerBadge,
       }}>
       {children}
     </AchievementsContext.Provider>

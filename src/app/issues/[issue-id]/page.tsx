@@ -317,12 +317,18 @@ export default function IssueDetailsPage() {
     const nowMs = Timestamp.fromDate(now).toMillis();
     const issueCreatedTimeMs = issueDetails?.time.toMillis();
     const oneHourMs = 60 * 60 * 1000;
+    const oneYearMs = 365 * 24 * 60 * 60 * 1000;
     if (issueCreatedTimeMs) {
       const timeDiff = nowMs - issueCreatedTimeMs;
       if (timeDiff >= 0 && timeDiff <= oneHourMs) {
         // Update issue reporter achievementsHelpers
         await updateDoc(doc(db, "users", uid), { 
           "achievementsHelpers.finishedIssueWithinOneHour": true,
+        });    
+      } else if (timeDiff >= oneYearMs) {
+        // Update issue reporter achievementsHelpers
+        await updateDoc(doc(db, "users", uid), { 
+          "achievementsHelpers.finishedIssueOneYearAfterPosted": true,
         });    
       }
     }

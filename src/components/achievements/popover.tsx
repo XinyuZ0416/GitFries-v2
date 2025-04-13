@@ -27,6 +27,7 @@ export default function AchievementPopover() {
     received10RequestsToFinishIssue, hasSeenMergeMonarchBadge,
     received10RequestsToClaimIssue, hasSeenIssueFisherBadge,
     finishedIssueWithinOneHour, hasSeenSpeedyGonzalesBadge,
+    finishedIssueOneYearAfterPosted, hasSeenTimeTravellerBadge,
   } = useAchievementsProvider();
   const [ badgeObj, setBadgeObj ] =  useState<BadgeObjType | null>(null);
 
@@ -105,7 +106,15 @@ export default function AchievementPopover() {
       alt: "speedy gonzales",
       title: "speedy gonzales",
       description: "No fix too quick.",
-      explanation: "Finishes an issue in under an hour"
+      explanation: "Finishes an issue within an hour after it's posted"
+    }, {
+      condition: finishedIssueOneYearAfterPosted && !hasSeenTimeTravellerBadge,
+      field: "timeTraveller",
+      src: "/time-traveller.png",
+      alt: "time traveller",
+      title: "time traveller",
+      description: "They’re here to fix the past.",
+      explanation: "Solves an issue that’s been posted for over a year"
     }
   ];
 
@@ -132,6 +141,7 @@ export default function AchievementPopover() {
     hasFinished10Issues, hasSeenBugDestroyerBadge,
     has50Comments, hasSeenCommentGoblinBadge,
     received10RequestsToFinishIssue, hasSeenMergeMonarchBadge,
+    finishedIssueOneYearAfterPosted, hasSeenTimeTravellerBadge,
   ]);
 
   return (
