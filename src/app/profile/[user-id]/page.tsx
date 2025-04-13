@@ -43,10 +43,16 @@ export default function ProfilePage() {
 
   const countEventsByMonth = (timestamps: Timestamp[]) => {
     const counts = Array(12).fill(0);
+    const now = new Date();
+    const thisYear = now.getFullYear();
+
     timestamps?.forEach(time => {
       if (time?.toDate) {
-        const monthIndex = time.toDate().getMonth();
-        counts[monthIndex]++;
+        const yearIndex = time.toDate().getFullYear();
+        if (yearIndex == thisYear) {
+          const monthIndex = time.toDate().getMonth();
+          counts[monthIndex]++;
+        }
       }
     });
     return counts;
