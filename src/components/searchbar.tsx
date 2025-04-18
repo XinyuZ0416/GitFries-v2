@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from 'react'
 export default function Searchbar() {
   const [ query, setQuery ] = useState<string>('');
   const [ isLoading, setIsLoading ] = useState<boolean>(false);
+  const [ hasSearched, setHasSearched ] = useState(false);
   const [ results, setResults ] = useState<any[]>([]);
   const searchbarRef = useRef<HTMLDivElement>(null);
   const { uid } = useAuthProvider();
@@ -15,6 +16,7 @@ export default function Searchbar() {
     if (!query.trim()) return;
 
     setIsLoading(true);
+    setHasSearched(true);
 
     try {
       if (!uid) {
@@ -51,8 +53,9 @@ export default function Searchbar() {
   // Monitor clicks outside searchbar
   useEffect(() => {
     const handleClicksOutsideSearchbar = (e: MouseEvent) => {
-      if (searchbarRef.current && !searchbarRef.current.contains(event?.target as Node)) {
+      if (searchbarRef.current && !searchbarRef.current.contains(e.target as Node)) {
         setResults([]);
+        setHasSearched(false);
       }
     }
 
@@ -79,10 +82,19 @@ export default function Searchbar() {
         </div>
       </form>
       
-      {!isLoading && results?.length > 0 && (
+      {(results.length > 0 || hasSearched) && (
         <div className='absolute top-full mt-2 w-full max-w-lg bg-white border shadow-lg rounded z-50'>
           <ul className='divide-y'>
-            {renderResults()}
+            { isLoading ? 
+              <li className="p-3 border rounded bg-white shadow">
+                <p className="font-bold">Loading</p>
+              </li> : 
+              results?.length > 0 ? 
+                renderResults():
+                <li className="p-3 border rounded bg-white shadow">
+                  <p className="font-bold">No result</p>
+                </li>
+            }
           </ul>
         </div>
       )}
