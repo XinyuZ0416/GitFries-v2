@@ -29,7 +29,8 @@ type IssueDetailsType = {
   claimedBy?: string,
   issueClaimerUsername: string
   finishedBy?: string,
-  issueFinisherUsername: string
+  issueFinisherUsername: string,
+  favedBy?: string[]
 }
 
 type CommentType = {
@@ -102,6 +103,7 @@ export default function IssueDetailsPage() {
         issueClaimerUsername: issueClaimerUsername,
         finishedBy: issueData!.finishedBy,
         issueFinisherUsername: issueFinisherUsername,
+        favedBy: issueData!.favedBy,
       })
     } catch (error) {
       console.error(error)
@@ -173,7 +175,6 @@ export default function IssueDetailsPage() {
     return () => unsubscribe();
   }, [issueId]); 
   
-
   const handleDeleteIssue = async() => {
     if (issueDetails?.claimedBy) {
       alert('You cannot delete a claimed issue!');
@@ -204,6 +205,9 @@ export default function IssueDetailsPage() {
     try {
       await updateDoc(doc(db, "users", uid), { 
         favedIssues: favedIssues.includes(issueId as string) ? arrayRemove(issueId) : arrayUnion(issueId) 
+      });
+      await updateDoc(doc(db, "issues", issueId as string), { 
+        favedBy: issueDetails?.favedBy?.includes(uid as string) ? arrayRemove(uid) : arrayUnion(uid) 
       });
       dispatch({ 
         type: "SET_FAVED_ISSUES", 

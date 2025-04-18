@@ -34,7 +34,7 @@ export default function PreviewCard({
     <>
     <Link className={`flex flex-row p-3 h-32 overflow-hidden items-center rounded-lg shadow-lg hover:bg-gray-100
       ${isUrgent ? `shadow-red-500` : `shadow-grey`}
-      ${difficulty === `beginner-friendly` ? `bg-green-200` : `bg-white`}`}
+      ${difficulty === `easy-fix` ? `bg-green-200` : `bg-white`}`}
       href={`/issues/${issueId}`} >
       <div className="flex flex-col justify-between px-4 py-2">
         <h5 className={`text-xl font-bold ${isUnavailable && `text-gray-300`}`}>{title}</h5>

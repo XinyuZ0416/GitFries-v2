@@ -180,7 +180,7 @@ export default function PostIssuePage() {
               <label htmlFor="difficulty" className="block mb-2 text-sm font-medium">Difficulty *</label>
               <select id="difficulty" name="difficulty" value={formData.difficulty} onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                 <option value='headache'>Headache</option>
-                <option value='beginner-friendly'>Beginner Friendly</option>
+                <option value='easy-fix'>Easy Fix</option>
               </select>
             </fieldset>
 
