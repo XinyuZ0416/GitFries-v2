@@ -1,32 +1,11 @@
 import React from 'react'
 import ActivitiesAchievementsCard from './activities/achievements'
-import { useAchievementsProvider } from '@/providers/achievements-provider';
 
-export default function ProfileAchievementsCard() {
-  const { 
-    freshStarter,
-    firstDetonation,
-    issueHoarder,
-    bugDestroyer,
-    commentGoblin,
-    mergeMonarch,
-    issueFisher,
-    speedyGonzales,
-    timeTraveller 
-  } = useAchievementsProvider();
+interface ProfileAchievementsCardProps {
+  achievements: Record<string, boolean>;
+}
 
-  const achievements = {
-    freshStarter,
-    firstDetonation,
-    issueHoarder,
-    bugDestroyer,
-    commentGoblin,
-    mergeMonarch,
-    issueFisher,
-    speedyGonzales,
-    timeTraveller
-  };
-
+export default function ProfileAchievementsCard({achievements}: ProfileAchievementsCardProps) {
   const renderActivitiesAchievementsCard = () => {
     /*  Object.entries(achievements) convert achievements obj into an array of [key, value]
     * [
@@ -35,23 +14,24 @@ export default function ProfileAchievementsCard() {
     *   ...
     * ]
     */
+   if (achievements) {
     return Object.entries(achievements) 
-      .filter(([_, value]) => value.achieved) // Find only achieved achievements, aka achieved: true
-      .map(([key, _]) => { // Take the variable name
-        const kebabCase = key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-        const spacedName = key.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
-        const titleCase = spacedName.replace(/\b\w/g, char => char.toUpperCase());
-  
-        return (
-          <ActivitiesAchievementsCard
-            key={key}
-            src={`/achievements/colorful/${kebabCase}.png`}
-            alt={titleCase}
-            picTitle={titleCase}
-            title={titleCase}
-          />
-        );
-      });
+    .map(([key, _]) => { // Take the variable name
+      const kebabCase = key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+      const spacedName = key.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
+      const titleCase = spacedName.replace(/\b\w/g, char => char.toUpperCase());
+
+      return (
+        <ActivitiesAchievementsCard
+          key={key}
+          src={`/achievements/colorful/${kebabCase}.png`}
+          alt={titleCase}
+          picTitle={titleCase}
+          title={titleCase}
+        />
+      );
+    });
+   }
   };
 
   return (

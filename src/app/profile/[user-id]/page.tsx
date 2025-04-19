@@ -5,7 +5,6 @@ import ProfileDashboardCard from '@/components/profile/dashboard'
 import ProfilePicCard from '@/components/profile/bio'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
-import { useAuthProvider } from '@/providers/auth-provider'
 import { Timestamp, doc, getDoc } from 'firebase/firestore'
 import { db, storage } from '@/app/firebase'
 import { getDownloadURL, ref } from 'firebase/storage'
@@ -27,7 +26,6 @@ export default function ProfilePage() {
   // For ProfilePicCard
   const { "user-id": userIdParam } = useParams();
   const userId = Array.isArray(userIdParam) ? userIdParam[0] : userIdParam; // Ensure only string 
-  const { username, bio, uid, userPicUrl } = useAuthProvider();
   const [ displayUsername, setDisplayUsername ] = useState<string>("");
   const [ displayBio, setDisplayBio ] = useState<string>("");
   const [ displayUserPicUrl, setDisplayUserPicUrl ] = useState<string>("/potato.png");
@@ -35,10 +33,12 @@ export default function ProfilePage() {
   const [ postedIssuesTimeArr, setPostedIssuesTimeArr ] = useState<Timestamp[]>([]);
   const [ claimedIssuesTimeArr, setClaimedIssuesTimeArr ] = useState<Timestamp[]>([]);
   const [ finishedIssuesTimeArr, setFinishedIssuesTimeArr ] = useState<Timestamp[]>([]);
-  const [combinedData, setCombinedData] = useState<ChartDataItem[]>([]);
+  const [ combinedData, setCombinedData ] = useState<ChartDataItem[]>([]);
   const monthNames = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ];
   // For ProfileActivities
   const [ displayActivities, setDisplayActivities ] = useState<ActivityType[]>([]);
+  // For ProfileAchievementsCard
+  const [achievements, setAchievements] = useState<Record<string, boolean>>({});
 
   const countEventsByMonth = (timestamps: Timestamp[]) => {
     const counts = Array(12).fill(0);
@@ -100,6 +100,9 @@ export default function ProfilePage() {
         }
         setFinishedIssuesTimeArr(arr);
       }
+
+      // For ProfileAchievementsCard
+      setAchievements(userData.achievements);
     }
   }
 
@@ -124,7 +127,6 @@ export default function ProfilePage() {
     setCombinedData(transformedData);
   }, [postedIssuesTimeArr, claimedIssuesTimeArr, finishedIssuesTimeArr]); 
 
-
   return (
     <>
     <div className='flex flex-col gap-2'>
@@ -135,7 +137,7 @@ export default function ProfilePage() {
             bio={displayBio}
             userPicUrl={displayUserPicUrl}
           />
-          <ProfileAchievementsCard />
+          <ProfileAchievementsCard achievements={achievements} />
         </div>
         <ProfileDashboardCard combinedData={combinedData} />
       </div>
