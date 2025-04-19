@@ -13,22 +13,22 @@ export default function Searchbar() {
 
   const handleSearch = async(e: React.FormEvent) => {
     e.preventDefault();
+    if (!uid) {
+      alert('please sign in first');
+      return;
+    }
+    
     if (!query.trim()) return;
 
     setIsLoading(true);
     setHasSearched(true);
 
     try {
-      if (!uid) {
-        alert('please sign in first');
-        return;
-      }
       const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
       const data = await res.json();
 
       if (data?.hits) {
         setResults(data.hits.map((hit: any) => hit.document));
-        console.log(data.hits.map((hit: any) => hit.document));
       } else {
         setResults([]);
       }

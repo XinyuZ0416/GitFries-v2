@@ -98,6 +98,11 @@ export default function IssuesPage() {
   }, [currentPage]);
 
   const handleChange = (e: any) => {
+    if (!uid) {
+      alert(`Please sign in first`);
+      return;
+    }
+
     const { name, value, type, checked } = e.target;
     
     setFormData((prev) => {
