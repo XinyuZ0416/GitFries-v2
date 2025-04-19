@@ -5,10 +5,12 @@ import UserDropdown from './user-dropdown'
 import { useAuthProvider } from '../providers/auth-provider';
 import Link from 'next/link';
 import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider';
+import { useChatProvider } from '@/providers/chat-provider';
 
 export default function Navbar() {
   const { isVerified } = useAuthProvider();
   const { unreadNotif } = useCurrentUserDocProvider();
+  const { openChat } = useChatProvider();
 
   return (
     <>
@@ -43,6 +45,9 @@ export default function Navbar() {
           <Link href='/notifications'>
             <img src={unreadNotif.length > 0 ? "/notification-new.png" : "/notification.png"} className="h-8" alt="notification" />
           </Link>
+          <button onClick={() => openChat()}>
+            <img src="/chats.png" className="h-8" alt="chats" />
+          </button>
           <UserDropdown />
           </>}
         

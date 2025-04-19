@@ -8,6 +8,7 @@ import { useParams } from 'next/navigation'
 import { Timestamp, doc, getDoc } from 'firebase/firestore'
 import { db, storage } from '@/app/firebase'
 import { getDownloadURL, ref } from 'firebase/storage'
+import { useAuthProvider } from '@/providers/auth-provider'
 
 interface ChartDataItem {
   month: string;
@@ -26,6 +27,7 @@ export default function ProfilePage() {
   // For ProfilePicCard
   const { "user-id": userIdParam } = useParams();
   const userId = Array.isArray(userIdParam) ? userIdParam[0] : userIdParam; // Ensure only string 
+  const { uid } = useAuthProvider();
   const [ displayUsername, setDisplayUsername ] = useState<string>("");
   const [ displayBio, setDisplayBio ] = useState<string>("");
   const [ displayUserPicUrl, setDisplayUserPicUrl ] = useState<string>("/potato.png");
@@ -136,6 +138,8 @@ export default function ProfilePage() {
             username={displayUsername}
             bio={displayBio}
             userPicUrl={displayUserPicUrl}
+            userId={userId}
+            uid={uid}
           />
           <ProfileAchievementsCard achievements={achievements} />
         </div>

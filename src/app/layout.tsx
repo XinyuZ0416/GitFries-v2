@@ -8,6 +8,8 @@ import { CurrentUserDocProvider } from "@/providers/current-user-doc-provider";
 import { AchievementsProvider } from "@/providers/achievements-provider";
 import AchievementsWrapper from "@/components/achievements/wrapper";
 import { TypesenseProvider } from "@/providers/typesense-provider";
+import { ChatProvider } from "@/providers/chat-provider";
+import ChatBoxWrapper from "@/components/chats/wrapper";
 
 const ubuntuMono = Ubuntu_Mono({
   variable: "--font-ubuntu-mono",
@@ -28,24 +30,27 @@ export default function RootLayout({
   return (
     <AuthProvider>
       <TypesenseProvider>
-        <CurrentUserDocProvider>
-          <AchievementsProvider>
-            <html lang="en">
-              <body
-                className={`${ubuntuMono.variable} antialiased`}
-              >
-                <Navbar />
-                <div className="min-h-screen">
-                  {children}
-                </div>
-                <img className="fixed right-3 bottom-3 size-20 z-9" src="/chatbot.png" />
-                <AchievementsWrapper />
-                <Footer />
-                <script src="https://unpkg.com/flowbite@3.1.2/dist/flowbite.js"></script>
-              </body>
-            </html>
-          </AchievementsProvider>
-        </CurrentUserDocProvider>
+        <ChatProvider>
+          <CurrentUserDocProvider>
+            <AchievementsProvider>
+              <html lang="en">
+                <body
+                  className={`${ubuntuMono.variable} antialiased`}
+                >
+                  <Navbar />
+                  <div className="min-h-screen">
+                    {children}
+                  </div>
+                  <img className="fixed left-3 bottom-3 size-20 z-9" src="/chatbot.png" />
+                  <ChatBoxWrapper />
+                  <AchievementsWrapper />
+                  <Footer />
+                  <script src="https://unpkg.com/flowbite@3.1.2/dist/flowbite.js"></script>
+                </body>
+              </html>
+            </AchievementsProvider>
+          </CurrentUserDocProvider>
+        </ChatProvider>
       </TypesenseProvider>
     </AuthProvider>
   );
