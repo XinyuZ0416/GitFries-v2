@@ -14,7 +14,7 @@ export default function ProfilePicCard({
   username, bio, userPicUrl, userId, uid
 }: ProfilePicCardProps) {
   const { openChat } = useChatProvider();
-  
+
   return (
     <>
     <div className='flex flex-col flex-grow w-full max-w-md justify-center items-center rounded-lg shadow-sm p-4 bg-white'>
@@ -22,7 +22,7 @@ export default function ProfilePicCard({
       <h2 className='text-2xl font-bold'>{username}</h2>
       <p className='font-normal'>{bio}</p>
       { uid && uid != userId &&
-        <button onClick={() => openChat(userId!)}>Start Chat</button>
+        <button onClick={() => openChat(userId!, username!, userPicUrl!)}>Start Chat</button>
       }
     </div>
     </>

@@ -10,7 +10,7 @@ import { useChatProvider } from '@/providers/chat-provider';
 export default function Navbar() {
   const { isVerified } = useAuthProvider();
   const { unreadNotif } = useCurrentUserDocProvider();
-  const { openChat } = useChatProvider();
+  const { openChat, chats } = useChatProvider();
 
   return (
     <>
@@ -46,7 +46,7 @@ export default function Navbar() {
             <img src={unreadNotif.length > 0 ? "/notification-new.png" : "/notification.png"} className="h-8" alt="notification" />
           </Link>
           <button onClick={() => openChat()}>
-            <img src="/chats.png" className="h-8" alt="chats" />
+            <img src={chats && Object.keys(chats).length !== 0 ? "/chats-new.png" : "/chats.png"} className="h-8" alt="chats" />
           </button>
           <UserDropdown />
           </>}
