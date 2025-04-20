@@ -18,7 +18,7 @@ export default function ChatWindow() {
     chatTargetPicUrl, setChatTargetPicUrl,
     displayEmptyChat, setDisplayEmptyChat,
     chats,
-    readChats, setReadChats,
+    readChats,
     chatUsers,
     isViewingChatLogsFromProfile,
     setIsViewingChatLogsFromProfile
@@ -73,6 +73,11 @@ export default function ChatWindow() {
         [`chats.${targetId}`]: deleteField(),
         [`readChats.${targetId}`]: deleteField()
       });
+
+      if (chatTargetUid === targetId) {
+        setDisplayEmptyChat(true);
+        setChatTargetUsername('');
+      }
     } catch (err) {
       console.error(err);
     }
