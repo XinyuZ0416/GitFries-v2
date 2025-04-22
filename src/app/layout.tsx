@@ -10,6 +10,7 @@ import AchievementsWrapper from "@/components/achievements/wrapper";
 import { TypesenseProvider } from "@/providers/typesense-provider";
 import { ChatProvider } from "@/providers/chat-provider";
 import ChatBoxWrapper from "@/components/chats/wrapper";
+import ChatBoxAiWrapper from "@/components/chats/wrapper-ai";
 
 const ubuntuMono = Ubuntu_Mono({
   variable: "--font-ubuntu-mono",
@@ -41,7 +42,7 @@ export default function RootLayout({
                   <div className="min-h-screen">
                     {children}
                   </div>
-                  <img className="fixed left-3 bottom-3 size-20 z-9" src="/chatbot.png" />
+                  <ChatBoxAiWrapper />
                   <ChatBoxWrapper />
                   <AchievementsWrapper />
                   <Footer />

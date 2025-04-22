@@ -6,3 +6,12 @@ export interface ChatBubbleProps {
   time: Timestamp, 
   content: string
 }
+
+export interface AiChatBubbleProps {
+  content: string;
+}
+
+export type QAType = {
+  content: string,
+  type: string
+}
