@@ -28,7 +28,6 @@ type FormDataType = {
 }
 
 export default function IssuesPage() {
-  // TODO: cannot view more than 1 page/ use search without verified log in
   const { uid } = useAuthProvider();
   const [ isLoading, setIsLoading ] = useState<boolean>(false);
   const [ isFiltering, setIsFiltering ] = useState<boolean>(false);
@@ -68,6 +67,10 @@ export default function IssuesPage() {
       if (page === 1) {
         issuesQ = query(collection(db, "issues"), orderBy("time", "desc"), limit(issuesPerPage));
       } else {
+        if (!uid) {
+          alert(`Please sign in to view more issues`);
+          return;
+        }
         issuesQ = query(collection(db, "issues"), orderBy("time", "desc"), startAfter(lastVisibleIssueRef.current!.time), limit(issuesPerPage));
       }
 
@@ -97,7 +100,7 @@ export default function IssuesPage() {
     fetchIssues(currentPage);
   }, [currentPage]);
 
-  const handleChange = (e: any) => {
+  const handleFilterChange = (e: any) => {
     if (!uid) {
       alert(`Please sign in first`);
       return;
@@ -185,11 +188,27 @@ export default function IssuesPage() {
   }
 
   const renderPageNum = pageNums.map((num) => {
-    return(
-      <button key={num} onClick={() => setCurrentPage(num)} className={`px-3 py-1 mx-1 border rounded ${currentPage === num ? 'bg-blue-500 text-white' : ''}`}>
-        {num}
-      </button>
-    )
+    if (num === 1) {
+      return(
+        <button key={1} onClick={() => setCurrentPage(1)} className={`px-3 py-1 mx-1 border rounded ${currentPage === 1 ? 'bg-blue-500 text-white' : ''}`}>
+          {1}
+        </button>
+      )
+    } else {
+      if (!uid) {
+        return(
+          <button key={num} onClick={() => setCurrentPage(num)} className={`px-3 py-1 mx-1 border rounded bg-gray-200 text-white`}>
+            {num}
+          </button>
+        )
+      } else {
+        return(
+          <button key={num} onClick={() => setCurrentPage(num)} className={`px-3 py-1 mx-1 border rounded ${currentPage === num ? 'bg-blue-500 text-white' : ''}`}>
+            {num}
+          </button>
+        )
+      }
+    }
   });
 
   const paginatedIssues = isFiltering
@@ -203,38 +222,38 @@ export default function IssuesPage() {
       <div className="flex ml-auto">
         <div className="flex items-center me-4">
           <input className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2"
-            id="isClaimedByMe" name="isClaimedByMe" type="checkbox" checked={formData.isClaimedByMe} onChange={handleChange}  />
+            id="isClaimedByMe" name="isClaimedByMe" type="checkbox" checked={formData.isClaimedByMe} onChange={handleFilterChange}  />
           <label htmlFor="isClaimedByMe" className="ms-2 text-m font-bold">Claimed by Me</label>
         </div>
         <div className="flex items-center me-4">
           <input className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2"
-            id="isFinishedByMe" name="isFinishedByMe" type="checkbox" checked={formData.isFinishedByMe} onChange={handleChange}  />
+            id="isFinishedByMe" name="isFinishedByMe" type="checkbox" checked={formData.isFinishedByMe} onChange={handleFilterChange}  />
           <label htmlFor="isFinishedByMe" className="ms-2 text-m font-bold">Finished by Me</label>
         </div>
         <div className="flex items-center me-4">
           <input className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2" 
-            id="isAvailable" name="isAvailable" type="checkbox" checked={formData.isAvailable} onChange={handleChange} />
+            id="isAvailable" name="isAvailable" type="checkbox" checked={formData.isAvailable} onChange={handleFilterChange} />
           <label htmlFor="isAvailable" className="ms-2 text-m font-bold">Available</label>
         </div>
         <div className="flex items-center me-4">
           <input className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2" 
-            id="isFavorited" name="isFavorited" type="checkbox" checked={formData.isFavorited} onChange={handleChange} />
+            id="isFavorited" name="isFavorited" type="checkbox" checked={formData.isFavorited} onChange={handleFilterChange} />
           <label htmlFor="isFavorited" className="ms-2 text-m font-bold">Favorited</label>
         </div>
         <div className="flex items-center me-4">
           <input className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2" 
-            id="isEasyFix" name="isEasyFix" type="checkbox" checked={formData.isEasyFix} onChange={handleChange} />
+            id="isEasyFix" name="isEasyFix" type="checkbox" checked={formData.isEasyFix} onChange={handleFilterChange} />
           <label htmlFor="isEasyFix" className="ms-2 text-m font-bold">Easy fix</label>
         </div>
         <div className="flex items-center me-4">
           <input className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2"
-            id="isUrgent" name="isUrgent" type="checkbox" checked={formData.isUrgent} onChange={handleChange} />
+            id="isUrgent" name="isUrgent" type="checkbox" checked={formData.isUrgent} onChange={handleFilterChange} />
           <label htmlFor="isUrgent" className="ms-2 text-m font-bold">Urgent</label>
         </div>
         <div className="flex items-center me-4">
           <label htmlFor="language" className="ms-2 text-m font-bold">Language</label>
           <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            id="language" name="language" value={formData.language} onChange={handleChange}>
+            id="language" name="language" value={formData.language} onChange={handleFilterChange}>
             <option value="Select">-Select-</option>
             <option value="C">C</option>
             <option value="C++">C++</option>
