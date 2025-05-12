@@ -1,14 +1,17 @@
 'use client'
 import EmailSignUp from "@/components/email-signup";
 import { useAuthProvider } from "@/providers/auth-provider";
+import { useNavbarProvider } from "@/providers/navbar-provider";
 
 export default function Home() {
   const { isVerified } = useAuthProvider();
+  const { height } = useNavbarProvider();
+  const navbarHeight = height ?? 64;
 
   return (
     <>
     {/* 1st screen */}
-    <div className="flex h-screen">
+    <div className="flex" style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
       <div className="flex flex-col flex-1 justify-center items-center">
         <h1 className="text-4xl font-bold">Link Code Issues with Contributors</h1>
         { isVerified !== null && !isVerified  && <EmailSignUp goal="Find Contributors or Contribute to Issues" /> }
@@ -20,30 +23,30 @@ export default function Home() {
     </div>
 
     {/* 2nd screen */}
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col" style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
       <div className="flex-1">
         <h1 className="text-4xl font-bold">Find Talented Contributors</h1>
         <h2 className="text-2xl font-semi-bold">Bashing your head for a bug? Post the issue on GitFries, we will match it with contributors.</h2>
       </div>
-      <div className="flex-1">
+      {/* <div className="flex-1">
         <img src="comments-preview.png"/>
-      </div>
+      </div> */}
     </div>
 
     {/* 3rd screen */}
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col" style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
       <div className="flex-1">
         <h1 className="text-4xl font-bold">Showcase Skills by Contributing</h1>
         <h2 className="text-2xl font-semi-bold">Want to take part in more real-life projects? Find issues on GitFries and ace your skills while tracking your growth.</h2>
       </div>
-      <div className="flex-1">
+      {/* <div className="flex-1">
         <img src="profile-preview.png"/>
-      </div>
+      </div> */}
     </div>
 
     {/* 4th screen */}
     { isVerified !== null && !isVerified && 
-    <div className="flex flex-col h-screen justify-center items-center">
+    <div className="flex flex-col justify-center items-center" style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
       <h1 className="text-4xl font-bold">Join GitFries Today</h1>
       <EmailSignUp goal="Find Contributors or Contribute to Issues" />
     </div>

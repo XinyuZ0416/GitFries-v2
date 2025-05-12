@@ -11,6 +11,7 @@ import { TypesenseProvider } from "@/providers/typesense-provider";
 import { ChatProvider } from "@/providers/chat-provider";
 import ChatBoxWrapper from "@/components/chats/wrapper";
 import ChatBoxAiWrapper from "@/components/chats/wrapper-ai";
+import { NavbarProvider } from "@/providers/navbar-provider";
 
 const ubuntuMono = Ubuntu_Mono({
   variable: "--font-ubuntu-mono",
@@ -34,21 +35,23 @@ export default function RootLayout({
         <ChatProvider>
           <CurrentUserDocProvider>
             <AchievementsProvider>
-              <html lang="en">
-                <body
-                  className={`${ubuntuMono.variable} antialiased`}
-                >
-                  <Navbar />
-                  <div className="min-h-screen">
-                    {children}
-                  </div>
-                  <ChatBoxAiWrapper />
-                  <ChatBoxWrapper />
-                  <AchievementsWrapper />
-                  <Footer />
-                  <script src="https://unpkg.com/flowbite@3.1.2/dist/flowbite.js"></script>
-                </body>
-              </html>
+              <NavbarProvider>
+                <html lang="en">
+                  <body
+                    className={`${ubuntuMono.variable} antialiased`}
+                  >
+                    <Navbar />
+                    <div className="min-h-screen">
+                      {children}
+                    </div>
+                    <ChatBoxAiWrapper />
+                    <ChatBoxWrapper />
+                    <AchievementsWrapper />
+                    <Footer />
+                    <script src="https://unpkg.com/flowbite@3.1.2/dist/flowbite.js"></script>
+                  </body>
+                </html>
+              </NavbarProvider>
             </AchievementsProvider>
           </CurrentUserDocProvider>
         </ChatProvider>

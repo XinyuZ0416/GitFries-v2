@@ -8,6 +8,7 @@ import MDEditor from '@uiw/react-md-editor';
 import rehypeSanitize from "rehype-sanitize";
 import { useRouter } from 'next/navigation';
 import { NotificationType } from '@/utils/notification-types';
+import { useNavbarProvider } from '@/providers/navbar-provider';
 
 type FormDataType = {
   issueReporterUid: string,
@@ -25,6 +26,8 @@ export default function PostIssuePage() {
   const [ isValidUrl, setIsValidUrl ] = useState<boolean | null>(null);
   const { uid, isVerified } = useAuthProvider();
   const router = useRouter();
+  const { height } = useNavbarProvider();
+  const navbarHeight = height ?? 64;
   const [ formData, setFormData ] = useState<FormDataType>({
     issueReporterUid: '',
     url: '',
@@ -110,7 +113,7 @@ export default function PostIssuePage() {
   return (
     <>
     {isVerified ? 
-      <div className='flex justify-center items-center h-screen'>
+      <div className='flex justify-center items-center' style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
         <form className="mx-auto w-2/5" onSubmit={handleSubmit}>
           {/* issue url */}
           <fieldset className="mb-5">

@@ -5,6 +5,7 @@ import { auth } from '../firebase';
 import CheckUnchecked from '@/components/check-unchecked';
 import { useAuthProvider } from '@/providers/auth-provider';
 import { useRouter } from 'next/navigation';
+import { useNavbarProvider } from '@/providers/navbar-provider';
 
 type PasswordCriteriaType = {
   isUpperCase: boolean,
@@ -22,6 +23,8 @@ export default function SignUpPage() {
   const [ isLoading, setIsLoading ] = useState<boolean>(false);
   const { isVerified, setIsVerified } = useAuthProvider();
   const router = useRouter();
+  const { height } = useNavbarProvider();
+  const navbarHeight = height ?? 64;
   const [ passwordCriteria, setPasswordCriteria ] = useState<PasswordCriteriaType>({
     isUpperCase: false,
     isLowerCase: false,
@@ -98,7 +101,7 @@ export default function SignUpPage() {
     <>
     { isVerified ? 
       'You have signed in. Redirecting to profile page...' :  // TODO: implement redirect
-      <div className='flex flex-col justify-center items-center h-screen'>
+      <div className='flex flex-col justify-center items-center' style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
         <form className="mx-auto w-2/5" onSubmit={handleSubmit}>
           <div className="relative z-0 w-full mb-5 group">
             <input className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" 

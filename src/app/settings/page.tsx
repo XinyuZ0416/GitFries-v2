@@ -6,6 +6,7 @@ import { useAuthProvider } from '@/providers/auth-provider';
 import { useRouter } from 'next/navigation';
 import { deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { useNavbarProvider } from '@/providers/navbar-provider';
 
 type FormDataType = {
   username: string,
@@ -21,6 +22,8 @@ export default function Settings() {
   const [ errorCode, setErrorCode ] = useState<string>('');
   const { email, uid, setUserPicUrl, isVerified } = useAuthProvider();
   const router = useRouter();
+  const { height } = useNavbarProvider();
+  const navbarHeight = height ?? 64;
   const [ formData, setFormData ] = useState<FormDataType>({
     username: '',
     bio: '',
@@ -174,7 +177,7 @@ export default function Settings() {
 
   return (
     <>
-    <div className='flex flex-col justify-center items-center h-screen'>
+    <div className='flex flex-col justify-center items-center' style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
       {/* Profile picture */}
       <div className="mb-5">
         <label className="block mb-2 text-sm font-medium" htmlFor="file_input">Profile Picture</label>

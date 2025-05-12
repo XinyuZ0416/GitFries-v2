@@ -6,15 +6,17 @@ import { useAuthProvider } from '../providers/auth-provider';
 import Link from 'next/link';
 import { useCurrentUserDocProvider } from '@/providers/current-user-doc-provider';
 import { useChatProvider } from '@/providers/chat-provider';
+import { useNavbarProvider } from '@/providers/navbar-provider';
 
 export default function Navbar() {
   const { isVerified } = useAuthProvider();
   const { unreadNotif } = useCurrentUserDocProvider();
   const { openChat, chats } = useChatProvider();
+  const { navbarRef } = useNavbarProvider();
 
   return (
     <>
-    <nav className="bg-yellow-300 sticky top-0 z-10">
+    <nav className="bg-yellow-300 sticky top-0 z-10" ref={navbarRef}>
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2">
         <Link href="/" className="flex items-center space-x-3">
           <img src="/logo.png" className="h-8" alt="GitFries Logo" />
