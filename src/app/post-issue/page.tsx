@@ -113,8 +113,8 @@ export default function PostIssuePage() {
   return (
     <>
     {isVerified ? 
-      <div className='flex justify-center items-center' style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
-        <form className="mx-auto w-2/5" onSubmit={handleSubmit}>
+      <div className='flex justify-center items-center py-16' >
+        <form className="mx-auto w-4/5" onSubmit={handleSubmit}>
           {/* issue url */}
           <fieldset className="mb-5">
             <label className={isValidUrl || isValidUrl === null ? "block mb-2 text-sm font-medium" :  "block mb-2 text-sm font-medium text-red-600" }
@@ -143,7 +143,7 @@ export default function PostIssuePage() {
             </div>
           </fieldset>
           {/* language, difficulty, urgent */}
-          <div className="mb-5 flex flex-row">
+          <div className="mb-5 flex flex-row items-center">
             <fieldset className="max-w-sm mx-auto">
               <label htmlFor="language" className="block mb-2 text-sm font-medium">Language *</label>
               <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -187,14 +187,18 @@ export default function PostIssuePage() {
               </select>
             </fieldset>
 
-            <fieldset className="flex items-center">
+            <fieldset className="flex items-center mx-auto">
               <input className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2" 
                 type="checkbox" id="isUrgent" name="isUrgent" checked={formData.isUrgent} onChange={handleChange} ></input>
               <label htmlFor="isUrgent" className="ms-2 text-sm font-medium">Urgent</label>
             </fieldset>
+
+            <fieldset className='mx-auto'>
+              <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Submit</button>
+            </fieldset>
           </div>
 
-          <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Submit</button>
+          
         </form>
       </div> :
       <RequireSignInSignUp target='Post an Issue' />
