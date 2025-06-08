@@ -34,6 +34,7 @@ export default function Settings() {
     if (isVerified === null || !isVerified) {
       router.push('/sign-in');
     }
+    console.log(uid)
   }, [isVerified]);
 
   useEffect(() => {
@@ -57,14 +58,21 @@ export default function Settings() {
     getUsernameAndBio();
   }, [uid]);
 
-  const handleUpdate = async() => {
-    // Only update modified fields
-    const updatedData: Partial<FormDataType> = {};
-    if (formData.username) updatedData.username = formData.username;
-    if (formData.bio) updatedData.bio = formData.bio;
+  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault(); // Prevent page reload
 
+  // Only update changed fields
+  const updatedData: Partial<FormDataType> = {};
+  if (formData.username) updatedData.username = formData.username;
+  if (formData.bio) updatedData.bio = formData.bio;
+
+  try {
     await updateDoc(doc(db, "users", uid), updatedData);
+    alert('Profile updated successfully.');
+  } catch (error) {
+    console.error("Error updating user data:", error);
   }
+}
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
