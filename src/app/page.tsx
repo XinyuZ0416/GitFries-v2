@@ -11,9 +11,9 @@ export default function Home() {
   return (
     <>
     {/* 1st screen */}
-    <div className="flex" style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
+    <div className="flex mx-2" style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
       <div className="flex flex-col flex-1 justify-center items-center">
-        <h1 className="text-4xl font-bold">Link Code Issues with Contributors</h1>
+        <h1 className="text-4xl font-bold text-center">Link Code Issues with Contributors</h1>
         { isVerified !== null && !isVerified  && <EmailSignUp goal="Find Contributors or Contribute to Issues" /> }
       </div>
 
@@ -23,7 +23,7 @@ export default function Home() {
     </div>
 
     {/* 2nd screen */}
-    <div className="flex flex-col" style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
+    <div className="flex flex-col mx-4" style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
       <div className="flex-1">
         <h1 className="text-4xl font-bold">Find Talented Contributors</h1>
         <h2 className="text-2xl font-semi-bold">Bashing your head for a bug? Post the issue on GitFries, we will match it with contributors.</h2>
@@ -34,7 +34,7 @@ export default function Home() {
     </div>
 
     {/* 3rd screen */}
-    <div className="flex flex-col" style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
+    <div className="flex flex-col mx-4" style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
       <div className="flex-1">
         <h1 className="text-4xl font-bold">Showcase Skills by Contributing</h1>
         <h2 className="text-2xl font-semi-bold">Want to take part in more real-life projects? Find issues on GitFries and ace your skills while tracking your growth.</h2>
@@ -46,7 +46,7 @@ export default function Home() {
 
     {/* 4th screen */}
     { isVerified !== null && !isVerified && 
-    <div className="flex flex-col justify-center items-center" style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
+    <div className="flex flex-col mx-4 justify-center items-center" style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
       <h1 className="text-4xl font-bold">Join GitFries Today</h1>
       <EmailSignUp goal="Find Contributors or Contribute to Issues" />
     </div>
