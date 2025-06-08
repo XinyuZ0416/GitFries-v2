@@ -30,6 +30,8 @@ export default function CreditsPage() {
       <a href="https://www.flaticon.com/free-icons/time-travel" title="time travel icons">Time travel icons created by Freepik - Flaticon</a>
       <a href="https://www.flaticon.com/free-icons/detonator" title="detonator icons">Detonator icons created by cah nggunung - Flaticon</a>
       <a href="https://www.flaticon.com/free-icons/communication" title="communication icons">Communication icons created by Freepik - Flaticon</a>
+      <a href="https://www.flaticon.com/free-icons/urgent" title="urgent icons">Urgent icons created by Freepik - Flaticon</a>
+      <a href="https://www.flaticon.com/free-icons/easy" title="easy icons">Easy icons created by Smashicons - Flaticon</a>
     </div>
     </>
   )

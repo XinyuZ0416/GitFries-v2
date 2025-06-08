@@ -37,16 +37,18 @@ export default function PreviewCard({
 
   return (
     <>
-    <Link className={`flex flex-row p-3 h-32 overflow-hidden items-center rounded-lg shadow-lg hover:bg-gray-100
-      ${isUrgent ? `shadow-red-500` : `shadow-grey`}
-      ${difficulty === `easy-fix` ? `bg-green-200` : `bg-white`}`}
+    <Link className={`flex flex-row p-3 h-32 overflow-hidden items-center rounded-lg shadow-lg hover:bg-gray-100 bg-white`}
       href={`/issues/${issueId}`} >
-      <div className="flex flex-col justify-between px-4 py-2">
-        <h5 className={`text-xl font-bold ${!isAvailable && `text-gray-300`}`}>{title}</h5>
-        <p className={`font-normal ${isAvailable ? `text-gray-700` : `text-gray-300`}`}>{description}</p>
+      <div className="flex flex-col justify-between px-4 py-2 w-5/6">
+        <div className='flex flex-row gap-2 items-center'>
+          {isUrgent && <img src='/urgent.png' className="size-10" alt='urgent logo'/> }
+          {difficulty === `easy-fix` && <img src='/easy.png' className="size-10" alt='easy logo'/> }
+          <h5 className={`text-xl font-bold ${!isAvailable && `text-gray-300`}`}>{title}</h5>
+        </div>
+        <p className={`font-normal ${isAvailable ? `text-gray-700` : `text-gray-300`} line-clamp-2`}>{description}</p>
       </div>
 
-      <div>
+      <div className='w-1/6'>
         <p className={`font-normal ${isAvailable ? `text-gray-700` : `text-gray-300`}`}>{formattedDate}</p>
         <p className={`font-normal ${isAvailable ? `text-gray-700` : `text-gray-300`}`}>{language}</p>
         <p className={`font-normal ${isAvailable ? `text-gray-700` : `text-gray-300`}`}>{difficulty}</p>

@@ -53,7 +53,7 @@ export default function SignUpPage() {
         // Send email verification
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         await sendEmailVerification(userCredential.user);
-        console.log('sent email!')
+        alert('The verification email has been sent!');
 
         // Check email verification status every 1s
         const interval = setInterval(async() => {
