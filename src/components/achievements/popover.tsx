@@ -50,7 +50,7 @@ export default function AchievementPopover() {
       alt: "Fresh Starter",
       title: "Fresh Starter",
       description: "Planted the seed, now watch it grow.",
-      explanation: "Claims and finishes their first issue"
+      explanation: "Claimed and finished their first issue"
     }, {
       condition: firstDetonation.achieved && !firstDetonation.seen,
       field: "firstDetonation",
@@ -58,7 +58,7 @@ export default function AchievementPopover() {
       alt: "First Detonation",
       title: "First Detonation",
       description: "Found the bug. Pulled the pin. Walked away in slow motion.",
-      explanation: "Posts their first issue"
+      explanation: "Posted their first issue"
     }, {
       condition: issueHoarder.achieved && !issueHoarder.seen,
       field: "issueHoarder",
@@ -66,7 +66,7 @@ export default function AchievementPopover() {
       alt: "Issue Hoarder",
       title: "Issue Hoarder",
       description: "If I hoarded it, I solved it!",
-      explanation: "Favorites 20 issues"
+      explanation: "Favorited 20 issues"
     }, {
       condition: bugDestroyer.achieved && !bugDestroyer.seen,
       field: "bugDestroyer",
@@ -74,7 +74,7 @@ export default function AchievementPopover() {
       alt: "Bug Destroyer",
       title: "Bug Destroyer",
       description: "What bugs?",
-      explanation: "Finishes 10 issues"
+      explanation: "Finished 10 issues"
     }, {
       condition: commentGoblin.achieved && !commentGoblin.seen,
       field: "commentGoblin",
@@ -82,7 +82,7 @@ export default function AchievementPopover() {
       alt: "Comment Goblin",
       title: "Comment Goblin",
       description: "Lives in the comment section. Probably.",
-      explanation: "Leaves 50 comments"
+      explanation: "Leaved 50 comments"
     }, {
       condition: mergeMonarch.achieved && !mergeMonarch.seen,
       field: "mergeMonarch",
@@ -90,7 +90,7 @@ export default function AchievementPopover() {
       alt: "Merge Monarch",
       title: "Merge Monarch",
       description: "All commits bow to your will!",
-      explanation: "Gets 10 requests to approve finished issues"
+      explanation: "Received 10 requests to approve finished issues"
     }, {
       condition: issueFisher.achieved && !issueFisher.seen,
       field: "issueFisher",
@@ -98,7 +98,7 @@ export default function AchievementPopover() {
       alt: "Issue Fisher",
       title: "Issue Fisher",
       description: "Baited the hook, and the coders came biting.",
-      explanation: "Receives 10 requests to approve claimed issues"
+      explanation: "Received 10 requests to approve claimed issues"
     }, {
       condition: speedyGonzales.achieved && !speedyGonzales.seen,
       field: "speedyGonzales",
@@ -106,7 +106,7 @@ export default function AchievementPopover() {
       alt: "Speedy Gonzales",
       title: "Speedy Gonzales",
       description: "No fix too quick.",
-      explanation: "Finishes an issue within an hour after it's posted"
+      explanation: "Finished an issue within an hour after it's posted"
     }, {
       condition: timeTraveller.achieved && !timeTraveller.seen,
       field: "timeTraveller",
@@ -114,7 +114,7 @@ export default function AchievementPopover() {
       alt: "Time Traveller",
       title: "Time Traveller",
       description: "They’re here to fix the past.",
-      explanation: "Finishes an issue a year after it's posted"
+      explanation: "Finished an issue a year after it's posted"
     }
   ];
 
