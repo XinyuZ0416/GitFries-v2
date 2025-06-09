@@ -138,7 +138,7 @@ export default function SignUpPage() {
           <div className="flex items-center mb-4">
             <input className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2" 
               id="checkbox-1" type="checkbox" value="" required ></input>
-            <label htmlFor="checkbox-1" className="ms-2 text-sm font-medium">I agree to the <a href="#" className="text-blue-600 hover:underline">terms and conditions</a> (because why not)</label>
+            <label htmlFor="checkbox-1" className="ms-2 text-sm font-medium">I agree to the <a href="#" className="text-blue-600 hover:underline">terms and conditions</a></label>
           </div>
           <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
             type="submit" >Sign Up</button>

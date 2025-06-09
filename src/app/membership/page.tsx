@@ -10,7 +10,6 @@ export default function MembershipPage() {
   const navbarHeight = height ?? 64;
   return (
     <>
-    Payment cannot be refunded and plans will not auto renew
     <div className='flex flex-row w-full justify-around items-center' style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
       <PricingFreeCard />
       <PricingVipCard />

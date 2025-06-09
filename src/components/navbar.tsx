@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Searchbar from './searchbar'
 import UserDropdown from './user-dropdown'
 import { useAuthProvider } from '../providers/auth-provider';
@@ -59,12 +59,12 @@ export default function Navbar() {
           </div>
           
           {/* Search bar (default visible on desktop) */}
-          <div className='hidden md:inline-block'>
+          <div className='hidden md:inline-block w-52'>
             <Searchbar />
           </div>
           
           {/* Post issue button (default visible on desktop) */}
-          <Link href="/post-issue" className="px-5 py-2.5 hidden md:inline-block">
+          <Link href="/post-issue" className="py-2.5 hidden md:inline-block">
             <div className='flex items-center'>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5 mr-2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />

@@ -151,7 +151,6 @@ export default function NotificatonsPage() {
   return (
     <>
     <div className='flex flex-col gap-2'>
-    Your notifications will be automatically deleted after 1 month
       {renderNotifCard()}
     </div>
     </>
