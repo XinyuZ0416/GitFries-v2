@@ -1,4 +1,5 @@
 import formatDate from '@/utils/format-date'
+import MDEditor from '@uiw/react-md-editor'
 import { Timestamp } from 'firebase/firestore'
 import Link from 'next/link'
 import React from 'react'
@@ -20,8 +21,8 @@ export default function IssueCommentCard({
 }: IssueCommentCardProps) {
   return (
     <>
-    <div className='flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm'>
-      <div className="flex flex-row p-3 gap-3 items-center">
+    <div className='flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm p-4 gap-3'>
+      <div className="flex flex-row gap-3 items-center">
         <Link href={`/profile/${commenterUid}`}>
           <img className="rounded-full size-10" src={commenterPicUrl} alt="user profile" />
           <h6 className='text-lg font-bold'>{commenterUsername}</h6>
@@ -29,7 +30,9 @@ export default function IssueCommentCard({
         <p className="font-normal text-gray-700">{formatDate(time?.toDate() as Date)}</p>
       </div>
 
-      <p className="font-normal text-gray-700">{comment}</p>
+      <div data-color-mode="light">
+        <MDEditor.Markdown source={comment} />
+      </div>
     </div>
     </>
   )

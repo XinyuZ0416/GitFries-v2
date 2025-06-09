@@ -475,7 +475,8 @@ export default function IssueDetailsPage() {
       />}
       
       { commentsArr && commentsArr.length > 0 ? 
-          commentsArr?.map((comment) => (
+          commentsArr.sort((a, b) => b.time.toMillis() - a.time.toMillis())
+          .map((comment) => (
             <IssueCommentCard
               key={comment.commentId}
               commenterUid={comment.commenterUid}
@@ -487,7 +488,6 @@ export default function IssueDetailsPage() {
           )) :
           ""
       }
-      
     </div>
     </>
   )
