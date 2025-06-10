@@ -26,7 +26,7 @@ export default function Home() {
     <div className="flex flex-col mx-4" style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
       <div className="flex-1">
         <h1 className="text-4xl font-bold">Find Talented Contributors</h1>
-        <h2 className="text-2xl font-semi-bold">Bashing your head for a bug? Post the issue on GitFries, we will match it with contributors.</h2>
+        <h2 className="text-2xl font-semi-bold">Scratching your head for a bug? Post the issue on GitFries and find contributors.</h2>
       </div>
       {/* <div className="flex-1">
         <img src="comments-preview.png"/>
@@ -37,7 +37,7 @@ export default function Home() {
     <div className="flex flex-col mx-4" style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
       <div className="flex-1">
         <h1 className="text-4xl font-bold">Showcase Skills by Contributing</h1>
-        <h2 className="text-2xl font-semi-bold">Want to take part in more real-life projects? Find issues on GitFries and ace your skills while tracking your growth.</h2>
+        <h2 className="text-2xl font-semi-bold">Want to take part in more real-life projects? Fix issues on GitFries and track your growth.</h2>
       </div>
       {/* <div className="flex-1">
         <img src="profile-preview.png"/>
