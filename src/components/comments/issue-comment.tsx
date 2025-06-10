@@ -23,11 +23,11 @@ export default function IssueCommentCard({
     <>
     <div className='flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm p-4 gap-3'>
       <div className="flex flex-row gap-3 items-center">
-        <Link href={`/profile/${commenterUid}`}>
+        <Link href={`/profile/${commenterUid}`}  className="flex flex-col items-center">
           <img className="rounded-full size-10" src={commenterPicUrl} alt="user profile" />
           <h6 className='text-lg font-bold'>{commenterUsername}</h6>
         </Link>
-        <p className="font-normal text-gray-700">{formatDate(time?.toDate() as Date)}</p>
+        <p className="font-normal text-gray-700 text-center">{formatDate(time?.toDate() as Date)}</p>
       </div>
 
       <div data-color-mode="light">

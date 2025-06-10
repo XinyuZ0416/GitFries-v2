@@ -86,7 +86,7 @@ export default function AddCommentBox({
   return (
     <>
     <div className='flex flex-col gap-3'>
-      <div className='flex flex-row'>
+      <div className='flex flex-row items-center gap-3'>
         <img className="rounded-full size-14" src={commenterPicUrl} alt="user profile" />
         <h6 className='text-lg font-bold'>{commenterUsername}</h6>
       </div>

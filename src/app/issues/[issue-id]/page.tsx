@@ -435,9 +435,9 @@ export default function IssueDetailsPage() {
     }
       <div className='flex flex-row'>
         <section id='user-info'>
-          <Link href={`/profile/${issueDetails?.issueReporterUid}`}>
-          <img className="rounded-full size-14" src={issueDetails?.issueReporterPicUrl ? issueDetails.issueReporterPicUrl : '/potato.png'} alt="user profile" />
-          <h6 className='text-lg font-bold'>{issueDetails?.issueReporterUsername}</h6>
+          <Link href={`/profile/${issueDetails?.issueReporterUid}`} className='flex flex-col items-center'>
+            <img className="rounded-full size-14" src={issueDetails?.issueReporterPicUrl ? issueDetails.issueReporterPicUrl : '/potato.png'} alt="user profile" />
+            <h6 className='text-lg font-bold'>{issueDetails?.issueReporterUsername}</h6>
           </Link>
         </section>
 
