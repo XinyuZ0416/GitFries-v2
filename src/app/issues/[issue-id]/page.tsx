@@ -361,8 +361,9 @@ export default function IssueDetailsPage() {
     // If user signed out, show claim issue btn
     if (!uid) {
       return(
-        <button onClick={() => toggleClaimIssue(issueReporterUid)}>
+        <button onClick={() => toggleClaimIssue(issueReporterUid)} className='flex flex-row bg-yellow-400 px-2 py-1 rounded-full text-white'>
           <img className="size-5" src="/claim.png" alt="claim issue button" title="claim issue" />
+          Claim Issue
         </button>
       )
     }
@@ -380,12 +381,14 @@ export default function IssueDetailsPage() {
     if (!issueDetails?.claimedBy) {
       // If issue is not claimed, show claim/ waiting btn
       return(
-        <button onClick={() => toggleClaimIssue(issueReporterUid)}> 
+        <button onClick={() => toggleClaimIssue(issueReporterUid)} 
+        className={`flex flex-row px-2 py-1 rounded-full ${isRequesting ? `bg-purple-500 `:`bg-yellow-400 `} text-white`}> 
           <img className="size-5" 
             src={ isRequesting ? "/waiting.png" : "/claim.png" } 
             alt={ isRequesting ? "waiting to be accepted" : "claim issue" } 
             title={ isRequesting ? "waiting to be accepted" : "claim issue" } 
           />
+          {isRequesting ? 'Waiting for Acception' : 'Claim Issue'}
         </button>
       )
     } else {
@@ -393,15 +396,18 @@ export default function IssueDetailsPage() {
         // If issue is claimed by current user, show disclaim btn and finish btn
         return(
           <>
-          <button onClick={() => toggleClaimIssue(issueReporterUid)}> 
+          <button onClick={() => toggleClaimIssue(issueReporterUid)} className='flex flex-row bg-gray-400 px-2 py-1 rounded-full text-white'> 
             <img className="size-5" src="/disclaim.png" alt="disclaim issue" title="disclaim issue" />
+            Disclaim Issue
           </button>
-          <button onClick={() => handleFinishIssue(issueDetails?.issueReporterUid)}> 
+          <button onClick={() => handleFinishIssue(issueDetails?.issueReporterUid)}
+            className={`flex flex-row px-2 py-1 rounded-full ${isRequesting ? `bg-yellow-400 `:`bg-green-400 `} text-white`}> 
             <img className="size-5" 
               src={ isRequesting ? "/waiting.png" : "/finish.png" } 
               alt={ isRequesting ? "waiting to be accepted" : "finish issue" } 
               title={ isRequesting ? "waiting to be accepted" : "finish issue" } 
             />
+            {isRequesting ? 'Waiting for Acception' : 'Finish Issue'}
           </button>
           </>
         )
@@ -416,10 +422,9 @@ export default function IssueDetailsPage() {
     <>
     <div className="flex flex-col p-3 m-3 bg-white border border-gray-200 rounded-lg shadow-sm">
     { issueId && uid && issueDetails?.claimedBy&& 
-      <h2 className="text-2xl font-bold text-red-600">CLAIMED BY 
-        <Link href={`/profile/${issueDetails?.claimedBy}`}>
-        {issueDetails.issueClaimerUsername}
-        </Link>
+      <h2 className="text-2xl font-bold text-red-600">
+        CLAIMED BY @
+        <Link href={`/profile/${issueDetails?.claimedBy}`}>{issueDetails.issueClaimerUsername}</Link>
       </h2>
     }
     { issueId && uid && issueDetails?.finishedBy&& 
@@ -438,24 +443,30 @@ export default function IssueDetailsPage() {
         </section>
 
         <section id='issue-basic-info' className="flex flex-col justify-between px-4 py-2">
-          <h5 className="text-xl font-bold">{issueDetails?.title}</h5>
-          
-          <div className='flex flex-row gap-2'>
+          <div className='flex items-center gap-3'>
+            {issueDetails?.isUrgent && <img src='/urgent.png' className="size-10" alt='urgent' title='urgent'/> } <h5 className="text-xl font-bold">{issueDetails?.title}</h5>
+          </div>
+          <div className='flex flex-row gap-2 items-center'>
             <p className="font-normal text-gray-700">{formatDate(issueDetails?.time.toDate() as Date)}</p>
             <p className="font-normal text-gray-700">{issueDetails?.language}</p>
-            <p className="font-normal text-gray-700">{issueDetails?.difficulty}</p>
+            {issueDetails?.difficulty === `easy-fix` ? <img src='/easy.png' className="size-10" alt='easy fix' title='easy fix'/> : <p className="font-normal text-gray-700">{issueDetails?.difficulty}</p>}
             <a href={issueDetails?.url} target='_blank'>
-              <img className="size-5" src="/link.png" alt="link" title="link to original issue" />
+              <button className='flex flex-row bg-blue-600 px-2 py-1 rounded-full text-white'>
+                <img className="size-5" src="/link.png" alt="link" title="link to original issue" />
+                Source
+              </button>
             </a> 
             {uid !== issueDetails?.issueReporterUid && 
-              <button onClick={toggleFavIssue}>
+              <button onClick={toggleFavIssue} className='flex flex-row bg-orange-600 px-2 py-1 rounded-full text-white'>
                 <img className="size-5" src={favedIssues.includes(issueId as string) ? "/logo.png" : "/empty-fries.png" } alt="favorite button" title={favedIssues.includes(issueId as string) ? "unfavorite issue" : "favorite issue" } />
+                Favorite
               </button>
             }
             {issueDetails?.issueReporterUid && renderClaimBtns(issueDetails?.issueReporterUid)}
             {uid === issueDetails?.issueReporterUid && 
-              <button onClick={handleDeleteIssue}>
+              <button onClick={handleDeleteIssue} className='flex flex-row bg-gray-500 px-2 py-1 rounded-full text-white'>
                 <img className="size-5" src="/delete.png" alt="delete button" title="delete issue" />
+                Delete
               </button>}
           </div>
         </section>
