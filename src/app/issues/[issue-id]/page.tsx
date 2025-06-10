@@ -428,10 +428,9 @@ export default function IssueDetailsPage() {
       </h2>
     }
     { issueId && uid && issueDetails?.finishedBy&& 
-      <h2 className="text-2xl font-bold text-green-500">Finished BY 
-        <Link href={`/profile/${issueDetails?.finishedBy}`}>
-        {issueDetails.issueFinisherUsername}
-        </Link>
+      <h2 className="text-2xl font-bold text-green-500">
+        Finished BY @
+        <Link href={`/profile/${issueDetails?.finishedBy}`}>{issueDetails.issueFinisherUsername}</Link>
       </h2>
     }
       <div className='flex flex-row'>
