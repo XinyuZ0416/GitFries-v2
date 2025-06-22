@@ -44,15 +44,15 @@ export default function Navbar() {
         
           {/* Menu items (default visible on desktop) */}
           <div className="items-center justify-between w-full hidden md:flex md:w-auto" id="navbar-search">
-            <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
-              <li>
-                <Link href="/issues" className="block py-2 px-3 brounded-sm md:bg-transparent md:p-0" aria-current="page">Issues</Link>
+            <ul className="flex flex-col md:space-x-6 md:flex-row md:mt-0 md:border-0">
+              <li className='px-3 rounded-full hover:shadow-lg'>
+                <Link href="/issues" className="block md:bg-transparent md:p-0" aria-current="page">Issues</Link>
               </li>
-              <li>
+              <li className='px-3 rounded-full hover:shadow-lg'>
                 <Link href="/achievements" className="block py-2 px-3 rounded-sm md:hover:bg-transparent md:p-0 md:dark:hover:bg-transparent">Achievements</Link>
               </li>
               {isVerified && // if user is logged in & verified
-                <li>
+                <li className='px-3 rounded-full hover:shadow-lg'>
                   <Link href="/membership" className="block py-2 px-3 rounded-sm md:hover:bg-transparent md:p-0 md:dark:hover:bg-transparent">Membership</Link>
                 </li>}
             </ul>
@@ -65,7 +65,7 @@ export default function Navbar() {
           
           {/* Post issue button (default visible on desktop) */}
           <Link href="/post-issue" className="py-2.5 hidden md:inline-block">
-            <div className='flex items-center'>
+            <div className='flex items-center px-3 rounded-full hover:shadow-lg'>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5 mr-2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
               </svg>
@@ -76,10 +76,10 @@ export default function Navbar() {
           {/* Notifications, chats and user dropdown (default visible on desktop) */}
           {isVerified && // if user is logged in & verified
             <div className='hidden md:flex items-center flex-shrink-0 gap-10'>
-              <Link href='/notifications'>
+              <Link href='/notifications' className='hover:shadow-lg'>
                 <img src={unreadNotif.length > 0 ? "/notification-new.png" : "/notification.png"} className="h-8" alt="notification" />
               </Link>
-              <button onClick={() => openChat()}>
+              <button onClick={() => openChat()} className='hover:shadow-lg'>
                 <img src={chats && Object.keys(chats).length !== 0 ? "/chats-new.png" : "/chats.png"} className="h-8" alt="chats" />
               </button>
               <UserDropdown />
@@ -89,7 +89,7 @@ export default function Navbar() {
           {/* Sign in and sign up (default visible on desktop) */}
           {isVerified !== null && !isVerified && // if user is logged out or not verified
             <div className='hidden md:flex gap-10 items-center'>
-              <Link href="/sign-in" className="hover:underline">Sign In</Link>
+              <Link href="/sign-in" className="hover:shadow-lg">Sign In</Link>
               <Link href="/sign-up" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
                 Sign Up
               </Link>

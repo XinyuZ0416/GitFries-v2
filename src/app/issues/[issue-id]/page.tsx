@@ -132,7 +132,7 @@ export default function IssueDetailsPage() {
 
     getIssueDoc(); 
     checkIfHasRequestedToClaimOrFinish();
-  }, [uid, issueId]);
+  }, [uid, issueId, username]);
 
   // Listen to real-time comment update
   useEffect(() => {
@@ -475,14 +475,16 @@ export default function IssueDetailsPage() {
         <MDEditor.Markdown source={issueDetails?.description} />
       </section>
 
-      {issueDetails && issueId && issueDetails.issueReporterUid && <AddCommentBox 
-        issueId={issueId}
-        issueReporterUid={issueDetails!.issueReporterUid}
-        issueTitle={issueDetails!.title}
-        commenterUid={uid}
-        commenterUsername={username}
-        commenterPicUrl={userPicUrl}
-      />}
+      <div className='mt-4'>
+        {issueDetails && issueId && issueDetails.issueReporterUid && <AddCommentBox 
+          issueId={issueId}
+          issueReporterUid={issueDetails!.issueReporterUid}
+          issueTitle={issueDetails!.title}
+          commenterUid={uid}
+          commenterUsername={username}
+          commenterPicUrl={userPicUrl}
+        />}
+      </div>
       
       { commentsArr && commentsArr.length > 0 ? 
           commentsArr.sort((a, b) => b.time.toMillis() - a.time.toMillis())

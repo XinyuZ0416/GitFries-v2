@@ -7,13 +7,6 @@ interface ProfileAchievementsCardProps {
 
 export default function ProfileAchievementsCard({achievements}: ProfileAchievementsCardProps) {
   const renderActivitiesAchievementsCard = () => {
-    /*  Object.entries(achievements) convert achievements obj into an array of [key, value]
-    * [
-    *   ["freshStarter", { achieved: false, seen: false }],
-    *   ["firstDetonation", { achieved: false, seen: false }],
-    *   ...
-    * ]
-    */
    if (achievements) {
     return Object.entries(achievements) 
     .map(([key, _]) => { // Take the variable name
