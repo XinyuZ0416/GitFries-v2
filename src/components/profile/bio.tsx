@@ -22,7 +22,9 @@ export default function ProfilePicCard({
       <h2 className='text-2xl font-bold'>{username}</h2>
       <p className='font-normal'>{bio}</p>
       { uid && uid != userId &&
-        <button onClick={() => openChat(userId!, username!, userPicUrl!)}>Start Chat</button>
+        <button onClick={() => openChat(userId!, username!, userPicUrl!)}>
+          <img src='/start-chat.png' className='size-10' alt='start chat logo' title='start chatting' />
+        </button>
       }
     </div>
     </>
