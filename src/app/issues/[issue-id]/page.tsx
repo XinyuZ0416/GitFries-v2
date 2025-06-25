@@ -225,7 +225,7 @@ export default function IssueDetailsPage() {
       return;
     }
     try {
-      if (!claimedIssues.includes(issueId as string)) { // Request to claim an issue if it hasn't be claimed
+      if (!claimedIssues.includes(issueId as string) || !requestingToClaimIssues.includes(issueId as string)) { // Request to claim an issue if it hasn't be claimed
         if (isRequesting) {
           alert('You have already sent request.');
           return;
