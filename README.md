@@ -15,6 +15,7 @@ GitFries v2 was built based on [GitFries v1](https://github.com/XinyuZ0416/GitFr
 - **Search bar**: self-hosted Typesense in Docker
 - **Sign up, sign in, email reset, password reset**: Firebase authentication
 - **Profile picture**: Firebase storage
-- **Username, bio, comment, real-time chat, issue operations, achievements**: Firebase database
+- **Username, bio, comment, issue operations**: Firebase database
+- **Real-time chat, message alert, achievement badges**: Firebase database + onSnapshot()
 - **Pricing**: Stripe
 - **Chatbot**: Firebase Genkit
