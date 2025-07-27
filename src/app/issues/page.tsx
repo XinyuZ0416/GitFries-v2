@@ -218,33 +218,33 @@ export default function IssuesPage() {
   return (
     <>
     {/* filters */}
-    <div className="flex justify-center items-center my-5">
-      <div className="flex items-center me-4">
+    <div className="flex justify-center items-center my-10">
+      <div className="flex items-center me-4 transition-transform duration-150 hover:scale-105">
         <input className="hidden peer" id="isClaimedByMe" name="isClaimedByMe" type="checkbox" checked={formData.isClaimedByMe} onChange={handleFilterChange}  />
-        <label htmlFor="isClaimedByMe" className="bg-white shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-2 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors">👌🏻 Claimed by Me</label>
+        <label htmlFor="isClaimedByMe" className="bg-white shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-4 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors">👌🏻 Claimed by Me</label>
       </div>
-      <div className="flex items-center me-4">
+      <div className="flex items-center me-4 transition-transform duration-150 hover:scale-105">
         <input className="hidden peer" id="isFinishedByMe" name="isFinishedByMe" type="checkbox" checked={formData.isFinishedByMe} onChange={handleFilterChange}  />
-        <label htmlFor="isFinishedByMe" className="bg-white shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-2 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors">✅ Finished by Me</label>
+        <label htmlFor="isFinishedByMe" className="bg-white shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-4 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors">✅ Finished by Me</label>
       </div>
-      <div className="flex items-center me-4">
+      <div className="flex items-center me-4 transition-transform duration-150 hover:scale-105">
         <input className="hidden peer" id="isAvailable" name="isAvailable" type="checkbox" checked={formData.isAvailable} onChange={handleFilterChange} />
-        <label htmlFor="isAvailable" className="bg-white shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-2 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors">👀 Available</label>
+        <label htmlFor="isAvailable" className="bg-white shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-4 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors">👀 Available</label>
       </div>
-      <div className="flex items-center me-4">
+      <div className="flex items-center me-4 transition-transform duration-150 hover:scale-105">
         <input className="hidden peer" id="isFavorited" name="isFavorited" type="checkbox" checked={formData.isFavorited} onChange={handleFilterChange} />
-        <label htmlFor="isFavorited" className="bg-white shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-2 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors">♥️ Favorited</label>
+        <label htmlFor="isFavorited" className="bg-white shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-4 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors">♥️ Favorited</label>
       </div>
-      <div className="flex items-center me-4">
+      <div className="flex items-center me-4 transition-transform duration-150 hover:scale-105">
         <input className="hidden peer" id="isEasyFix" name="isEasyFix" type="checkbox" checked={formData.isEasyFix} onChange={handleFilterChange} />
-        <label htmlFor="isEasyFix" className="bg-white shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-2 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors">😌 Easy fix</label>
+        <label htmlFor="isEasyFix" className="bg-white shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-4 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors">😌 Easy fix</label>
       </div>
-      <div className="flex items-center me-4">
+      <div className="flex items-center me-4 transition-transform duration-150 hover:scale-105">
         <input className="hidden peer" id="isUrgent" name="isUrgent" type="checkbox" checked={formData.isUrgent} onChange={handleFilterChange} />
-        <label htmlFor="isUrgent" className="bg-white shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-2 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors">⏳ Urgent</label>
+        <label htmlFor="isUrgent" className="bg-white shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-4 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors">⏳ Urgent</label>
       </div>
-      <div className="flex items-center me-4">
-        <select className="shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-2 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors"
+      <div className="flex items-center me-4 transition-transform duration-150 hover:scale-105">
+        <select className="shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-4 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors"
           id="language" name="language" value={formData.language} onChange={handleFilterChange}>
           <option value="Select">- 💻 Language-</option>
           <option value="C">C</option>
@@ -284,7 +284,7 @@ export default function IssuesPage() {
         'Loading' : 
         <>
           {/* issue previews */}
-          <div className='flex flex-col gap-3 mb-3 mx-5'>
+          <div className='flex flex-col gap-3 mb-10 mx-10'>
             {paginatedIssues.map((issue) => (<PreviewCard key={issue.issueId} {...issue} />))}
           </div>
           {/* bottom page nav */}
