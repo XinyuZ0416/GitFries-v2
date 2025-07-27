@@ -10,6 +10,7 @@ export default function MembershipPage() {
   const navbarHeight = height ?? 64;
   return (
     <>
+    <h2 className="text-7xl font-bold text-center my-10">Pick a Plan</h2>
     <div className='flex flex-row w-full justify-around items-center' style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
       <PricingFreeCard />
       <PricingVipCard />
