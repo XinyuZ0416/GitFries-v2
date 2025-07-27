@@ -19,15 +19,15 @@ export default function Home() {
     <>
     <div className="homepage">
     {/* 1st screen */}
-    <motion.div className="flex mx-2" style={{ height: `calc(100vh - ${navbarHeight}px)` }}
+    <motion.div className="flex mx-auto px-4 max-w-7xl w-full" style={{ height: `calc(100vh - ${navbarHeight}px)` }}
       initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3}} variants={fadeInUp}>
-      <div className="flex flex-col flex-1 justify-center items-center">
+      <div className="flex flex-col flex-1 ml-10 justify-center items-center">
         <h1 className="text-7xl font-bold text-center">Link Code Issues with Contributors</h1>
         { isVerified !== null && !isVerified  && <EmailSignUp goal="Outsource or Contribute to Code Repo Issues" /> }
       </div>
 
       <div className="flex flex-col flex-1 justify-center items-center">
-        <img src="logo.png" />
+        <img src="logo.png" className="w-full max-w-md object-contain" />
       </div>
     </motion.div>
 
