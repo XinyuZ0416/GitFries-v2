@@ -218,73 +218,65 @@ export default function IssuesPage() {
   return (
     <>
     {/* filters */}
-    <div className="flex">
-      <div className="flex ml-auto">
-        <div className="flex items-center me-4">
-          <input className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2"
-            id="isClaimedByMe" name="isClaimedByMe" type="checkbox" checked={formData.isClaimedByMe} onChange={handleFilterChange}  />
-          <label htmlFor="isClaimedByMe" className="ms-2 text-m font-bold">Claimed by Me</label>
-        </div>
-        <div className="flex items-center me-4">
-          <input className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2"
-            id="isFinishedByMe" name="isFinishedByMe" type="checkbox" checked={formData.isFinishedByMe} onChange={handleFilterChange}  />
-          <label htmlFor="isFinishedByMe" className="ms-2 text-m font-bold">Finished by Me</label>
-        </div>
-        <div className="flex items-center me-4">
-          <input className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2" 
-            id="isAvailable" name="isAvailable" type="checkbox" checked={formData.isAvailable} onChange={handleFilterChange} />
-          <label htmlFor="isAvailable" className="ms-2 text-m font-bold">Available</label>
-        </div>
-        <div className="flex items-center me-4">
-          <input className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2" 
-            id="isFavorited" name="isFavorited" type="checkbox" checked={formData.isFavorited} onChange={handleFilterChange} />
-          <label htmlFor="isFavorited" className="ms-2 text-m font-bold">Favorited</label>
-        </div>
-        <div className="flex items-center me-4">
-          <input className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2" 
-            id="isEasyFix" name="isEasyFix" type="checkbox" checked={formData.isEasyFix} onChange={handleFilterChange} />
-          <label htmlFor="isEasyFix" className="ms-2 text-m font-bold">Easy fix</label>
-        </div>
-        <div className="flex items-center me-4">
-          <input className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2"
-            id="isUrgent" name="isUrgent" type="checkbox" checked={formData.isUrgent} onChange={handleFilterChange} />
-          <label htmlFor="isUrgent" className="ms-2 text-m font-bold">Urgent</label>
-        </div>
-        <div className="flex items-center me-4">
-          <label htmlFor="language" className="ms-2 text-m font-bold">Language</label>
-          <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            id="language" name="language" value={formData.language} onChange={handleFilterChange}>
-            <option value="Select">-Select-</option>
-            <option value="C">C</option>
-            <option value="C++">C++</option>
-            <option value="C#">C#</option>
-            <option value="Java">Java</option>
-            <option value="PHP">PHP</option>
-            <option value="JavaScript">JavaScript</option>
-            <option value="TypeScript">TypeScript</option>
-            <option value="HTML">HTML</option>
-            <option value="CSS">CSS</option>
-            <option value="Python">Python</option>
-            <option value="Go">Go</option>
-            <option value="Ruby">Ruby</option>
-            <option value="Rust">Rust</option>
-            <option value="Kotlin">Kotlin</option>
-            <option value="Swift">Swift</option>
-            <option value="Dart">Dart</option>
-            <option value="Scala">Scala</option>
-            <option value="R">R</option>
-            <option value="Perl">Perl</option>
-            <option value="Elixir">Elixir</option>
-            <option value="Haskell">Haskell</option>
-            <option value="Erlang">Erlang</option>
-            <option value="Assembly">Assembly</option>
-            <option value="Matlab">Matlab</option>
-            <option value="Visual Basic">Visual Basic</option>
-            <option value="SQL">SQL</option>
-            <option value="Lua">Lua</option>
-            <option value="Others">Others</option>
-          </select>
-        </div>
+    <div className="flex justify-center items-center my-5">
+      <div className="flex items-center me-4">
+        <input className="hidden peer" id="isClaimedByMe" name="isClaimedByMe" type="checkbox" checked={formData.isClaimedByMe} onChange={handleFilterChange}  />
+        <label htmlFor="isClaimedByMe" className="bg-white shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-2 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors">Claimed by Me</label>
+      </div>
+      <div className="flex items-center me-4">
+        <input className="hidden peer" id="isFinishedByMe" name="isFinishedByMe" type="checkbox" checked={formData.isFinishedByMe} onChange={handleFilterChange}  />
+        <label htmlFor="isFinishedByMe" className="bg-white shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-2 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors">Finished by Me</label>
+      </div>
+      <div className="flex items-center me-4">
+        <input className="hidden peer" id="isAvailable" name="isAvailable" type="checkbox" checked={formData.isAvailable} onChange={handleFilterChange} />
+        <label htmlFor="isAvailable" className="bg-white shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-2 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors">Available</label>
+      </div>
+      <div className="flex items-center me-4">
+        <input className="hidden peer" id="isFavorited" name="isFavorited" type="checkbox" checked={formData.isFavorited} onChange={handleFilterChange} />
+        <label htmlFor="isFavorited" className="bg-white shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-2 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors">Favorited</label>
+      </div>
+      <div className="flex items-center me-4">
+        <input className="hidden peer" id="isEasyFix" name="isEasyFix" type="checkbox" checked={formData.isEasyFix} onChange={handleFilterChange} />
+        <label htmlFor="isEasyFix" className="bg-white shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-2 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors">Easy fix</label>
+      </div>
+      <div className="flex items-center me-4">
+        <input className="hidden peer" id="isUrgent" name="isUrgent" type="checkbox" checked={formData.isUrgent} onChange={handleFilterChange} />
+        <label htmlFor="isUrgent" className="bg-white shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-2 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors">Urgent</label>
+      </div>
+      <div className="flex items-center me-4">
+        <select className="shadow-md shadow-yellow-700 cursor-pointer select-none px-4 py-2 rounded-full border-2 border-dashed border-yellow-700 font-bold text-m peer-checked:bg-orange-800 peer-checked:text-white transition-colors"
+          id="language" name="language" value={formData.language} onChange={handleFilterChange}>
+          <option value="Select">-Select Language-</option>
+          <option value="C">C</option>
+          <option value="C++">C++</option>
+          <option value="C#">C#</option>
+          <option value="Java">Java</option>
+          <option value="PHP">PHP</option>
+          <option value="JavaScript">JavaScript</option>
+          <option value="TypeScript">TypeScript</option>
+          <option value="HTML">HTML</option>
+          <option value="CSS">CSS</option>
+          <option value="Python">Python</option>
+          <option value="Go">Go</option>
+          <option value="Ruby">Ruby</option>
+          <option value="Rust">Rust</option>
+          <option value="Kotlin">Kotlin</option>
+          <option value="Swift">Swift</option>
+          <option value="Dart">Dart</option>
+          <option value="Scala">Scala</option>
+          <option value="R">R</option>
+          <option value="Perl">Perl</option>
+          <option value="Elixir">Elixir</option>
+          <option value="Haskell">Haskell</option>
+          <option value="Erlang">Erlang</option>
+          <option value="Assembly">Assembly</option>
+          <option value="Matlab">Matlab</option>
+          <option value="Visual Basic">Visual Basic</option>
+          <option value="SQL">SQL</option>
+          <option value="Lua">Lua</option>
+          <option value="Others">Others</option>
+        </select>
+        <label htmlFor="language" className="ms-2 text-m font-bold"></label>
       </div>
     </div> 
 
