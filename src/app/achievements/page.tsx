@@ -27,8 +27,8 @@ export default function AchievementsPage() {
 
   return (
     <>
-    <h2 className="text-2xl font-bold text-center my-5">All Achievements</h2>
-    <div className="grid grid-flow-col grid-rows-3 gap-4">
+    <h2 className="text-7xl font-bold text-center my-10">All Achievements</h2>
+    <div className="grid grid-flow-col grid-rows-3 grid-cols-3 gap-10 m-10">
       <Badge src={`/achievements/${ signedIn && freshStarter.achieved ? "colorful" : "brown"}/fresh-starter.png`} alt='Fresh Starter' title='Fresh Starter' 
         description='Planted the seed, now watch it grow.' explanation='Claimed and finished their first issue' />
       <Badge src={`/achievements/${ signedIn && firstDetonation.achieved ? "colorful" : "brown"}/first-detonation.png`} alt='First Detonation' title='First Detonation' 
