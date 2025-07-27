@@ -17,7 +17,7 @@ export default function CheckUnchecked({condition, explanation}:CheckUncheckedPr
         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
       </svg>
     }
-    <p className="text-sm text-gray-500">{explanation}</p>
+    <p className="text-sm text-gray-500  font-bold">{explanation}</p>
     </div>
     </>
   )

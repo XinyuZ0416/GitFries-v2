@@ -102,20 +102,20 @@ export default function SignUpPage() {
     { isVerified ? 
       'You have signed in. Redirecting to profile page...' :  // TODO: implement redirect
       <div className='flex flex-col justify-center items-center' style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
-        <form className="mx-auto w-2/5" onSubmit={handleSubmit}>
-          <div className="relative z-0 w-full mb-5 group">
-            <input className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
-              type="email" name="floating_email" id="floating_email" placeholder=" " value={email} onChange={(e) => setEmail(e.target.value)} required />
-            <label htmlFor="floating_email" className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-              Email address
-            </label>
+        <form className="flex flex-col mx-auto w-2/5 gap-7" onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="email" className="block mb-2 text-3xl font-bold">Email</label>
+            <div className='flex flex-row relative'>
+              <input className="transition-transform duration-150 hover:scale-105 shadow-[4px_4px_0px_0px_black] border-4 border-black bg-gray-50 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+              type="email" id="email" placeholder="YouWontGetAwayWithNonEmail@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            </div>
           </div>
-          <div className="relative z-0 w-full mb-5 group">
-            <input className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
-              type='password' name="floating_password" id="floating_password" placeholder=" " value={password} onChange={handleSetPassword} required />
-            <label htmlFor="floating_password" className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-              Password
-            </label>
+          <div>
+            <label htmlFor="password" className="block mb-2 text-3xl font-bold">Password</label>
+            <div className='flex flex-row relative'>
+              <input className="transition-transform duration-150 hover:scale-105 shadow-[4px_4px_0px_0px_black] border-4 border-black bg-gray-50 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                type='password' id="password" placeholder="DefinitelyNot123456" value={password} onChange={handleSetPassword} required />
+            </div>
           </div>
           <div>
             { password &&
@@ -128,25 +128,34 @@ export default function SignUpPage() {
               </>
             }
           </div>
-          <div className="relative z-0 w-full mb-5 group">
-            <input className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer ${password == repeatPassword ? '': 'border-red-500'}`}
-              type="password" name="repeat_password" id="floating_repeat_password" placeholder=" " value={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)} required />
-            <label htmlFor="floating_repeat_password" className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-              Repeat Password
-            </label>
+          <div>
+            <label htmlFor="repeat_password" className="block mb-2 text-3xl font-bold">Repeat Password</label>
+            <div className='flex flex-row relative'>
+              <input className="transition-transform duration-150 hover:scale-105 shadow-[4px_4px_0px_0px_black] border-4 border-black bg-gray-50 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                type='password' name="repeat_password" id="repeat_password" placeholder="DefinitelyNot123456" value={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)} required />
+            </div>
           </div>
-          <div className="flex items-center mb-4">
-            <input className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2" 
-              id="checkbox-1" type="checkbox" value="" required ></input>
-            <label htmlFor="checkbox-1" className="ms-2 text-sm font-medium">I agree to the <a href="#" className="text-blue-600 hover:underline">terms and conditions</a></label>
+
+          <div className="flex items-start">
+            <div className="flex items-center h-5">
+              <input className="transition-transform duration-150 hover:scale-150 shadow-[2px_2px_0px_0px_black] border-4 border-black w-4 h-4 rounded-sm bg-gray-50"
+                id="checkbox-1" type="checkbox" value="" required/>
+            </div>
+            <label htmlFor="checkbox-1" className="ms-2 text-lg font-bold">I agree to the <a href="#" className="text-blue-600 hover:underline">terms and conditions</a> 🤞🏻</label>
           </div>
-          <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+          <button className="transition-transform duration-150 hover:scale-105 shadow-[4px_4px_0px_0px_black] border-4 border-black text-white bg-blue-700 hover:bg-blue-800 font-bold rounded-lg text-xl w-full sm:w-auto px-5 py-2.5 text-center"
             type="submit" >Sign Up</button>
         </form>
-        <h3 className='text-lg font-semibold text-green-600'>
-          {isLoading && 'Loading...'}
-        </h3>
-        {errorMessage && <h3 className='text-lg font-semibold text-red-600'>{errorMessage}</h3>}
+        {/* Toast Message */}
+        {(isLoading ||  errorCode) && (
+          <div className="fixed bottom-6 right-6 z-50">
+            <div className={`p-4 rounded-lg shadow-lg text-white text-md font-semibold transition-all 
+              ${errorCode ? 'bg-red-600' : 'bg-blue-600'}`}>
+              {isLoading && 'Loading... '}
+              {errorCode && `${errorCode}`}
+            </div>
+          </div>
+        )}
       </div>
     }
   </>

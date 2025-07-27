@@ -64,21 +64,21 @@ export default function SignInPage() {
       'Redirecting to issues page...' :  // TODO: implement redirect
       <div className='flex flex-col justify-center items-center' style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
         <form className="flex flex-col mx-auto w-2/5 gap-7" onSubmit={handleSubmit} >
-          <div className="mb-5">
+          <div>
             <label htmlFor="email" className="block mb-2 text-3xl font-bold">Email</label>
             <div className='flex flex-row relative'>
               <input className="transition-transform duration-150 hover:scale-105 shadow-[4px_4px_0px_0px_black] border-4 border-black bg-gray-50 text-gray-900 text-sm rounded-lg block w-full p-2.5"
               type="email" id="email" placeholder="YouWontGetAwayWithNonEmail@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
           </div>
-          <div className="mb-5">
+          <div>
             <label htmlFor="password" className="block mb-2 text-3xl font-bold">Password</label>
             <div className='flex flex-row relative'>
               <input className="transition-transform duration-150 hover:scale-105 shadow-[4px_4px_0px_0px_black] border-4 border-black bg-gray-50 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                 type='password' id="password" placeholder="DefinitelyNot123456" value={password} onChange={(e) => setPassword(e.target.value)} required />
             </div>
           </div>
-          <div className="flex items-start mb-5">
+          <div className="flex items-start">
             <div className="flex items-center h-5">
               <input className="transition-transform duration-150 hover:scale-150 shadow-[2px_2px_0px_0px_black] border-4 border-black w-4 h-4 rounded-sm bg-gray-50"
                 id="remember" type="checkbox" checked={isRememberMe} onChange={(e) => setIsRememberMe(e.target.checked)} />
@@ -92,15 +92,18 @@ export default function SignInPage() {
           <button className="transition-transform duration-150 hover:scale-105 shadow-[4px_4px_0px_0px_black] border-4 border-black text-white bg-blue-700 hover:bg-blue-800 font-bold rounded-lg text-xl w-full sm:w-auto px-5 py-2.5 text-center"
             type="submit">Sign In</button>
         </form>
-        <h3 className='text-lg font-semibold text-green-600'>
-          {isLoading && 'Loading...'}
-          {isResetPassword && 'Check your email for password reset link.'}
-        </h3>
-        <h3 className='text-lg font-semibold text-red-600'>
-          {errorCode == 'auth/invalid-credential' && 'Wrong email or password, try again.'}
-          {errorCode == 'auth/email-not-verified' && 'Please find the verification link in your email and verify before logging in.'}
-          {errorCode == 'auth/too-many-requests' && 'Chill.. You are seding too many requests, try again later.'}
-        </h3>
+
+        {/* Toast Message */}
+        {(isLoading || isResetPassword || errorCode) && (
+          <div className="fixed bottom-6 right-6 z-50">
+            <div className={`p-4 rounded-lg shadow-lg text-white text-md font-semibold transition-all 
+              ${isLoading ? 'bg-blue-600' : isResetPassword ? 'bg-green-600' : 'bg-red-600'}`}>
+              {isLoading && 'Loading... '}
+              {isResetPassword && 'Check your email for password reset link.'}
+              {errorCode && `${errorCode}`}
+            </div>
+          </div>
+        )}
       </div>
     }
     </>
