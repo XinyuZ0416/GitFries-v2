@@ -21,7 +21,7 @@ export default function FeatureIntro() {
 
   return (
     <div key={selectedFeature} className="opacity-0 animate-fadeIn">
-      <img src={src} alt={alt} className='max-w-screen-lg w-full'/>
+      <img src={src} alt={alt} className='max-w-screen-lg w-full object-contain rounded-xl shadow-lg'/>
     </div>
   );
 };
