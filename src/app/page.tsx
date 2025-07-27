@@ -17,6 +17,7 @@ export default function Home() {
 
   return (
     <>
+    <div className="homepage">
     {/* 1st screen */}
     <motion.div className="flex mx-2" style={{ height: `calc(100vh - ${navbarHeight}px)` }}
       initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3}} variants={fadeInUp}>
@@ -56,6 +57,7 @@ export default function Home() {
       <EmailSignUp goal="Find Contributors or Contribute to Issues" />
     </motion.div>
     }
+    </div>
     </>
   );
 }
