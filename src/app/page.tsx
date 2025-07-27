@@ -4,16 +4,12 @@ import FeatureIntro from "@/components/feature-intro";
 import { useAuthProvider } from "@/providers/auth-provider";
 import { useNavbarProvider } from "@/providers/navbar-provider";
 import { motion } from "framer-motion";
+import { fadeInUp } from "../utils/animation";
 
 export default function Home() {
   const { isVerified } = useAuthProvider();
   const { height } = useNavbarProvider();
   const navbarHeight = height ?? 64;
-  
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 50},
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6}},
-  }
 
   return (
     <>
