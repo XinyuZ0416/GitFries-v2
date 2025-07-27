@@ -23,7 +23,7 @@ export default function Home() {
       initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3}} variants={fadeInUp}>
       <div className="flex flex-col flex-1 justify-center items-center">
         <h1 className="text-4xl font-bold text-center">Link Code Issues with Contributors</h1>
-        { isVerified !== null && !isVerified  && <EmailSignUp goal="Find Contributors or Contribute to Issues" /> }
+        { isVerified !== null && !isVerified  && <EmailSignUp goal="Outsource or Contribute to Code Repo Issues" /> }
       </div>
 
       <div className="flex flex-col flex-1 justify-center items-center">
@@ -67,7 +67,7 @@ export default function Home() {
     <motion.div className="flex flex-col mx-4 justify-center items-center" style={{ height: `calc(100vh - ${navbarHeight}px)` }}
       initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3}} variants={fadeInUp}>
       <h1 className="text-4xl font-bold">Join GitFries Today</h1>
-      <EmailSignUp goal="Find Contributors or Contribute to Issues" />
+      <EmailSignUp goal="Outsource or Contribute to Code Repo Issues" />
     </motion.div>
     }
     </div>
