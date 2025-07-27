@@ -34,7 +34,7 @@ export default function Home() {
     <FeatureIntro />
 
     {/* 2nd screen */}
-    <motion.div className="flex flex-col mx-4 mb-5 text-center"
+    <motion.div className="flex flex-col mx-4 my-5 text-center"
       initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3}} variants={fadeInUp}>
       <h1 className="text-4xl font-bold mb-4">Find Talented Contributors</h1>
       <h2 className="text-2xl font-semi-bold mb-6">Scratching your head for a bug? Post the issue on GitFries and find contributors.</h2>
