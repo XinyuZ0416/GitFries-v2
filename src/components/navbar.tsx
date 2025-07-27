@@ -46,14 +46,14 @@ export default function Navbar() {
           <div className="items-center justify-between w-full hidden md:flex md:w-auto" id="navbar-search">
             <ul className="flex flex-col md:space-x-6 md:flex-row md:mt-0 md:border-0">
               <li className='px-3 rounded-full hover:shadow-lg'>
-                <Link href="/issues" className="block md:bg-transparent md:p-0" aria-current="page">Issues</Link>
+                <Link href="/issues" className="font-bold block md:bg-transparent md:p-0" aria-current="page">Issues</Link>
               </li>
               <li className='px-3 rounded-full hover:shadow-lg'>
-                <Link href="/achievements" className="block py-2 px-3 rounded-sm md:hover:bg-transparent md:p-0 md:dark:hover:bg-transparent">Achievements</Link>
+                <Link href="/achievements" className="font-bold block py-2 px-3 rounded-sm md:hover:bg-transparent md:p-0 md:dark:hover:bg-transparent">Achievements</Link>
               </li>
               {isVerified && // if user is logged in & verified
                 <li className='px-3 rounded-full hover:shadow-lg'>
-                  <Link href="/membership" className="block py-2 px-3 rounded-sm md:hover:bg-transparent md:p-0 md:dark:hover:bg-transparent">Membership</Link>
+                  <Link href="/membership" className="font-bold block py-2 px-3 rounded-sm md:hover:bg-transparent md:p-0 md:dark:hover:bg-transparent">Membership</Link>
                 </li>}
             </ul>
           </div>
@@ -65,7 +65,7 @@ export default function Navbar() {
           
           {/* Post issue button (default visible on desktop) */}
           <Link href="/post-issue" className="py-2.5 hidden md:inline-block">
-            <div className='flex items-center px-3 rounded-full hover:shadow-lg'>
+            <div className='flex items-center px-3 rounded-full hover:shadow-lg font-bold'>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5 mr-2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
               </svg>
@@ -89,8 +89,8 @@ export default function Navbar() {
           {/* Sign in and sign up (default visible on desktop) */}
           {isVerified !== null && !isVerified && // if user is logged out or not verified
             <div className='hidden md:flex gap-10 items-center'>
-              <Link href="/sign-in" className="hover:shadow-lg">Sign In</Link>
-              <Link href="/sign-up" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
+              <Link href="/sign-in" className="hover:shadow-lg font-bold ">Sign In</Link>
+              <Link href="/sign-up" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold rounded-lg text-sm px-5 py-2.5 focus:outline-none">
                 Sign Up
               </Link>
             </div>
