@@ -1,5 +1,6 @@
 'use client'
 import EmailSignUp from "@/components/email-signup";
+import FeatureIntro from "@/components/feature-intro";
 import { useAuthProvider } from "@/providers/auth-provider";
 import { useNavbarProvider } from "@/providers/navbar-provider";
 import { motion } from "framer-motion";
@@ -28,6 +29,8 @@ export default function Home() {
         <img src="logo.png" />
       </div>
     </motion.div>
+
+    <FeatureIntro />
 
     {/* 2nd screen */}
     <motion.div className="flex flex-col mx-4 mb-5 text-center"
