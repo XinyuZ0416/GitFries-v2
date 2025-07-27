@@ -191,22 +191,22 @@ export default function IssuesPage() {
     if (num === 1) {
       return(
         <button key={1} onClick={() => setCurrentPage(1)} 
-          className={`px-3 py-1 mx-1 rounded border-4 border-black transition-transform duration-150 shadow-[4px_4px_0px_0px_black] hover:scale-105 hover:bg-yellow-700 hover:text-white ${currentPage === 1 ? 'bg-yellow-300 text-black' : ''}`}>
+          className={`font-bold px-3 py-1 mx-1 rounded border-4 border-black transition-transform duration-150 shadow-[4px_4px_0px_0px_black] hover:scale-105 hover:bg-yellow-700 hover:text-white ${currentPage === 1 ? 'bg-yellow-300 text-black' : ''}`}>
           {1}
         </button>
       )
     } else {
       if (!uid) {
         return(
-          <button key={num} onClick={() => setCurrentPage(num)} 
-            className={`px-3 py-1 mx-1 rounded border-4 border-black transition-transform duration-150 shadow-[4px_4px_0px_0px_black] hover:scale-105 hover:bg-yellow-700 hover:text-white`}>
+          <button key={num} onClick={() => setCurrentPage(num)} \
+            className={`font-bold px-3 py-1 mx-1 rounded border-4 border-black transition-transform duration-150 shadow-[4px_4px_0px_0px_black] hover:scale-105 hover:bg-yellow-700 hover:text-white`}>
             {num}
           </button>
         )
       } else {
         return(
           <button key={num} onClick={() => setCurrentPage(num)} 
-            className={`px-3 py-1 mx-1 rounded border-4 border-black transition-transform duration-150 shadow-[4px_4px_0px_0px_black] hover:scale-105 hover:bg-yellow-700 hover:text-white ${currentPage === num ? 'bg-yellow-300 text-black' : ''}`}>
+            className={`font-bold px-3 py-1 mx-1 rounded border-4 border-black transition-transform duration-150 shadow-[4px_4px_0px_0px_black] hover:scale-105 hover:bg-yellow-700 hover:text-white ${currentPage === num ? 'bg-yellow-300 text-black' : ''}`}>
             {num}
           </button>
         )
@@ -224,30 +224,30 @@ export default function IssuesPage() {
     <div className="flex justify-center items-center my-10">
       <div className="flex items-center me-4 transition-transform duration-150 hover:scale-105">
         <input className="hidden peer" id="isClaimedByMe" name="isClaimedByMe" type="checkbox" checked={formData.isClaimedByMe} onChange={handleFilterChange}  />
-        <label htmlFor="isClaimedByMe" className="bg-yellow-300 cursor-pointer select-none shadow-[4px_4px_0px_0px_black] px-4 py-2 rounded border-4 border-black font-bold text-m peer-hover:bg-orange-800 peer-hover:text-white peer-checked:bg-orange-800 peer-checked:text-white transition-colors">👌🏻 Claimed by Me</label>
+        <label htmlFor="isClaimedByMe" className="bg-yellow-300 cursor-pointer select-none shadow-[4px_4px_0px_0px_black] px-4 py-2 rounded border-4 border-black font-bold text-m peer-hover:bg-yellow-800 peer-hover:text-white peer-checked:bg-yellow-800 peer-checked:text-white transition-colors">👌🏻 Claimed by Me</label>
       </div>
       <div className="flex items-center me-4 transition-transform duration-150 hover:scale-105">
         <input className="hidden peer" id="isFinishedByMe" name="isFinishedByMe" type="checkbox" checked={formData.isFinishedByMe} onChange={handleFilterChange}  />
-        <label htmlFor="isFinishedByMe" className="bg-yellow-300 cursor-pointer select-none shadow-[4px_4px_0px_0px_black] px-4 py-2 rounded border-4 border-black font-bold text-m peer-hover:bg-orange-800 peer-hover:text-white peer-checked:bg-orange-800 peer-checked:text-white transition-colors">✅ Finished by Me</label>
+        <label htmlFor="isFinishedByMe" className="bg-yellow-300 cursor-pointer select-none shadow-[4px_4px_0px_0px_black] px-4 py-2 rounded border-4 border-black font-bold text-m peer-hover:bg-yellow-800 peer-hover:text-white peer-checked:bg-yellow-800 peer-checked:text-white transition-colors">✅ Finished by Me</label>
       </div>
       <div className="flex items-center me-4 transition-transform duration-150 hover:scale-105">
         <input className="hidden peer" id="isAvailable" name="isAvailable" type="checkbox" checked={formData.isAvailable} onChange={handleFilterChange} />
-        <label htmlFor="isAvailable" className="bg-yellow-300 cursor-pointer select-none shadow-[4px_4px_0px_0px_black] px-4 py-2 rounded border-4 border-black font-bold text-m peer-hover:bg-orange-800 peer-hover:text-white peer-checked:bg-orange-800 peer-checked:text-white transition-colors">👀 Available</label>
+        <label htmlFor="isAvailable" className="bg-yellow-300 cursor-pointer select-none shadow-[4px_4px_0px_0px_black] px-4 py-2 rounded border-4 border-black font-bold text-m peer-hover:bg-yellow-800 peer-hover:text-white peer-checked:bg-yellow-800 peer-checked:text-white transition-colors">👀 Available</label>
       </div>
       <div className="flex items-center me-4 transition-transform duration-150 hover:scale-105">
         <input className="hidden peer" id="isFavorited" name="isFavorited" type="checkbox" checked={formData.isFavorited} onChange={handleFilterChange} />
-        <label htmlFor="isFavorited" className="bg-yellow-300 cursor-pointer select-none shadow-[4px_4px_0px_0px_black] px-4 py-2 rounded border-4 border-black font-bold text-m peer-hover:bg-orange-800 peer-hover:text-white peer-checked:bg-orange-800 peer-checked:text-white transition-colors">♥️ Favorited</label>
+        <label htmlFor="isFavorited" className="bg-yellow-300 cursor-pointer select-none shadow-[4px_4px_0px_0px_black] px-4 py-2 rounded border-4 border-black font-bold text-m peer-hover:bg-yellow-800 peer-hover:text-white peer-checked:bg-yellow-800 peer-checked:text-white transition-colors">♥️ Favorited</label>
       </div>
       <div className="flex items-center me-4 transition-transform duration-150 hover:scale-105">
         <input className="hidden peer" id="isEasyFix" name="isEasyFix" type="checkbox" checked={formData.isEasyFix} onChange={handleFilterChange} />
-        <label htmlFor="isEasyFix" className="bg-yellow-300 cursor-pointer select-none shadow-[4px_4px_0px_0px_black] px-4 py-2 rounded border-4 border-black font-bold text-m peer-hover:bg-orange-800 peer-hover:text-white peer-checked:bg-orange-800 peer-checked:text-white transition-colors">😌 Easy fix</label>
+        <label htmlFor="isEasyFix" className="bg-yellow-300 cursor-pointer select-none shadow-[4px_4px_0px_0px_black] px-4 py-2 rounded border-4 border-black font-bold text-m peer-hover:bg-yellow-800 peer-hover:text-white peer-checked:bg-yellow-800 peer-checked:text-white transition-colors">😌 Easy fix</label>
       </div>
       <div className="flex items-center me-4 transition-transform duration-150 hover:scale-105">
         <input className="hidden peer" id="isUrgent" name="isUrgent" type="checkbox" checked={formData.isUrgent} onChange={handleFilterChange} />
-        <label htmlFor="isUrgent" className="bg-yellow-300 cursor-pointer select-none shadow-[4px_4px_0px_0px_black] px-4 py-2 rounded border-4 border-black font-bold text-m peer-hover:bg-orange-800 peer-hover:text-white peer-checked:bg-orange-800 peer-checked:text-white transition-colors">⏳ Urgent</label>
+        <label htmlFor="isUrgent" className="bg-yellow-300 cursor-pointer select-none shadow-[4px_4px_0px_0px_black] px-4 py-2 rounded border-4 border-black font-bold text-m peer-hover:bg-yellow-800 peer-hover:text-white peer-checked:bg-yellow-800 peer-checked:text-white transition-colors">⏳ Urgent</label>
       </div>
       <div className="flex items-center me-4 transition-transform duration-150 hover:scale-105">
-        <select className="bg-yellow-300 cursor-pointer select-none shadow-[4px_4px_0px_0px_black] px-4 py-2 rounded border-4 border-black font-bold text-m peer-hover:bg-orange-800 peer-hover:text-white peer-checked:bg-orange-800 peer-checked:text-white transition-colors"
+        <select className="bg-yellow-300 cursor-pointer select-none shadow-[4px_4px_0px_0px_black] px-4 py-2 rounded border-4 border-black font-bold text-m peer-hover:bg-yellow-800 peer-hover:text-white peer-checked:bg-yellow-800 peer-checked:text-white transition-colors"
           id="language" name="language" value={formData.language} onChange={handleFilterChange}>
           <option value="Select">- 💻 Language-</option>
           <option value="C">C</option>
