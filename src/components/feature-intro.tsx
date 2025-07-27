@@ -20,7 +20,7 @@ export default function FeatureIntro() {
   const { src, alt } = imageMap[selectedFeature];
 
   return (
-    <div key={selectedFeature} className="opacity-0 animate-fadeIn">
+    <div key={selectedFeature} className="opacity-0 animate-fadeIn rounded-xl border-4 border-black shadow-[5px_5px_0px_0px_black]">
       <img src={src} alt={alt} className='max-w-screen-lg w-full object-contain rounded-xl shadow-lg'/>
     </div>
   );
@@ -34,22 +34,22 @@ export default function FeatureIntro() {
       <div className='flex flex-row justify-center gap-5'>
         <button 
           onClick={() => handleClick('post')} 
-          className="text-white bg-yellow-800 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-2xl w-48 px-4 py-4 text-center">
+          className="border-4 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 text-white bg-yellow-800 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-2xl w-48 px-4 py-4 text-center">
           Post Issues
         </button>
         <button 
           onClick={() => handleClick('claim')} 
-          className="text-white bg-yellow-800 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-2xl w-48 px-4 py-4 text-center">
+          className="border-4 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 text-white bg-yellow-800 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-2xl w-48 px-4 py-4 text-center">
           Claim Issues
         </button>
         <button 
           onClick={() => handleClick('badges')} 
-          className="text-white bg-yellow-800 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-2xl w-48 px-4 py-4 text-center">
+          className="border-4 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 text-white bg-yellow-800 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-2xl w-48 px-4 py-4 text-center">
           Win Badges
         </button>
         <button 
           onClick={() => handleClick('growth')} 
-          className="text-white bg-yellow-800 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-2xl w-48 px-4 py-4 text-center">
+          className="border-4 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 text-white bg-yellow-800 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-2xl w-48 px-4 py-4 text-center">
           Track Growth
         </button>
       </div>

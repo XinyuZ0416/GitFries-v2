@@ -42,7 +42,7 @@ export default function Home() {
         <h2 className="text-4xl font-semi-bold mb-6">Scratching your head for a bug? Post the issue on GitFries and find contributors.</h2>
       </div>
       <div>
-        <img src="3rd.png" className="max-w-full h-auto object-contain rounded-xl shadow-md" />
+        <img src="3rd.png" className="max-w-full h-auto object-contain rounded-xl border-4 border-black shadow-[5px_5px_0px_0px_black]" />
       </div>
     </motion.div>
 
@@ -50,7 +50,7 @@ export default function Home() {
     <motion.div className="grid grid-flow-row grid-cols-2 mx-4 my-24 text-center"
       initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3}} variants={fadeInUp}>
       <div>
-        <img src="4th.png" className="max-w-full h-auto object-contain rounded-xl shadow-md" />
+        <img src="4th.png" className="max-w-full h-auto object-contain rounded-xl border-4 border-black shadow-[5px_5px_0px_0px_black]" />
       </div>
       <div className="flex flex-col flex-1 justify-center items-center mx-2">
         <h1 className="text-7xl font-bold mb-4">Showcase Skills by Contributing</h1>
