@@ -1,6 +1,8 @@
 import { useAuthProvider } from '@/providers/auth-provider';
+import { fadeInUp } from '@/utils/animation';
 import formatDate from '@/utils/format-date';
 import { Timestamp } from 'firebase/firestore'
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 
@@ -37,36 +39,37 @@ export default function PreviewCard({
 
   return (
     <>
-    <Link
-      className={`
-        flex flex-row p-4 h-32 my-3 overflow-hidden items-center rounded-lg
-        shadow-[4px_4px_0px_0px_black] 
-        ${isAvailable ? 'bg-yellow-300 hover:bg-yellow-400' : 'bg-yellow-200 hover:bg-yellow-200'}
-        border-4 border-black
-        transition-transform duration-150 hover:scale-105
-        `}
-      href={`/issues/${issueId}`}
-    >
-      <div className="flex flex-col justify-between px-4 py-2 w-5/6">
-        <div className='flex flex-row gap-2 items-center'>
-          {isUrgent && <img src='/urgent.png' className="w-10 h-10" alt='urgent logo' />}
-          {difficulty === 'easy-fix' && <img src='/easy.png' className="w-10 h-10" alt='easy logo' />}
-          <h5 className={`text-2xl font-extrabold tracking-wider ${isAvailable ? 'text-black' : 'text-gray-400'}`}>
-            {title}
-          </h5>
+    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3}} variants={fadeInUp}>
+      <Link
+        className={`
+          flex flex-row p-4 h-32 my-3 overflow-hidden items-center rounded-lg
+          shadow-[4px_4px_0px_0px_black] 
+          ${isAvailable ? 'bg-yellow-300 hover:bg-yellow-400' : 'bg-yellow-200 hover:bg-yellow-200'}
+          border-4 border-black
+          transition-transform duration-150 hover:scale-105
+          `}
+        href={`/issues/${issueId}`}
+      >
+        <div className="flex flex-col justify-between px-4 py-2 w-5/6">
+          <div className='flex flex-row gap-2 items-center'>
+            {isUrgent && <img src='/urgent.png' className="w-10 h-10" alt='urgent logo' />}
+            {difficulty === 'easy-fix' && <img src='/easy.png' className="w-10 h-10" alt='easy logo' />}
+            <h5 className={`text-2xl font-extrabold tracking-wider ${isAvailable ? 'text-black' : 'text-gray-400'}`}>
+              {title}
+            </h5>
+          </div>
+          <p className={`font-semibold ${isAvailable ? 'text-yellow-800' : 'text-gray-400'} line-clamp-2`}>
+            {description}
+          </p>
         </div>
-        <p className={`font-semibold ${isAvailable ? 'text-yellow-800' : 'text-gray-400'} line-clamp-2`}>
-          {description}
-        </p>
-      </div>
 
-      <div className='w-1/6 text-center'>
-        <p className={`font-semibold ${isAvailable ? 'text-black' : 'text-gray-400'}`}>{formattedDate}</p>
-        <p className={`font-semibold ${isAvailable ? 'text-black' : 'text-gray-400'}`}>{language}</p>
-        <p className={`font-semibold ${isAvailable ? 'text-black' : 'text-gray-400'}`}>{difficulty}</p>
-      </div>
-    </Link>
-
+        <div className='w-1/6 text-center'>
+          <p className={`font-semibold ${isAvailable ? 'text-black' : 'text-gray-400'}`}>{formattedDate}</p>
+          <p className={`font-semibold ${isAvailable ? 'text-black' : 'text-gray-400'}`}>{language}</p>
+          <p className={`font-semibold ${isAvailable ? 'text-black' : 'text-gray-400'}`}>{difficulty}</p>
+        </div>
+      </Link>
+    </motion.div>
     </>
   )
 }
