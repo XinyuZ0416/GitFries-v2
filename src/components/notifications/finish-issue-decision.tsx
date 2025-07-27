@@ -17,7 +17,7 @@ export default function FinishIssueDecisionCard({decision, senderUsername, issue
   return (
     <>
     <Link href={`/issues/${issueId}`}>
-      <div className='flex flex-col rounded-lg shadow-sm p-4 gap-2 bg-white hover:bg-gray-100'>
+      <div className='my-5 transition-transform duration-150 hover:scale-105 border-4 border-black shadow-[4px_4px_0px_0px_black] flex flex-col rounded-lg p-4 gap-4 bg-white hover:bg-gray-100'>
         <h3 className='text-lg font-semibold'>@{senderUsername} has { decision === "request_finish_issue_accept" ? "accepted" : "declined"} your request to finish issue "{issueTitle}"</h3>
         <p className="font-normal">{formatDate(time?.toDate() as Date)}</p>
       </div>

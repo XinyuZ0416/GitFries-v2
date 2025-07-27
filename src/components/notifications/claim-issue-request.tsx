@@ -101,28 +101,28 @@ export default function ClaimIssueRequestCard({currentNotifId, senderUsername, s
 
   return (
     <>
-    <div className='flex flex-col rounded-lg shadow-sm p-4 gap-2 bg-white hover:bg-gray-100'>
+    <div className='my-5 transition-transform duration-150 hover:scale-105 border-4 border-black shadow-[4px_4px_0px_0px_black] flex flex-col rounded-lg p-4 gap-4 bg-white hover:bg-gray-100'>
       <Link href={`/issues/${issueId}`}>
       <h3 className='text-lg font-semibold'>@{senderUsername} would like to claim your issue "{issueTitle}"</h3>
       <p className="font-normal">{message}</p>
       <p className="font-normal">{formatDate(time?.toDate() as Date)}</p>
       </Link>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-2 w-full">
         { 
           isAccepted === null ? 
             <>
-              <div>
-                <button className="inline-flex justify-center w-full px-2 py-1.5 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300"
-                  onClick={handleAccept}>
-                  Accept
-                </button>
-              </div>
-              <div>
-                <button className="inline-flex justify-center w-full px-2 py-1.5 text-xs font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200"
-                  onClick={handleDecline}>
-                  Decline
-                </button>
-              </div>
+            <div className='flex justify-center'>
+              <button className="transition-transform duration-150 hover:scale-125 border-4 border-black shadow-[4px_4px_0px_0px_black] inline-flex justify-center w-36 px-2 py-1.5 text-md font-bold text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+                onClick={handleAccept}>
+                Accept
+              </button>
+            </div>
+            <div className='flex justify-center'>
+              <button className="transition-transform duration-150 hover:scale-125 border-4 border-black shadow-[4px_4px_0px_0px_black] inline-flex justify-center w-36 px-2 py-1.5 text-md font-bold text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100"
+                onClick={handleDecline}>
+                Decline
+              </button>
+            </div>
             </> :
             isAccepted ? 'You have accepted this request' : 'You have declined this request'
         }
