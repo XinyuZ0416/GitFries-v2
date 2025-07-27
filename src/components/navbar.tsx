@@ -23,7 +23,7 @@ export default function Navbar() {
     <>
       <nav className="bg-yellow-300 sticky top-0 z-10" ref={navbarRef}>
         <div className="max-w-screen-xl flex flex-nowrap items-center justify-between mx-auto p-2">
-          <Link href="/" className="flex items-center space-x-3">
+          <Link href="/" className="flex items-center space-x-3 transition-transform duration-150 hover:scale-105">
             <img src="/logo.png" className="h-8" alt="GitFries Logo" />
             <img src="https://see.fontimg.com/api/rf5/Yz9Ga/YWE2ZTFiNmIzODBjNGY5ZGJkYWU2Zjc4ODRjZTdiMDgub3Rm/R2l0RnJpZXM/flying-bird.png?r=fs&h=130&w=2000&fg=D00B0B&bg=FFFFFF&tb=1&s=65" className="h-8" alt="GitFries Title Logo" />
           </Link>
@@ -45,27 +45,27 @@ export default function Navbar() {
           {/* Menu items (default visible on desktop) */}
           <div className="items-center justify-between w-full hidden md:flex md:w-auto" id="navbar-search">
             <ul className="flex flex-col md:space-x-6 md:flex-row md:mt-0 md:border-0">
-              <li className='px-3 rounded-full hover:shadow-lg'>
-                <Link href="/issues" className="font-bold block md:bg-transparent md:p-0" aria-current="page">Issues</Link>
+              <li className='px-3'>
+                <Link href="/issues" className="font-bold block md:bg-transparent md:p-0 transition-transform duration-150 hover:scale-125" aria-current="page">Issues</Link>
               </li>
-              <li className='px-3 rounded-full hover:shadow-lg'>
-                <Link href="/achievements" className="font-bold block py-2 px-3 rounded-sm md:hover:bg-transparent md:p-0 md:dark:hover:bg-transparent">Achievements</Link>
+              <li className='px-3'>
+                <Link href="/achievements" className="font-bold block md:bg-transparent md:p-0 transition-transform duration-150 hover:scale-125">Achievements</Link>
               </li>
               {isVerified && // if user is logged in & verified
-                <li className='px-3 rounded-full hover:shadow-lg'>
-                  <Link href="/membership" className="font-bold block py-2 px-3 rounded-sm md:hover:bg-transparent md:p-0 md:dark:hover:bg-transparent">Membership</Link>
+                <li className='px-3'>
+                  <Link href="/membership" className="font-bold block md:bg-transparent md:p-0 transition-transform duration-150 hover:scale-125">Membership</Link>
                 </li>}
             </ul>
           </div>
           
           {/* Search bar (default visible on desktop) */}
-          <div className='hidden md:inline-block w-52'>
+          <div className='hidden md:inline-block w-52 transition-transform duration-150 hover:scale-105'>
             <Searchbar />
           </div>
           
           {/* Post issue button (default visible on desktop) */}
           <Link href="/post-issue" className="py-2.5 hidden md:inline-block">
-            <div className='flex items-center px-3 rounded-full hover:shadow-lg font-bold'>
+            <div className='flex items-center px-3 font-bold transition-transform duration-150 hover:scale-125'>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5 mr-2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
               </svg>
@@ -76,21 +76,23 @@ export default function Navbar() {
           {/* Notifications, chats and user dropdown (default visible on desktop) */}
           {isVerified && // if user is logged in & verified
             <div className='hidden md:flex items-center flex-shrink-0 gap-10'>
-              <Link href='/notifications' className='hover:shadow-lg'>
+              <Link href='/notifications' className='transition-transform duration-150 hover:scale-125'>
                 <img src={unreadNotif.length > 0 ? "/notification-new.png" : "/notification.png"} className="h-8" alt="notification" />
               </Link>
-              <button onClick={() => openChat()} className='hover:shadow-lg'>
+              <button onClick={() => openChat()} className='transition-transform duration-150 hover:scale-125'>
                 <img src={chats && Object.keys(chats).length !== 0 ? "/chats-new.png" : "/chats.png"} className="h-8" alt="chats" />
               </button>
-              <UserDropdown />
+              <div className='transition-transform duration-150 hover:scale-125 flex justify-center'>
+                <UserDropdown />
+              </div>
             </div>
           }
           
           {/* Sign in and sign up (default visible on desktop) */}
           {isVerified !== null && !isVerified && // if user is logged out or not verified
             <div className='hidden md:flex gap-10 items-center'>
-              <Link href="/sign-in" className="hover:shadow-lg font-bold ">Sign In</Link>
-              <Link href="/sign-up" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold rounded-lg text-sm px-5 py-2.5 focus:outline-none">
+              <Link href="/sign-in" className="transition-transform duration-150 hover:scale-125 font-bold ">Sign In</Link>
+              <Link href="/sign-up" className="transition-transform duration-150 hover:scale-105 border-4 border-black shadow-[4px_4px_0px_0px_black] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold rounded-lg text-sm px-5 py-2.5 focus:outline-none">
                 Sign Up
               </Link>
             </div>
