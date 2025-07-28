@@ -420,7 +420,7 @@ export default function IssueDetailsPage() {
 
   return (
     <>
-    <div className="border-2 border-black shadow-[4px_4px_0px_0px_black] m-10 p-10 flex flex-col bg-white rounded-lg">
+    <div className="border-2 border-black shadow-[4px_4px_0px_0px_black] m-10 px-10 py-5 flex flex-col bg-white rounded-lg">
     { issueId && uid && issueDetails?.claimedBy&& 
       <h2 className="text-2xl font-bold text-red-600 mb-7">
         Claimed By @

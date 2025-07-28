@@ -41,7 +41,7 @@ export default function Home() {
       initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3}} variants={fadeInUp}>
       <div className="flex flex-col flex-1 justify-center items-center mx-2">
         <h1 className="text-7xl font-bold text-yellow-400 drop-shadow-[3px_3px_0px_rgba(0,0,0,1)] mb-4">Find Talented Contributors</h1>
-        <h2 className="text-4xl font-semi-bold mb-6">Scratching your head for a bug? Post the issue on GitFries and find contributors.</h2>
+        <h2 className="text-4xl font-bold mb-6">No time or don't know how to fix the issue? Post it on GitFries to find contributors!</h2>
       </div>
       <div>
         <img src="3rd.png" className="max-w-full h-auto object-contain rounded-xl border-2 border-black shadow-[5px_5px_0px_0px_black]" />
@@ -56,7 +56,7 @@ export default function Home() {
       </div>
       <div className="flex flex-col flex-1 justify-center items-center mx-2">
         <h1 className="text-7xl font-bold text-yellow-400 drop-shadow-[3px_3px_0px_rgba(0,0,0,1)] mb-4">Showcase Skills by Contributing</h1>
-        <h2 className="text-4xl font-semi-bold mb-6">Want to take part in more real-life projects? Fix issues on GitFries and track your growth.</h2>
+        <h2 className="text-4xl font-bold mb-6">Want to take part in more real-life projects? Fix issues on GitFries to track your growth.</h2>
       </div>
     </motion.div>
 
