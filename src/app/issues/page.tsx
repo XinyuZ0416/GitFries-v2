@@ -198,7 +198,7 @@ export default function IssuesPage() {
     } else {
       if (!uid) {
         return(
-          <button key={num} onClick={() => setCurrentPage(num)}>
+          <button key={num} onClick={() => setCurrentPage(num)}
             className={`font-bold px-3 py-1 mx-1 rounded border-4 border-black transition-transform duration-150 shadow-[4px_4px_0px_0px_black] hover:scale-105 hover:bg-yellow-700 hover:text-white`}>
             {num}
           </button>
