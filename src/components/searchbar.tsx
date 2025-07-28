@@ -68,7 +68,7 @@ export default function Searchbar() {
     <div ref={searchbarRef} className="relative flex">
       <form className="max-w-lg mx-auto w-full" onSubmit={handleSearch}>
         <div className="flex">
-          <label htmlFor="search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>          
+          <label htmlFor="search" className="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>          
           <div className="relative w-full">
             <input className="shadow-[4px_4px_0px_0px_black] border-4 border-black block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg focus:ring-yellow-700 focus:border-yellow-700" 
               type="search" id="search" placeholder="Search for an issue" value={query} onChange={(e) => setQuery(e.target.value)} required />
