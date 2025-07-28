@@ -102,7 +102,7 @@ export default function SignUpPage() {
     { isVerified ? 
       'You have signed in. Redirecting to profile page...' :  // TODO: implement redirect
       <div className='flex flex-col justify-center items-center' style={{ height: `calc(100vh - ${navbarHeight}px)` }}>
-        <form className="flex flex-col mx-auto w-2/5 gap-7" onSubmit={handleSubmit}>
+        <form className="flex flex-col mx-auto w-2/5 gap-3" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="email" className="block mb-2 text-3xl font-bold">Email</label>
             <div className='flex flex-row relative'>
