@@ -6,7 +6,7 @@ export default function ChatBubbleReceiver({ url, username, time, content }: Cha
   return (
     <div className="flex mr-auto items-start gap-2.5">
       <img className="w-8 h-8 rounded-full" src={url} alt={username} />
-      <div className="flex flex-col w-full max-w-[320px] leading-1.5 p-4 bg-gray-100 rounded-e-xl rounded-es-xl">
+      <div className="border-2 border-black flex flex-col w-full max-w-[320px] leading-1.5 p-4 bg-yellow-100 rounded-e-xl rounded-es-xl">
         <div className="flex items-center space-x-2">
           <span className="text-sm font-semibold">{username}</span>
           <span className="text-sm text-gray-500">{formatTimeOrDate(time.toDate())}</span>

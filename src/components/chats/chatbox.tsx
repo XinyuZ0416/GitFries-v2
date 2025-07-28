@@ -5,6 +5,7 @@ import { db } from '@/app/firebase';
 import { useAuthProvider } from '@/providers/auth-provider';
 import ChatBubbleSender from './chat-bubble-sender';
 import ChatBubbleReceiver from './chat-bubble-receiver';
+import { motion } from 'framer-motion';
 
 export default function ChatWindow() {
   const { uid } = useAuthProvider();
@@ -134,7 +135,7 @@ export default function ChatWindow() {
     if (!chatUsers) return null;
 
     return chatUsers.map((user) => (
-      <div key={user.id} className="flex border-b items-center gap-2 p-3 hover:bg-gray-100">
+      <div key={user.id} className="flex border-b-2 border-black items-center gap-2 p-3 hover:bg-gray-100">
         <button className='py-2 w-full text-left flex flex-row gap-2 items-center cursor-pointer' 
           onClick={() => handleSelectChat(user.id, user.username, user.avatar)}>
           <img src={user.avatar} alt={user.username} className="w-8 h-8 rounded-full" />
@@ -163,17 +164,23 @@ export default function ChatWindow() {
   }, [chatBubbleList]);
 
   return (
-    <div className="fixed bottom-3 right-3 w-[640px] h-[480px] bg-white border shadow-2xl rounded-xl z-50 flex overflow-hidden">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8, y: 50 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.8, y: 50 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      className="fixed bottom-3 right-3 w-[640px] h-[480px] bg-white border-4 border-black shadow-[4px_4px_0px_0px_black] rounded-xl z-50 flex overflow-hidden"
+    >
       {/* Left Sidebar */}
-      <div className="w-1/3 border-r bg-gray-50 overflow-y-auto">
-        <div className="p-3 font-semibold border-b">Chats</div>
+      <div className="w-1/3 border-r-2 border-black bg-gray-50 overflow-y-auto">
+        <div className="p-3 font-semibold border-b-2 border-black">Chats</div>
         {renderSidePanelBtns()}
       </div>
 
       {/* Right Chat Panel */}
       <div className="w-2/3 flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b">
+        <div className="flex items-center justify-between px-4 py-3 border-b-2 border-black">
           <div className="flex items-center gap-2">
             <span className="font-semibold">{chatTargetUsername}</span>
           </div>
@@ -197,11 +204,11 @@ export default function ChatWindow() {
             </div>
 
             {/* Input */}
-            <form onSubmit={handleSendMessage} className="p-3 border-t bg-gray-50">
-              <div className="flex items-center px-3 py-2 bg-white border rounded-lg">
+            <form onSubmit={handleSendMessage} className="p-3 border-t-2 border-black bg-gray-50">
+              <div className="flex items-center px-3 py-2 bg-white border-2 border-black rounded-lg">
                 <textarea
                   rows={1}
-                  className="w-full p-2 text-sm text-gray-700 border-gray-300 rounded-lg resize-none focus:outline-none"
+                  className="w-full p-2 text-sm text-gray-700 border-b-2 border-black rounded-lg resize-none focus:outline-none"
                   placeholder="Type here..."
                   onChange={handleChange}
                   value={message}
@@ -216,6 +223,6 @@ export default function ChatWindow() {
           </>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

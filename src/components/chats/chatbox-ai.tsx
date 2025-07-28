@@ -1,5 +1,6 @@
 import { QAType } from '@/types/chat-bubble-props';
 import React, { Ref, useEffect } from 'react'
+import { motion } from 'framer-motion';
 
 interface ChatBoxAIProps {
   closeAiChat: () => void, 
@@ -28,9 +29,15 @@ export default function ChatBoxAI({
   }, [questionAndAnswerList]);
 
   return (
-    <div className="fixed bottom-3 left-3 w-[320px] h-[480px] bg-white border shadow-2xl rounded-xl z-50 flex overflow-hidden">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8, y: 50 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.8, y: 50 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      className="border-4 border-black shadow-[4px_4px_0px_0px_black] fixed bottom-3 left-3 w-[320px] h-[480px] bg-white rounded-xl z-50 flex overflow-hidden"
+    >
       <div className="w-full flex flex-col">
-        <div className="flex items-center justify-between px-4 py-3 border-b">
+        <div className="flex items-center justify-between px-4 py-3 border-b-2 border-black">
           <div className="flex items-center gap-2">
             <span className="font-semibold">Chat with Little Fries the bot</span>
           </div>
@@ -48,11 +55,11 @@ export default function ChatBoxAI({
         </div>
 
           {/* Input */}
-        <form onSubmit={handleSendAiMessage} className="p-3 border-t bg-gray-50">
-          <div className="flex items-center px-3 py-2 bg-white border rounded-lg">
+        <form onSubmit={handleSendAiMessage} className="p-3 border-t-2 border-black bg-gray-50">
+          <div className="flex items-center px-3 py-2 bg-white border-2 border-black rounded-lg">
             <textarea
               rows={1}
-              className="w-full p-2 text-sm text-gray-700 border-gray-300 rounded-lg resize-none focus:outline-none"
+              className="w-full p-2 text-sm text-gray-700 border-2 border-black rounded-lg resize-none focus:outline-none"
               placeholder="Type here..."
               onChange={handleAiChatChange}
               value={question}
@@ -65,6 +72,6 @@ export default function ChatBoxAI({
           </div>
         </form>
       </div>
-    </div>
+    </motion.div>
   );
 }
