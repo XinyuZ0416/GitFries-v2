@@ -17,7 +17,7 @@ export default function ProfileDashboardCard({ combinedData }: ProfileDashboardC
  
   return (
     <>
-      <div className='rounded-lg shadow-sm bg-white p-4 w-full'>
+      <div className='border-4 border-black shadow-[4px_4px_0px_0px_black] rounded-lg bg-white p-4 w-full'>
       <div className='flex flex-row gap-2 items-center mr-auto'>
         <img className='size-14' src='/contribution.png' alt='contribution' />
         <h2 className="text-2xl font-bold">Issues and Contributions This Year</h2>

@@ -131,9 +131,9 @@ export default function ProfilePage() {
 
   return (
     <>
-    <div className='flex flex-col gap-2'>
-      <div className='flex flex-row gap-2 w-full'>
-        <div className='flex flex-col gap-2 w-fit justify-between'>
+    <div className='m-10 flex flex-col gap-10'>
+      <div className='flex flex-row gap-10 w-full'>
+        <div className='flex flex-col gap-10 w-fit justify-between'>
           <ProfilePicCard 
             username={displayUsername}
             bio={displayBio}

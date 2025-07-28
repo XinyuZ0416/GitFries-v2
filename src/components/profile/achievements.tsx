@@ -29,10 +29,10 @@ export default function ProfileAchievementsCard({achievements}: ProfileAchieveme
 
   return (
     <>
-    <div className='flex flex-col flex-grow justify-center items-center rounded-lg shadow-sm p-4 bg-white'>
+    <div className='border-4 border-black shadow-[4px_4px_0px_0px_black] flex flex-col flex-grow justify-center items-center rounded-lg p-4 bg-white'>
       <div className='flex flex-row gap-2 items-center mr-auto'>
         <img className='size-14' src='/badge.png' alt='user profile picture' />
-        <h2 className='text-2xl font-bold'>Achievements</h2>
+        <h2 className='text-xl font-bold'>Achievements</h2>
       </div>
 
       <div className='flex flex-row gap-2'>
