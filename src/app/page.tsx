@@ -18,7 +18,9 @@ export default function Home() {
     <motion.div className="flex mx-auto px-4 max-w-7xl w-full" style={{ height: `calc(100vh - ${navbarHeight}px)` }}
       initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3}} variants={fadeInUp}>
       <div className="flex flex-col flex-1 ml-10 justify-center items-center">
-        <h1 className="text-7xl font-bold text-center">Link Code Issues with Contributors</h1>
+        <h1 className="text-7xl font-bold text-yellow-400 text-center drop-shadow-[3px_3px_0px_rgba(0,0,0,1)]">
+          Link Code Issues with Contributors
+        </h1>
         { isVerified !== null && !isVerified  && <EmailSignUp goal="Outsource or Contribute to Code Repo Issues" /> }
       </div>
 
@@ -38,7 +40,7 @@ export default function Home() {
     <motion.div className="grid grid-flow-row grid-cols-2 mx-4 my-24 text-center"
       initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3}} variants={fadeInUp}>
       <div className="flex flex-col flex-1 justify-center items-center mx-2">
-        <h1 className="text-7xl font-bold mb-4">Find Talented Contributors</h1>
+        <h1 className="text-7xl font-bold text-yellow-400 drop-shadow-[3px_3px_0px_rgba(0,0,0,1)] mb-4">Find Talented Contributors</h1>
         <h2 className="text-4xl font-semi-bold mb-6">Scratching your head for a bug? Post the issue on GitFries and find contributors.</h2>
       </div>
       <div>
@@ -53,7 +55,7 @@ export default function Home() {
         <img src="4th.png" className="max-w-full h-auto object-contain rounded-xl border-4 border-black shadow-[5px_5px_0px_0px_black]" />
       </div>
       <div className="flex flex-col flex-1 justify-center items-center mx-2">
-        <h1 className="text-7xl font-bold mb-4">Showcase Skills by Contributing</h1>
+        <h1 className="text-7xl font-bold text-yellow-400 drop-shadow-[3px_3px_0px_rgba(0,0,0,1)] mb-4">Showcase Skills by Contributing</h1>
         <h2 className="text-4xl font-semi-bold mb-6">Want to take part in more real-life projects? Fix issues on GitFries and track your growth.</h2>
       </div>
     </motion.div>
@@ -62,7 +64,7 @@ export default function Home() {
     { isVerified !== null && !isVerified && 
     <motion.div className="flex flex-col mx-4 justify-center items-center" style={{ height: `calc(100vh - ${navbarHeight}px)` }}
       initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3}} variants={fadeInUp}>
-      <h1 className="text-7xl font-bold">Join GitFries Today</h1>
+      <h1 className="text-7xl font-bold text-yellow-400 drop-shadow-[3px_3px_0px_rgba(0,0,0,1)]">Join GitFries Today</h1>
       <EmailSignUp goal="Outsource or Contribute to Code Repo Issues" />
     </motion.div>
     }

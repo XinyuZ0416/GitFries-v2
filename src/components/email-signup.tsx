@@ -14,7 +14,7 @@ export default function EmailSignUp({goal}: EmailSignUpProps) {
   return (
     <>
       <form className="flex flex-col items-center w-full">
-        <label className="text-3xl font-semibold text-center" htmlFor="email">Join GitFries to {goal}</label>
+        <label className="text-3xl font-bold text-center" htmlFor="email">Join GitFries to {goal}</label>
         <div className='flex mt-10'>
           <input type="email" id="email" placeholder="Enter your email" 
             className="shadow-[4px_4px_0px_0px_black] bg-white border-4 border-black transition-transform duration-150 hover:scale-105 text-gray-900 md:w-64 mb-2 md:mb-0 md:me-4 text-lg rounded-lg block w-full p-2.5" required />
