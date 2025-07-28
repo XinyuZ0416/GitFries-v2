@@ -26,22 +26,26 @@ export default function UserDropdown() {
     <>
     <Menu>
       <MenuButton className="shrink-0">
-        {userPicUrl && <img className="rounded-full h-8" src={userPicUrl} alt="user profile" />}
+        {userPicUrl && <img className="border-2 border-black rounded-full h-9" src={userPicUrl} alt="user profile" />}
       </MenuButton>
 
       <MenuItems
         transition
         anchor="bottom"
-        className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-fit"
+        className="border-4 border-black shadow-[4px_4px_0px_0px_black] z-10 bg-white rounded-lg w-fit"
       >
         <MenuItem>
-          <Link href={`/profile/${uid}`} type='button' className="group flex w-full items-center justify-center rounded-lg py-1.5 px-3">Profile</Link>
+          <Link href={`/profile/${uid}`} className="transition-transform duration-150 hover:scale-125 font-bold border-b-2 border-black group flex w-full items-center justify-center py-1.5 px-3">
+            Profile
+          </Link>
         </MenuItem>
         <MenuItem>
-          <Link href='/settings' type='button' className="group flex w-full items-center justify-center rounded-lg py-1.5 px-3">Settings</Link>
+          <Link href="/settings" className="transition-transform duration-150 hover:scale-125 font-bold border-b-2 border-black group flex w-full items-center justify-center py-1.5 px-3">
+            Settings
+          </Link>
         </MenuItem>
         <MenuItem>
-          <button type='button' onClick={handleSignOut} className="group flex w-full items-center justify-center rounded-lg py-1.5 px-3">
+          <button onClick={handleSignOut} className="transition-transform duration-150 hover:scale-125 font-bold group flex w-full items-center justify-center py-1.5 px-3">
             Sign Out
           </button>
         </MenuItem>
