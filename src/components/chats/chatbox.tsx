@@ -169,7 +169,7 @@ export default function ChatWindow() {
       animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.8, y: 50 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="fixed bottom-3 right-3 w-[640px] h-[480px] bg-white border-4 border-black shadow-[4px_4px_0px_0px_black] rounded-xl z-50 flex overflow-hidden"
+      className="fixed bottom-3 right-3 w-[640px] h-[480px] bg-white border-2 border-black shadow-[4px_4px_0px_0px_black] rounded-xl z-50 flex overflow-hidden"
     >
       {/* Left Sidebar */}
       <div className="w-1/3 border-r-2 border-black bg-gray-50 overflow-y-auto">

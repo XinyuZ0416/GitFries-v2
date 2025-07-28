@@ -17,7 +17,7 @@ export default function ProfilePicCard({
 
   return (
     <>
-    <div className='border-4 border-black shadow-[4px_4px_0px_0px_black] flex flex-col flex-grow w-full max-w-md justify-center items-center rounded-lg p-4 bg-white'>
+    <div className='border-2 border-black shadow-[4px_4px_0px_0px_black] flex flex-col flex-grow w-full max-w-md justify-center items-center rounded-lg p-4 bg-white'>
       <img className='rounded-full size-14' src={userPicUrl || "/potato.png"} alt='user profile picture' />
       <h2 className='text-2xl font-bold'>{username}</h2>
       <p className='font-normal'>{bio}</p>

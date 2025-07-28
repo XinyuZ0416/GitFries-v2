@@ -101,7 +101,7 @@ export default function ClaimIssueRequestCard({currentNotifId, senderUsername, s
 
   return (
     <>
-    <div className='my-5 transition-transform duration-150 hover:scale-105 border-4 border-black shadow-[4px_4px_0px_0px_black] flex flex-col rounded-lg p-4 gap-4 bg-white hover:bg-gray-100'>
+    <div className='my-5 transition-transform duration-150 hover:scale-105 border-2 border-black shadow-[4px_4px_0px_0px_black] flex flex-col rounded-lg p-4 gap-4 bg-white hover:bg-gray-100'>
       <Link href={`/issues/${issueId}`}>
       <h3 className='text-lg font-semibold'>@{senderUsername} would like to claim your issue "{issueTitle}"</h3>
       <p className="font-normal">{message}</p>
@@ -112,13 +112,13 @@ export default function ClaimIssueRequestCard({currentNotifId, senderUsername, s
           isAccepted === null ? 
             <>
             <div className='flex justify-center'>
-              <button className="transition-transform duration-150 hover:scale-125 border-4 border-black shadow-[4px_4px_0px_0px_black] inline-flex justify-center w-36 px-2 py-1.5 text-md font-bold text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+              <button className="transition-transform duration-150 hover:scale-125 border-2 border-black shadow-[4px_4px_0px_0px_black] inline-flex justify-center w-36 px-2 py-1.5 text-md font-bold text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700"
                 onClick={handleAccept}>
                 Accept
               </button>
             </div>
             <div className='flex justify-center'>
-              <button className="transition-transform duration-150 hover:scale-125 border-4 border-black shadow-[4px_4px_0px_0px_black] inline-flex justify-center w-36 px-2 py-1.5 text-md font-bold text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100"
+              <button className="transition-transform duration-150 hover:scale-125 border-2 border-black shadow-[4px_4px_0px_0px_black] inline-flex justify-center w-36 px-2 py-1.5 text-md font-bold text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100"
                 onClick={handleDecline}>
                 Decline
               </button>

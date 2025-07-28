@@ -18,7 +18,7 @@ export default function RequireSignInSignUp({target}: RequireSignInSignUpProps) 
           <Link href="/sign-in" className="underline">Sign In</Link>
         </span> or 
         <span className="inline-flex align-middle ml-2">
-          <Link href="/sign-up" className="transition-transform duration-150 hover:scale-105 border-4 border-black shadow-[4px_4px_0px_0px_black] text-white bg-blue-700 hover:bg-blue-800 font-bold rounded-lg text-xl px-5 py-2.5">
+          <Link href="/sign-up" className="transition-transform duration-150 hover:scale-105 border-2 border-black shadow-[4px_4px_0px_0px_black] text-white bg-blue-700 hover:bg-blue-800 font-bold rounded-lg text-xl px-5 py-2.5">
             Sign Up
           </Link>
         </span> to {target}

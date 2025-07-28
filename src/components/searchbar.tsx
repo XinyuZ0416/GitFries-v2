@@ -70,9 +70,9 @@ export default function Searchbar() {
         <div className="flex">
           <label htmlFor="search" className="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>          
           <div className="relative w-full">
-            <input className="shadow-[4px_4px_0px_0px_black] border-4 border-black block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg" 
+            <input className="shadow-[4px_4px_0px_0px_black] border-2 border-black block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg" 
               type="search" id="search" placeholder="Search for an issue" value={query} onChange={(e) => setQuery(e.target.value)} required />
-            <button type="submit" className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border-black border-4 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-yellow-700">
+            <button type="submit" className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border-black border-2 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-yellow-700">
               <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
               </svg>

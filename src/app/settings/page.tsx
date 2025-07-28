@@ -190,7 +190,7 @@ export default function Settings() {
       {/* Profile picture */}
       <div className="mb-5 w-2/5">
         <label className="block mb-2 text-2xl font-bold" htmlFor="file_input">Profile Picture</label>
-        <input className="border-4 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 block w-full text-sm font-bold rounded-lg cursor-pointer bg-gray-50" 
+        <input className="border-2 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 block w-full text-sm font-bold rounded-lg cursor-pointer bg-gray-50" 
           aria-describedby="file_input_help" id="file_input" name="file_input" type="file" onChange={handleFileSelectAndUpload}></input>
         <p className="mt-1 text-sm font-bold" id="file_input_help">.jpg/.jpeg/.png (MAX 3MB)</p>
       </div>
@@ -199,23 +199,23 @@ export default function Settings() {
       <form className="mx-auto w-2/5" onSubmit={handleUpdate}>
         <fieldset className="mb-5">
           <label htmlFor="username" className="block mb-2 text-2xl font-bold">Username</label>
-          <input className="border-4 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 bg-gray-50 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+          <input className="border-2 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 bg-gray-50 text-gray-900 text-sm rounded-lg block w-full p-2.5"
             type="text" id="username" name='username' placeholder={placeHolderUsername} value={formData.username} onChange={handleChange} />
         </fieldset>
         <fieldset className="mb-5">
           <label htmlFor="bio" className="block mb-2 text-2xl font-bold">Bio</label>
-          <textarea className="border-4 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+          <textarea className="border-2 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg focus:ring-blue-500 focus:border-blue-500"
             id="bio" name="bio" placeholder={placeHolderBio} value={formData.bio} rows={4} onChange={handleChange} ></textarea>
         </fieldset>
         <div className='grid grid-cols-3 gap-4 w-full'>
-          <button type="submit" className="border-4 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 text-white bg-blue-700 hover:bg-blue-800 font-bold rounded-lg text-md w-full px-5 py-1 text-center">
+          <button type="submit" className="border-2 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 text-white bg-blue-700 hover:bg-blue-800 font-bold rounded-lg text-md w-full px-5 py-1 text-center">
             Update
           </button>
-          <button className="border-4 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 text-white bg-yellow-700 hover:bg-yellow-800 font-bold rounded-lg text-md w-full px-5 py-1 text-center"
+          <button className="border-2 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 text-white bg-yellow-700 hover:bg-yellow-800 font-bold rounded-lg text-md w-full px-5 py-1 text-center"
             type='button' onClick={handleResetPassword}>
             Reset Password
           </button>
-          <button className="border-4 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 text-white bg-red-700 hover:bg-red-800 font-bold rounded-lg text-md w-full px-5 py-1 text-center"
+          <button className="border-2 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 text-white bg-red-700 hover:bg-red-800 font-bold rounded-lg text-md w-full px-5 py-1 text-center"
             type='button' onClick={handleDeleteAccount}>
             Delete Account
           </button>
@@ -226,10 +226,10 @@ export default function Settings() {
       <form className="mx-auto w-2/5 mt-5" onSubmit={handleResetEmail}>
         <fieldset className="mb-5">
           <label htmlFor="new-email" className="block mb-2 text-2xl font-bold">New Email</label>
-          <input className="border-4 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 bg-gray-50 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+          <input className="border-2 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 bg-gray-50 text-gray-900 text-sm rounded-lg block w-full p-2.5"
             type="email" id="new-email" name='new-email' placeholder={`Current email: ${email}`} onChange={(e) => setNewEmail(e.target.value)} required/>
         </fieldset>
-        <button className="border-4 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 text-white bg-yellow-700 hover:bg-yellow-800 font-bold rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center"
+        <button className="border-2 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 text-white bg-yellow-700 hover:bg-yellow-800 font-bold rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center"
           type='submit'>
           Reset Email
         </button>

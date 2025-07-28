@@ -32,7 +32,7 @@ export default function UserDropdown() {
       <MenuItems
         transition
         anchor="bottom"
-        className="border-4 border-black shadow-[4px_4px_0px_0px_black] z-10 bg-white rounded-lg w-fit"
+        className="border-2 border-black shadow-[4px_4px_0px_0px_black] z-10 bg-white rounded-lg w-fit"
       >
         <MenuItem>
           <Link href={`/profile/${uid}`} className="transition-transform duration-150 hover:scale-125 font-bold border-b-2 border-black group flex w-full items-center justify-center py-1.5 px-3">

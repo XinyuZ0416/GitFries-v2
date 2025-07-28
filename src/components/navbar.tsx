@@ -92,7 +92,7 @@ export default function Navbar() {
           {isVerified !== null && !isVerified && // if user is logged out or not verified
             <div className='hidden md:flex gap-10 items-center'>
               <Link href="/sign-in" className="transition-transform duration-150 hover:scale-125 font-bold ">Sign In</Link>
-              <Link href="/sign-up" className="transition-transform duration-150 hover:scale-105 border-4 border-black shadow-[4px_4px_0px_0px_black] text-white bg-blue-700 hover:bg-blue-800 font-bold rounded-lg text-sm px-5 py-2.5">
+              <Link href="/sign-up" className="transition-transform duration-150 hover:scale-105 border-2 border-black shadow-[4px_4px_0px_0px_black] text-white bg-blue-700 hover:bg-blue-800 font-bold rounded-lg text-sm px-5 py-2.5">
                 Sign Up
               </Link>
             </div>

@@ -34,7 +34,7 @@ export default function ChatBoxAI({
       animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.8, y: 50 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="border-4 border-black shadow-[4px_4px_0px_0px_black] fixed bottom-3 left-3 w-[320px] h-[480px] bg-white rounded-xl z-50 flex overflow-hidden"
+      className="border-2 border-black shadow-[4px_4px_0px_0px_black] fixed bottom-3 left-3 w-[320px] h-[480px] bg-white rounded-xl z-50 flex overflow-hidden"
     >
       <div className="w-full flex flex-col">
         <div className="flex items-center justify-between px-4 py-3 border-b-2 border-black">

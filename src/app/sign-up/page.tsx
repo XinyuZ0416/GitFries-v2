@@ -106,14 +106,14 @@ export default function SignUpPage() {
           <div>
             <label htmlFor="email" className="block mb-2 text-3xl font-bold">Email</label>
             <div className='flex flex-row relative'>
-              <input className="transition-transform duration-150 hover:scale-105 shadow-[4px_4px_0px_0px_black] border-4 border-black bg-gray-50 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+              <input className="transition-transform duration-150 hover:scale-105 shadow-[4px_4px_0px_0px_black] border-2 border-black bg-gray-50 text-gray-900 text-sm rounded-lg block w-full p-2.5"
               type="email" id="email" placeholder="YouWontGetAwayWithNonEmail@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
           </div>
           <div>
             <label htmlFor="password" className="block mb-2 text-3xl font-bold">Password</label>
             <div className='flex flex-row relative'>
-              <input className="transition-transform duration-150 hover:scale-105 shadow-[4px_4px_0px_0px_black] border-4 border-black bg-gray-50 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+              <input className="transition-transform duration-150 hover:scale-105 shadow-[4px_4px_0px_0px_black] border-2 border-black bg-gray-50 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                 type='password' id="password" placeholder="DefinitelyNot123456" value={password} onChange={handleSetPassword} required />
             </div>
           </div>
@@ -131,19 +131,19 @@ export default function SignUpPage() {
           <div>
             <label htmlFor="repeat_password" className="block mb-2 text-3xl font-bold">Repeat Password</label>
             <div className='flex flex-row relative'>
-              <input className="transition-transform duration-150 hover:scale-105 shadow-[4px_4px_0px_0px_black] border-4 border-black bg-gray-50 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+              <input className="transition-transform duration-150 hover:scale-105 shadow-[4px_4px_0px_0px_black] border-2 border-black bg-gray-50 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                 type='password' name="repeat_password" id="repeat_password" placeholder="DefinitelyNot123456" value={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)} required />
             </div>
           </div>
 
           <div className="flex items-start">
             <div className="flex items-center h-5">
-              <input className="transition-transform duration-150 hover:scale-150 shadow-[2px_2px_0px_0px_black] border-4 border-black w-4 h-4 rounded-sm bg-gray-50"
+              <input className="transition-transform duration-150 hover:scale-150 shadow-[2px_2px_0px_0px_black] border-2 border-black w-4 h-4 rounded-sm bg-gray-50"
                 id="checkbox-1" type="checkbox" value="" required/>
             </div>
             <label htmlFor="checkbox-1" className="ms-2 text-lg font-bold">I agree to the <a href="#" className="text-blue-600 hover:underline">terms and conditions</a> 🤞🏻</label>
           </div>
-          <button className="transition-transform duration-150 hover:scale-105 shadow-[4px_4px_0px_0px_black] border-4 border-black text-white bg-blue-700 hover:bg-blue-800 font-bold rounded-lg text-xl w-full sm:w-auto px-5 py-2.5 text-center"
+          <button className="transition-transform duration-150 hover:scale-105 shadow-[4px_4px_0px_0px_black] border-2 border-black text-white bg-blue-700 hover:bg-blue-800 font-bold rounded-lg text-xl w-full sm:w-auto px-5 py-2.5 text-center"
             type="submit" >Sign Up</button>
         </form>
         {/* Toast Message */}

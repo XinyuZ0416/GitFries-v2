@@ -119,19 +119,19 @@ export default function PostIssuePage() {
           <fieldset className="mb-5">
             <label className={isValidUrl || isValidUrl === null ? "block mb-2 text-2xl font-bold" :  "block mb-2 text-sm font-medium text-red-600" }
               htmlFor="url" >Issue URL *{isValidUrl || isValidUrl === null ? "" : " (Must be a valid URL)"}</label>
-            <input className="bg-gray-50 border-4 border-black shadow-[4px_4px_0px_0px_black] text-gray-900 text-sm rounded-lg block w-full p-2.5" 
+            <input className="bg-gray-50 border-2 border-black shadow-[4px_4px_0px_0px_black] text-gray-900 text-sm rounded-lg block w-full p-2.5" 
               type="text" id="url" name='url' value={formData.url} onChange={handleChange} required />
           </fieldset>
           {/* issue title */}
           <fieldset className="mb-5">
             <label htmlFor="title" className="block mb-2 text-2xl font-bold">Issue Title *</label>
-            <input className="bg-gray-50 border-4 border-black shadow-[4px_4px_0px_0px_black] text-gray-900 text-sm rounded-lg block w-full p-2.5" 
+            <input className="bg-gray-50 border-2 border-black shadow-[4px_4px_0px_0px_black] text-gray-900 text-sm rounded-lg block w-full p-2.5" 
               type="text" id="title" name='title' value={formData.title} onChange={handleChange} required />
           </fieldset>
           {/* description */}
           <fieldset className="mb-5">
             <label htmlFor="description" className="block mb-2 text-2xl font-bold">Description</label>
-            <div className="container border-4 border-black shadow-[4px_4px_0px_0px_black]" data-color-mode="light">
+            <div className="container border-2 border-black shadow-[4px_4px_0px_0px_black]" data-color-mode="light">
               <MDEditor
                 id="description"
                 value={formData.description}
@@ -146,7 +146,7 @@ export default function PostIssuePage() {
           <div className="mb-5 flex flex-row items-center">
             <fieldset className="max-w-sm mx-auto">
               <label htmlFor="language" className="block mb-2 text-2xl font-bold">Language *</label>
-              <select className="bg-gray-50 border-4 border-black shadow-[4px_4px_0px_0px_black] text-gray-900 text-sm rounded-lg block w-full p-2.5"
+              <select className="bg-gray-50 border-2 border-black shadow-[4px_4px_0px_0px_black] text-gray-900 text-sm rounded-lg block w-full p-2.5"
                 id="language" name="language" value={formData.language} onChange={handleChange}>
                 <option value="C">C</option>
                 <option value="C++">C++</option>
@@ -181,20 +181,20 @@ export default function PostIssuePage() {
 
             <fieldset className="max-w-sm mx-auto">
               <label htmlFor="difficulty" className="block mb-2 text-2xl font-bold">Difficulty *</label>
-              <select id="difficulty" name="difficulty" value={formData.difficulty} onChange={handleChange} className="bg-gray-50 border-4 border-black shadow-[4px_4px_0px_0px_black] text-gray-900 text-sm rounded-lg block w-full p-2.5">
+              <select id="difficulty" name="difficulty" value={formData.difficulty} onChange={handleChange} className="bg-gray-50 border-2 border-black shadow-[4px_4px_0px_0px_black] text-gray-900 text-sm rounded-lg block w-full p-2.5">
                 <option value='headache'>Headache</option>
                 <option value='easy-fix'>Easy Fix</option>
               </select>
             </fieldset>
 
             <fieldset className="flex items-center mx-auto">
-              <input className="w-4 h-4 text-blue-600 bg-gray-100 border-4 border-black shadow-[4px_4px_0px_0px_black] rounded-sm" 
+              <input className="w-4 h-4 text-blue-600 bg-gray-100 border-2 border-black shadow-[4px_4px_0px_0px_black] rounded-sm" 
                 type="checkbox" id="isUrgent" name="isUrgent" checked={formData.isUrgent} onChange={handleChange} ></input>
               <label htmlFor="isUrgent" className="ms-2 text-2xl font-bold">Urgent</label>
             </fieldset>
 
             <fieldset className='mx-auto'>
-              <button type="submit" className="border-4 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 text-white bg-blue-700 hover:bg-blue-800 rounded-lg text-2xl font-bold w-full sm:w-auto px-5 py-2.5 text-center">Submit</button>
+              <button type="submit" className="border-2 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 text-white bg-blue-700 hover:bg-blue-800 rounded-lg text-2xl font-bold w-full sm:w-auto px-5 py-2.5 text-center">Submit</button>
             </fieldset>
           </div>
         </form>

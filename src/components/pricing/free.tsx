@@ -3,7 +3,7 @@ import React from 'react'
 export default function PricingFreeCard() {
   return (
     <>
-    <div className="transition-transform duration-150 hover:scale-105 border-4 border-black shadow-[4px_4px_0px_0px_black] w-full max-w-sm p-4 bg-white rounded-lg sm:p-8">
+    <div className="transition-transform duration-150 hover:scale-105 border-2 border-black shadow-[4px_4px_0px_0px_black] w-full max-w-sm p-4 bg-white rounded-lg sm:p-8">
       <h5 className="mb-4 text-xl font-medium text-gray-500">Standard Plan</h5>
       <div className="flex items-baseline text-gray-900">
         <span className="text-3xl font-semibold">￡</span>

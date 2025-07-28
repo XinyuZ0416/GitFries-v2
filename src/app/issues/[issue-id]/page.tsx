@@ -420,11 +420,11 @@ export default function IssueDetailsPage() {
 
   return (
     <>
-    <div className="border-4 border-black shadow-[4px_4px_0px_0px_black] m-10 p-10 flex flex-col bg-white rounded-lg">
+    <div className="border-2 border-black shadow-[4px_4px_0px_0px_black] m-10 p-10 flex flex-col bg-white rounded-lg">
     { issueId && uid && issueDetails?.claimedBy&& 
       <h2 className="text-2xl font-bold text-red-600 mb-7">
         Claimed By @
-        <span className="bg-yellow-300 rounded-lg inline-block border-4 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105">
+        <span className="bg-yellow-300 rounded-lg inline-block border-2 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105">
           <Link href={`/profile/${issueDetails?.claimedBy}`}>{issueDetails.issueClaimerUsername}</Link>
         </span>
       </h2>
@@ -432,7 +432,7 @@ export default function IssueDetailsPage() {
     { issueId && uid && issueDetails?.finishedBy&& 
       <h2 className="text-2xl font-bold text-green-500 mb-7">
         Finished By @
-        <span className="bg-yellow-300 rounded-lg inline-block border-4 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105">
+        <span className="bg-yellow-300 rounded-lg inline-block border-2 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105">
           <Link href={`/profile/${issueDetails?.finishedBy}`}>{issueDetails.issueFinisherUsername}</Link>
         </span>
       </h2>
