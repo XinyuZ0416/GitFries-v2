@@ -231,8 +231,8 @@ export default function IssuesPage() {
           font-bold text-sm
           border-2 border-black border-dashed
           bg-white text-black
-          peer-hover:bg-yellow-600 peer-hover:text-black 
-          peer-checked:bg-yellow-600 peer-checked:text-white 
+          peer-hover:bg-yellow-300 peer-hover:text-black 
+          peer-checked:bg-yellow-300 peer-checked:text-black 
           shadow-[2px_2px_0px_0px_black]
           transition-all">👌🏻 Claimed by Me</label>
       </div>
@@ -244,8 +244,8 @@ export default function IssuesPage() {
           font-bold text-sm
           border-2 border-black border-dashed
           bg-white text-black
-          peer-hover:bg-yellow-600 peer-hover:text-black 
-          peer-checked:bg-yellow-600 peer-checked:text-white 
+          peer-hover:bg-yellow-300 peer-hover:text-black 
+          peer-checked:bg-yellow-300 peer-checked:text-black 
           shadow-[2px_2px_0px_0px_black]
           transition-all">✅ Finished by Me</label>
       </div>
@@ -257,8 +257,8 @@ export default function IssuesPage() {
           font-bold text-sm
           border-2 border-black border-dashed
           bg-white text-black
-          peer-hover:bg-yellow-600 peer-hover:text-black 
-          peer-checked:bg-yellow-600 peer-checked:text-white 
+          peer-hover:bg-yellow-300 peer-hover:text-black 
+          peer-checked:bg-yellow-300 peer-checked:text-black 
           shadow-[2px_2px_0px_0px_black]
           transition-all">👀 Available</label>
       </div>
@@ -270,8 +270,8 @@ export default function IssuesPage() {
           font-bold text-sm
           border-2 border-black border-dashed
           bg-white text-black
-          peer-hover:bg-yellow-600 peer-hover:text-black 
-          peer-checked:bg-yellow-600 peer-checked:text-white 
+          peer-hover:bg-yellow-300 peer-hover:text-black 
+          peer-checked:bg-yellow-300 peer-checked:text-black 
           shadow-[2px_2px_0px_0px_black]
           transition-all">♥️ Favorited</label>
       </div>
@@ -283,8 +283,8 @@ export default function IssuesPage() {
           font-bold text-sm
           border-2 border-black border-dashed
           bg-white text-black
-          peer-hover:bg-yellow-600 peer-hover:text-black 
-          peer-checked:bg-yellow-600 peer-checked:text-white 
+          peer-hover:bg-yellow-300 peer-hover:text-black 
+          peer-checked:bg-yellow-300 peer-checked:text-black 
           shadow-[2px_2px_0px_0px_black]
           transition-all">😌 Easy fix</label>
       </div>
@@ -296,8 +296,8 @@ export default function IssuesPage() {
           font-bold text-sm
           border-2 border-black border-dashed
           bg-white text-black
-          peer-hover:bg-yellow-600 peer-hover:text-black 
-          peer-checked:bg-yellow-600 peer-checked:text-white 
+          peer-hover:bg-yellow-300 peer-hover:text-black 
+          peer-checked:bg-yellow-300 peer-checked:text-black 
           shadow-[2px_2px_0px_0px_black]
           transition-all">⏳ Urgent</label>
       </div>
@@ -308,8 +308,8 @@ export default function IssuesPage() {
           font-bold text-sm
           border-2 border-black border-dashed
           bg-white text-black
-          peer-hover:bg-yellow-600 peer-hover:text-black 
-          peer-checked:bg-yellow-600 peer-checked:text-white 
+          peer-hover:bg-yellow-300 peer-hover:text-black 
+          peer-checked:bg-yellow-300 peer-checked:text-black 
           shadow-[2px_2px_0px_0px_black]
           transition-all"
           id="language" name="language" value={formData.language} onChange={handleFilterChange}>
