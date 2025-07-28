@@ -91,7 +91,7 @@ export default function AddCommentBox({
         <h6 className='text-lg font-bold'>{commenterUsername}</h6>
       </div>
       <form onSubmit={handleSubmit}>
-        <div className="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50">
+        <div className="border-4 border-black shadow-[4px_4px_0px_0px_black] w-full mb-4 rounded-lg bg-gray-50">
           <div className="px-4 py-2 bg-white rounded-t-lg">
             <label htmlFor="comment" className="sr-only">Your comment</label>
             <fieldset className="mb-5">
@@ -109,8 +109,8 @@ export default function AddCommentBox({
             </fieldset>
             
           </div>
-            <div className="flex items-center justify-between px-3 py-2 border-t border-gray-200">
-              <button type="submit" className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800">
+            <div className="flex items-center justify-between px-3 py-5 border-t border-gray-200">
+              <button type="submit" className="border-4 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105 inline-flex items-center py-2.5 px-4 text-lg font-bold text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800">
                   Post comment
               </button>
             </div>

@@ -21,7 +21,7 @@ export default function IssueCommentCard({
 }: IssueCommentCardProps) {
   return (
     <>
-    <div className='flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm p-4 gap-3'>
+    <div className='border-4 border-black shadow-[4px_4px_0px_0px_black] flex flex-col bg-white rounded-lg p-4 my-5 gap-3'>
       <div className="flex flex-row gap-3 items-center">
         <Link href={`/profile/${commenterUid}`}  className="flex flex-col items-center">
           <img className="rounded-full size-10" src={commenterPicUrl} alt="user profile" />

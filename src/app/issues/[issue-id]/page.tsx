@@ -420,7 +420,7 @@ export default function IssueDetailsPage() {
 
   return (
     <>
-    <div className="flex flex-col p-3 m-3 bg-white border border-gray-200 rounded-lg shadow-sm">
+    <div className="border-4 border-black shadow-[4px_4px_0px_0px_black] m-10 p-10 flex flex-col bg-white rounded-lg">
     { issueId && uid && issueDetails?.claimedBy&& 
       <h2 className="text-2xl font-bold text-red-600">
         CLAIMED BY @
@@ -430,8 +430,13 @@ export default function IssueDetailsPage() {
     { issueId && uid && issueDetails?.finishedBy&& 
       <h2 className="text-2xl font-bold text-green-500">
         Finished BY @
-        <Link href={`/profile/${issueDetails?.finishedBy}`}>{issueDetails.issueFinisherUsername}</Link>
+        <span className="bg-yellow-300 rounded-lg inline-block border-4 border-black shadow-[4px_4px_0px_0px_black] transition-transform duration-150 hover:scale-105">
+          <Link href={`/profile/${issueDetails?.finishedBy}`}>
+            {issueDetails.issueFinisherUsername}
+          </Link>
+        </span>
       </h2>
+
     }
       <div className='flex flex-row'>
         <section id='user-info'>
@@ -486,20 +491,22 @@ export default function IssueDetailsPage() {
         />}
       </div>
       
-      { commentsArr && commentsArr.length > 0 ? 
-          commentsArr.sort((a, b) => b.time.toMillis() - a.time.toMillis())
-          .map((comment) => (
-            <IssueCommentCard
-              key={comment.commentId}
-              commenterUid={comment.commenterUid}
-              commenterUsername={comment.commenterUsername}
-              commenterPicUrl={comment.commenterPicUrl}
-              comment={comment.comment}
-              time={comment.time}
-            />
-          )) :
-          ""
-      }
+      <div className='mt-10'>
+        { commentsArr && commentsArr.length > 0 ? 
+            commentsArr.sort((a, b) => b.time.toMillis() - a.time.toMillis())
+            .map((comment) => (
+              <IssueCommentCard
+                key={comment.commentId}
+                commenterUid={comment.commenterUid}
+                commenterUsername={comment.commenterUsername}
+                commenterPicUrl={comment.commenterPicUrl}
+                comment={comment.comment}
+                time={comment.time}
+              />
+            )) :
+            ""
+        }
+      </div>
     </div>
     </>
   )
