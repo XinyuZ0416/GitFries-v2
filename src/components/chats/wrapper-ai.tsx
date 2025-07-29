@@ -89,7 +89,7 @@ export default function ChatBoxAiWrapper() {
   return (
     <>
     <button onClick={() => openAiChat()}>
-      <img className="fixed left-3 bottom-3 size-20 z-9" src="/chatbot.png" />
+      <img className="transition-transform duration-150 hover:scale-125 fixed left-3 bottom-3 size-20 z-9" src="/chatbot.png" />
     </button>
     { isAiChatOpen &&
       <ChatBoxAI

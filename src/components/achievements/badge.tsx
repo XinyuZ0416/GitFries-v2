@@ -16,7 +16,7 @@ export default function Badge({src, alt, title, description, explanation}: Badge
       <img className='size-40' src={src} alt={alt} />
       <h2 className="text-2xl font-bold text-yellow-700">{title}</h2>
       <p className="font-bold text-center text-yellow-500">{description}</p>
-      <h4 className="text-sm font-bold text-white">{explanation}</h4>
+      <h4 className="text-sm font-bold text-yellow-300">{explanation}</h4>
     </div>
     </>
   )
